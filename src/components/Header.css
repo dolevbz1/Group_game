@@ -1,0 +1,97 @@
+/* ─── Entrance animation ─── */
+.app-header {
+  opacity: 0;
+  transform: translateY(-16px);
+}
+.screen.is-ready .app-header {
+  animation: header-reveal 300ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+@keyframes header-reveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-header { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP3);
+  padding: var(--SP3) var(--SP5);
+  background: transparent;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--SP1);
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  color: #1a1a3e;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.icon-btn:focus {
+  outline: none;
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid #1a1a3e;
+  border-radius: 4px;
+}
+
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--SP1);
+  flex-shrink: 0;
+}
+
+.header-plus-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 12px;
+  background: var(--color-gray);
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.header-avatar-lottie {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar:focus {
+  outline: none;
+}
+
+.avatar:focus-visible {
+  outline: 2px solid var(--color-card-border);
+  outline-offset: 2px;
+}

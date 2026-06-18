@@ -1,0 +1,264 @@
+/* ─── Entrance animation ─── */
+.carousel {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.screen.is-ready .carousel {
+  animation: carousel-reveal 400ms 300ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+.screen.is-ready .carousel-nav {
+  animation: carousel-reveal 300ms 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+}
+@keyframes carousel-reveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .app-header, .hero, .carousel, .carousel-nav { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+.carousel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding-top: var(--SP2);
+}
+
+/* Horizontal track — swipe between cards, neighbours peek at the edges */
+.carousel-track {
+  display: flex;
+  gap: var(--SP3);
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0 0 calc(124px - var(--SP8) + env(safe-area-inset-bottom, 0px));
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-card {
+  flex: 0 0 calc(100% - var(--SP5) * 2);
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 20px;
+  padding: var(--SP4);
+  color: var(--color-card-border);
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0.55;
+  transform-origin: center center;
+  will-change: transform;
+  transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.carousel-card.is-active {
+  opacity: 1;
+}
+
+.carousel-card:first-child {
+  margin-inline-start: var(--SP5);
+}
+
+.carousel-card:last-child {
+  margin-inline-end: var(--SP5);
+}
+
+.carousel-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP3);
+  flex-shrink: 0;
+  min-height: 34px;
+  margin-inline: calc(-1 * var(--SP4));
+  padding-inline: var(--SP4);
+  padding-bottom: var(--SP4);
+  border-bottom: 0.5px solid var(--color-card-border);
+}
+
+.carousel-card-title {
+  margin: 0;
+  text-align: right;
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-secondary.carousel-card-cta {
+  height: 44px;
+  padding: 0 var(--SP5);
+  box-sizing: border-box;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-normal);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.carousel-card-body {
+  padding-top: var(--SP4);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.carousel-card-body.is-full-bleed {
+  overflow: visible;
+  padding-top: 0;
+}
+
+.carousel-card-body.is-centered {
+  display: flex;
+  flex-direction: column;
+}
+
+.carousel-card-body::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-card-placeholder {
+  color: rgba(34, 34, 51, 0.65);
+}
+
+/* Bottom tab bar — floating circle nav (continuous, JS-positioned) */
+.carousel-nav {
+  position: absolute;
+  bottom: var(--SP3);
+  left: 0;
+  right: 0;
+  height: calc(136px + env(safe-area-inset-bottom, 0px));
+  overflow: visible;
+  background: transparent;
+  border-top: none;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 10;
+}
+
+.carousel-tab {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Nav entrance: non-active circles slide out from behind the center circle ── */
+
+/* Non-active circles: hidden until nav is ready */
+.carousel-nav:not(.is-ready) .carousel-tab:not(.is-active) .carousel-tab-circle {
+  opacity: 0;
+}
+
+/* Non-active circles fan out once nav gets .is-ready */
+.carousel-nav.is-ready .carousel-tab:not(.is-active) .carousel-tab-circle {
+  animation: nav-fan-out 550ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  /* stagger: circles further from center appear slightly later */
+  animation-delay: calc(700ms + var(--dist-abs, 0) * 80ms);
+}
+
+@keyframes nav-fan-out {
+  from {
+    opacity: 0;
+    /* start at the visual center — negate the button's x offset */
+    transform: translateX(calc(-1 * var(--x-offset, 0px))) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* ── Labels fade in and rise after circles land ── */
+.carousel-nav:not(.is-ready) .carousel-tab-label {
+  opacity: 0;
+}
+
+.carousel-nav.is-ready .carousel-tab-label {
+  animation: nav-label-in 350ms ease-out both;
+  animation-delay: calc(1050ms + var(--dist-abs, 0) * 60ms);
+}
+
+@keyframes nav-label-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ── Once entrance is done, disable all animations permanently ── */
+.carousel-nav.nav-anim-done .carousel-tab:not(.is-active) .carousel-tab-circle,
+.carousel-nav.nav-anim-done .carousel-tab.is-active .carousel-tab-circle,
+.carousel-nav.nav-anim-done .carousel-tab-label {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-nav:not(.is-ready) .carousel-tab:not(.is-active) .carousel-tab-circle {
+    opacity: 1;
+  }
+  .carousel-nav.is-ready .carousel-tab:not(.is-active) .carousel-tab-circle {
+    animation: none;
+  }
+  .carousel-nav:not(.is-ready) .carousel-tab-label { opacity: 1; }
+  .carousel-nav.is-ready .carousel-tab-label { animation: none; }
+}
+
+.carousel-tab-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: var(--tab-color);
+  border: 0.5px solid var(--color-card-border);
+  color: var(--color-card-border);
+  box-sizing: border-box;
+}
+
+.carousel-tab-circle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+}
+
+.carousel-tab-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--SP2);
+  color: var(--color-card-border);
+  white-space: nowrap;
+  pointer-events: none;
+}

@@ -1,0 +1,225 @@
+.polls-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.poll-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP3);
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 16px;
+  padding: var(--SP4);
+  overflow: hidden;
+}
+
+.poll-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP2);
+}
+
+.poll-counter {
+  color: rgba(34, 34, 51, 0.55);
+}
+
+.poll-status {
+  color: var(--color-card-border);
+  background: #f1ecfb;
+  border-radius: 999px;
+  padding: var(--SP1) var(--SP3);
+}
+
+.poll-question {
+  color: var(--color-card-border);
+}
+
+.poll-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP2);
+}
+
+.poll-total {
+  color: rgba(34, 34, 51, 0.55);
+  background: #f1ecfb;
+  border-radius: 999px;
+  padding: var(--SP1) var(--SP3);
+}
+
+.poll-ended {
+  color: rgba(34, 34, 51, 0.5);
+}
+
+.poll-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP3);
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f7f4ff 0%, #ffffff 100%);
+  padding: var(--SP3);
+}
+
+.poll-hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP1);
+  min-width: 0;
+}
+
+.poll-hero-kicker {
+  color: rgba(34, 34, 51, 0.55);
+}
+
+.poll-hero-title {
+  color: var(--color-card-border);
+}
+
+.poll-hero-sub {
+  color: rgba(34, 34, 51, 0.6);
+}
+
+.poll-hero-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: poll-ring-in 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.poll-hero-ring::before {
+  content: '';
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+}
+
+.poll-hero-ring-value {
+  position: absolute;
+  color: var(--color-card-border);
+}
+
+@keyframes poll-ring-in {
+  from {
+    transform: scale(0.8) rotate(-40deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.poll-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP2);
+}
+
+.poll-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP1);
+  padding: var(--SP2) var(--SP3);
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.poll-result-row.is-winner {
+  background: #f7f4ff;
+}
+
+.poll-result-headline {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: var(--SP2);
+}
+
+.poll-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 20px;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 999px;
+  color: var(--color-card-border);
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.poll-result-label {
+  color: var(--color-card-border);
+  flex: 1;
+  min-width: 0;
+}
+
+.poll-result-pct {
+  color: var(--color-card-border);
+  flex-shrink: 0;
+}
+
+.poll-result-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(34, 34, 51, 0.12);
+  overflow: hidden;
+}
+
+.poll-result-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #d8c5ff;
+  transform-origin: right center;
+  animation: poll-fill-in 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.poll-result-row.is-winner .poll-result-fill {
+  background: #ceff7e;
+}
+
+@keyframes poll-fill-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.poll-next-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP2);
+}
+
+.poll-next-note {
+  color: rgba(34, 34, 51, 0.55);
+  text-align: center;
+}
+
+.poll-next-cta {
+  width: 100%;
+  min-height: 48px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-card-border);
+  color: #ffffff;
+  text-align: center;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
