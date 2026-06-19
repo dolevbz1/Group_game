@@ -158,8 +158,7 @@
 }
 
 .match-meta-hourglass {
-  width: 14px;
-  height: 14px;
+  flex-shrink: 0;
 }
 
 .match-meta-sep {

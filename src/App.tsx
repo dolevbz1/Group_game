@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import Carousel from './components/Carousel';
 import QuickActions from './components/QuickActions';
+import AddMenu from './components/AddMenu';
 import AIBot from './components/AIBot';
 import Profile from './components/Profile';
 import EventsPage from './components/EventsPage';
@@ -13,6 +14,7 @@ import GateSuccessModal from './components/GateSuccessModal';
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+  const [addMenuOpen, setAddMenuOpen] = useState(false);
   const [gateOpen, setGateOpen] = useState(false);
   const [aiBotOpen, setAiBotOpen] = useState(false);
   const [searchRect, setSearchRect] = useState<DOMRect | null>(null);
@@ -44,7 +46,14 @@ export default function App() {
         {loading && <LoadingScreen onDone={() => setLoading(false)} />}
         <div className={`screen${loading ? '' : ' is-ready'}`}>
           <Header
-            onMenuClick={() => setQuickActionsOpen(true)}
+            onMenuClick={() => {
+              setAddMenuOpen(false);
+              setQuickActionsOpen(true);
+            }}
+            onAddClick={() => {
+              setQuickActionsOpen(false);
+              setAddMenuOpen(true);
+            }}
             onSearchClick={handleSearchClick}
             onProfileClick={handleProfileClick}
           />
@@ -52,6 +61,7 @@ export default function App() {
           <Carousel isReady={!loading} onEventsOpen={() => setEventsOpen(true)} />
         </div>
         <QuickActions open={quickActionsOpen} onClose={() => setQuickActionsOpen(false)} onGateOpen={() => setGateOpen(true)} />
+        <AddMenu open={addMenuOpen} onClose={() => setAddMenuOpen(false)} />
         <GateSuccessModal open={gateOpen} onClose={() => setGateOpen(false)} />
         <AIBot open={aiBotOpen} startRect={searchRect} onClose={() => { setAiBotOpen(false); setBotInitialMessage(undefined); }} initialMessage={botInitialMessage} />
         <Profile open={profileOpen} startRect={avatarRect} onClose={() => setProfileOpen(false)} />

@@ -23,11 +23,12 @@ function GridIcon() {
 
 type HeaderProps = {
   onMenuClick: () => void;
+  onAddClick: () => void;
   onSearchClick?: (rect: DOMRect) => void;
   onProfileClick: (rect: DOMRect) => void;
 };
 
-export default function Header({ onMenuClick, onProfileClick }: HeaderProps) {
+export default function Header({ onMenuClick, onAddClick, onProfileClick }: HeaderProps) {
   const avatarRef = useRef<HTMLButtonElement>(null);
   const avatarLottieRef = useRef<LottieRefCurrentProps>(null);
 
@@ -50,7 +51,7 @@ export default function Header({ onMenuClick, onProfileClick }: HeaderProps) {
         <button className="icon-btn" aria-label="פעולות מהירות" onClick={onMenuClick}>
           <GridIcon />
         </button>
-        <button type="button" className="icon-btn" aria-label="הוספה">
+        <button type="button" className="icon-btn" aria-label="הוספה" onClick={onAddClick}>
           <svg className="header-plus-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <line x1="12" y1="4" x2="12" y2="20" stroke="#121331" strokeWidth="3" strokeLinecap="round"/>
             <line x1="4" y1="12" x2="20" y2="12" stroke="#121331" strokeWidth="3" strokeLinecap="round"/>

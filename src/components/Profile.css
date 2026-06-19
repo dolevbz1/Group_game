@@ -37,6 +37,7 @@
 
 /* Top bar */
 .profile-top {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,22 +53,11 @@
   transform: translateY(0);
 }
 
-.profile-icon-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: #ffffff;
-  border: 0.5px solid var(--color-card-border);
-  border-radius: 12px;
-  color: var(--color-card-border);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
 .profile-top-title {
   color: var(--color-card-border);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* Scroll area */
@@ -98,6 +88,12 @@
 .profile.is-open .profile-reveal:nth-child(5) { transition-delay: 0.36s; }
 
 /* Identity hero */
+.profile-avatar-wrap {
+  position: relative;
+  width: 88px;
+  margin: var(--SP2) auto var(--SP4);
+}
+
 .profile-avatar {
   position: relative;
   display: flex;
@@ -105,12 +101,35 @@
   justify-content: center;
   width: 88px;
   height: 88px;
-  margin: var(--SP2) auto var(--SP4);
   background: var(--color-gray);
   border: 0.5px solid var(--color-card-border);
   border-radius: 24px;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
+  overflow: hidden;
+}
+
+.profile-avatar-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-avatar-edit {
+  position: absolute;
+  bottom: -4px;
+  left: -4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--color-card-border);
+  color: #ffffff;
+  border: 2px solid var(--color-bg-top);
+  border-radius: 999px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .profile-avatar-lottie {
@@ -220,8 +239,17 @@
 }
 
 .profile-block-title {
+  display: flex;
+  align-items: center;
+  gap: var(--SP1);
   color: var(--color-card-border);
   margin-bottom: var(--SP3);
+}
+
+.profile-block-title-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 /* Achievements */
@@ -388,7 +416,8 @@
 .profile-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--SP2);
+  row-gap: var(--SP2);
+  column-gap: 0;
 }
 
 .profile-tag {
@@ -403,7 +432,15 @@
 }
 
 .profile-tag-emoji {
+  display: flex;
+  align-items: center;
   font-size: 16px;
+  flex-shrink: 0;
+}
+
+.profile-tag-emoji svg {
+  width: 16px;
+  height: 16px;
 }
 
 .profile-tag-add {
@@ -415,7 +452,8 @@
 
 .profile-tags-note {
   color: rgba(34, 34, 51, 0.45);
-  margin-top: var(--SP3);
+  margin-top: calc(-1 * var(--SP2));
+  margin-bottom: var(--SP3);
 }
 
 /* Close — content fades down and out */

@@ -1,11 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Lottie from 'lottie-react';
+import lottie, { AnimationItem } from 'lottie-web';
 import avatarAnim from '../assets/avatar-person.json';
+import visibilityAnimRaw from '../assets/visibility.json';
+import { overridePrimaryColor } from '../utils/lottieColor';
+
+const visibilityAnim = overridePrimaryColor(visibilityAnimRaw, [34 / 255, 34 / 255, 51 / 255, 1]);
+import { getInterestById } from '../data/interests';
+import { BackIcon, IconButton, PencilIcon, ScreenTextButton } from './IconButton';
 import './PublicProfile.css';
 
 type PublicProfileProps = {
   open: boolean;
   onBack: () => void;
+  name: string;
+  location: string;
+  interestIds: string[];
+  avatarPhotoUrl: string | null;
 };
 
 type HelpTopic = { emoji: string; label: string };
@@ -40,12 +51,78 @@ const INTERESTS: Interest[] = [
   { emoji: '⚽', label: 'ספורט שכונתי' },
 ];
 
-function BackIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  );
+const VISIBILITY_BLINK: [number, number] = [41, 69];
+const VISIBILITY_START_DELAY_MS = 1750;
+const VISIBILITY_LOOP_DELAY_MS = 4300;
+const VISIBILITY_SPEED = 0.5;
+
+function VisibilityIcon({ active }: { active: boolean }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const animRef = useRef<AnimationItem | null>(null);
+  const activeRef = useRef(active);
+  const loopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const startTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  activeRef.current = active;
+
+  const clearTimers = () => {
+    if (loopTimerRef.current) {
+      clearTimeout(loopTimerRef.current);
+      loopTimerRef.current = null;
+    }
+    if (startTimerRef.current) {
+      clearTimeout(startTimerRef.current);
+      startTimerRef.current = null;
+    }
+  };
+
+  const playBlink = () => {
+    const anim = animRef.current;
+    if (!anim) return;
+    anim.setSpeed(VISIBILITY_SPEED);
+    anim.playSegments(VISIBILITY_BLINK, true);
+  };
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const anim = lottie.loadAnimation({
+      container: containerRef.current,
+      animationData: visibilityAnim,
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+    });
+    animRef.current = anim;
+    anim.goToAndStop(VISIBILITY_BLINK[0], true);
+
+    const onComplete = () => {
+      if (!activeRef.current) return;
+      loopTimerRef.current = setTimeout(playBlink, VISIBILITY_LOOP_DELAY_MS);
+    };
+
+    anim.addEventListener('complete', onComplete);
+
+    return () => {
+      clearTimers();
+      anim.removeEventListener('complete', onComplete);
+      anim.destroy();
+      animRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    clearTimers();
+    if (!active) {
+      animRef.current?.goToAndStop(VISIBILITY_BLINK[0], true);
+      return clearTimers;
+    }
+    startTimerRef.current = setTimeout(playBlink, VISIBILITY_START_DELAY_MS);
+    return clearTimers;
+  }, [active]);
+
+  return <div ref={containerRef} className="pub-preview-icon" aria-hidden="true" />;
 }
 
 function MessageIcon() {
@@ -81,7 +158,14 @@ function ChevronIcon() {
   );
 }
 
-export default function PublicProfile({ open, onBack }: PublicProfileProps) {
+export default function PublicProfile({
+  open,
+  onBack,
+  name,
+  location,
+  interestIds,
+  avatarPhotoUrl,
+}: PublicProfileProps) {
   const [render, setRender] = useState(false);
   const [visible, setVisible] = useState(false);
   const [closing, setClosing] = useState(false);
@@ -90,8 +174,8 @@ export default function PublicProfile({ open, onBack }: PublicProfileProps) {
     if (open) {
       setRender(true);
       setClosing(false);
-      const raf = requestAnimationFrame(() => setVisible(true));
-      return () => cancelAnimationFrame(raf);
+      const t = setTimeout(() => setVisible(true), 16);
+      return () => clearTimeout(t);
     }
     if (!render) return;
     setVisible(false);
@@ -119,15 +203,22 @@ export default function PublicProfile({ open, onBack }: PublicProfileProps) {
     <div
       className={`pub${visible ? ' is-open' : ''}${closing ? ' is-closing' : ''}`}
       role="dialog"
-      aria-label="הפרופיל הציבורי שלי"
+      aria-label="תצוגה מקדימה של הפרופיל"
       dir="rtl"
     >
       <div className="pub-top">
-        <button type="button" className="pub-icon-btn" onClick={onBack} aria-label="חזרה">
+        <IconButton ariaLabel="חזרה" onClick={onBack}>
           <BackIcon />
-        </button>
-        <span className="pub-top-title text-small-bold">פרופיל ציבורי</span>
-        <span className="pub-top-spacer" aria-hidden="true" />
+        </IconButton>
+        <span className="pub-top-title text-small-bold">תצוגה מקדימה</span>
+        <ScreenTextButton ariaLabel="עריכה" onClick={onBack} icon={<PencilIcon />}>
+          עריכה
+        </ScreenTextButton>
+      </div>
+
+      <div className="pub-preview-banner" aria-live="polite">
+        <VisibilityIcon active={visible} />
+        <span className="text-small-bold">ככה הגבעתים רואים את הפרופיל שלך</span>
       </div>
 
       <div className="pub-scroll">
@@ -139,13 +230,17 @@ export default function PublicProfile({ open, onBack }: PublicProfileProps) {
             <span className="pub-blob tone-orange" />
           </div>
           <div className="pub-avatar" aria-hidden="true">
-            <Lottie animationData={avatarAnim} loop={false} autoplay className="pub-avatar-lottie" />
+            {avatarPhotoUrl ? (
+              <img src={avatarPhotoUrl} alt="" className="pub-avatar-photo" />
+            ) : (
+              <Lottie animationData={avatarAnim} loop={false} autoplay className="pub-avatar-lottie" />
+            )}
           </div>
         </div>
 
         <div className="pub-identity pub-reveal">
-          <h1 className="pub-name text-h2-bold">דולב בן ארי</h1>
-          <p className="pub-location text-small-normal">רחוב האלון · גבעת אלה</p>
+          <h1 className="pub-name text-h2-bold">{name}</h1>
+          <p className="pub-location text-small-normal">{location}</p>
           <div className="pub-action-row">
             <div className="pub-action-item">
               <button type="button" className="pub-message-btn" aria-label="שיחת טלפון">
@@ -171,7 +266,23 @@ export default function PublicProfile({ open, onBack }: PublicProfileProps) {
         </section>
 
         <section className="pub-block pub-reveal">
-          <h2 className="pub-block-title text-medium-bold">תחומי העניין המשותפים לך ולדולב</h2>
+          <h2 className="pub-block-title text-medium-bold">תחומי העניין שלי</h2>
+          <div className="pub-tags">
+            {interestIds.map((id) => {
+              const item = getInterestById(id);
+              if (!item) return null;
+              return (
+                <span className="pub-tag" key={id}>
+                  <span className="pub-tag-emoji" aria-hidden="true">{item.emoji}</span>
+                  <span className="text-small-normal">{item.label}</span>
+                </span>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="pub-block pub-reveal">
+          <h2 className="pub-block-title text-medium-bold">תחומי העניין המשותפים לך ול{name.split(' ')[0]}</h2>
           <div className="pub-tags">
             {HELP_TOPICS.map((t) => (
               <span className="pub-tag" key={t.label}>

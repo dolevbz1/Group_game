@@ -1,12 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { LottieRefCurrentProps } from 'lottie-react';
 import { GoogleMap, useJsApiLoader, OverlayViewF } from '@react-google-maps/api';
 import Lottie from 'lottie-react';
 import lottie from 'lottie-web';
-import hourglassAnimRaw from '../assets/hourglass.json';
-import { overridePrimaryColor } from '../utils/lottieColor';
-
-const hourglassAnim = overridePrimaryColor(hourglassAnimRaw, [34 / 255, 34 / 255, 51 / 255, 0.65]);
 import davidAvatarAnim from '../assets/volunteer-avatar-david.json';
 import avrahamAvatarAnim from '../assets/volunteer-avatar-avraham.json';
 import leviAvatarAnim from '../assets/volunteer-avatar-levi.json';
@@ -17,19 +12,25 @@ import stadiumAnim from '../assets/stadium.json';
 import './VolunteerCard.css';
 
 function HourglassIcon() {
-  const lottieRef = useRef<LottieRefCurrentProps>(null);
-  useEffect(() => {
-    const lastFrame = (hourglassAnim as any).op - 1;
-    lottieRef.current?.goToAndStop(lastFrame, true);
-  }, []);
   return (
-    <Lottie
-      lottieRef={lottieRef}
-      animationData={hourglassAnim}
-      loop={false}
-      autoplay={false}
+    <svg
       className="match-meta-icon match-meta-hourglass"
-    />
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 22h14" />
+      <path d="M5 2h14" />
+      <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
+      <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.828V2" />
+    </svg>
   );
 }
 

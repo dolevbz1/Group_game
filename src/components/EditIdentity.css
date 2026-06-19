@@ -1,0 +1,105 @@
+.edit-id {
+  position: fixed;
+  inset: 0;
+  z-index: 1250;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-top);
+  transform: translateX(100%);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.edit-id.is-open {
+  transform: translateX(0);
+}
+
+.edit-id.is-closing {
+  transform: translateX(100%);
+}
+
+@media (min-width: 600px) {
+  .edit-id {
+    position: absolute;
+    inset: 0;
+    border-radius: 38px;
+    overflow: hidden;
+  }
+}
+
+.edit-id-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP3);
+  padding: calc(var(--SP3) + env(safe-area-inset-top, 0px)) var(--SP5) var(--SP3);
+  flex-shrink: 0;
+}
+
+.edit-id-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 12px;
+  color: var(--color-card-border);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.edit-id-top-title {
+  color: var(--color-card-border);
+}
+
+.edit-id-save {
+  background: none;
+  border: none;
+  color: var(--color-card-border);
+  cursor: pointer;
+  padding: var(--SP2) var(--SP1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.edit-id-save.is-disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.edit-id-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--SP2) var(--SP5) calc(var(--SP6) + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP5);
+}
+
+.edit-id-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP2);
+}
+
+.edit-id-label {
+  color: rgba(34, 34, 51, 0.55);
+}
+
+.edit-id-input {
+  width: 100%;
+  height: 52px;
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 14px;
+  padding: 0 var(--SP4);
+  color: var(--color-card-border);
+  box-sizing: border-box;
+}
+
+.edit-id-input:focus {
+  outline: 2px solid rgba(34, 34, 51, 0.15);
+  outline-offset: 0;
+}

@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import Lottie from 'lottie-react';
 import avatarAnim from '../assets/avatar-person.json';
+import { DEFAULT_INTEREST_IDS, getInterestById } from '../data/interests';
+import AvatarPickerSheet from './AvatarPickerSheet';
+import { type IdentityData } from './EditIdentity';
+import { CloseIcon, IconButton, PencilIcon } from './IconButton';
+import InterestPicker from './InterestPicker';
 import PublicProfile from './PublicProfile';
 import './Profile.css';
 
@@ -10,21 +15,12 @@ type ProfileProps = {
   onClose: () => void;
 };
 
-type Badge = { emoji: string; label: string; tone: string };
 type Activity = { emoji: React.ReactNode; tone: string; label: string; sub: string; value: string; highlight?: boolean };
-type Interest = { emoji: string; label: string };
 
 const STATS = [
   { value: '8', label: 'שכנים שעזרת' },
   { value: '14', label: 'אירועים' },
   { value: '23', label: 'הצבעות' },
-];
-
-const BADGES: Badge[] = [
-  { emoji: '🤝', label: 'מתנדב/ת על', tone: 'pink' },
-  { emoji: '🗳️', label: 'קול בקהילה', tone: 'purple' },
-  { emoji: '🎉', label: 'פרצוף מוכר', tone: 'blue' },
-  { emoji: '🌳', label: 'שומר/ת שכונה', tone: 'lime' },
 ];
 
 function CalendarIcon() {
@@ -90,30 +86,11 @@ const ACTIVITY: Activity[] = [
   { emoji: <BuildIcon />, tone: 'lime', label: 'דיווחי תקלות', sub: 'תאורה ברחוב האלון', value: '1 בטיפול' },
 ];
 
-const INTERESTS: Interest[] = [
-  { emoji: '🏊', label: 'מועדון הבריכה' },
-  { emoji: '🎬', label: 'ערבי קולנוע' },
-  { emoji: '🌳', label: 'גינון קהילתי' },
-  { emoji: '⚽', label: 'ספורט שכונתי' },
-];
-
-function CloseIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  );
-}
-
-function SettingsIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="3" />
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-    </svg>
-  );
-}
+const DEFAULT_IDENTITY: IdentityData = {
+  name: 'דולב בן ארי',
+  street: 'רחוב האלון',
+  neighborhood: 'גבעת אלה',
+};
 
 function ChevronIcon() {
   return (
@@ -128,6 +105,11 @@ export default function Profile({ open, startRect, onClose }: ProfileProps) {
   const [visible, setVisible] = useState(false);
   const [closing, setClosing] = useState(false);
   const [publicOpen, setPublicOpen] = useState(false);
+  const [interestsOpen, setInterestsOpen] = useState(false);
+  const [avatarOpen, setAvatarOpen] = useState(false);
+  const [identity, setIdentity] = useState<IdentityData>(DEFAULT_IDENTITY);
+  const [interestIds, setInterestIds] = useState<string[]>(DEFAULT_INTEREST_IDS);
+  const [avatarPhotoUrl, setAvatarPhotoUrl] = useState<string | null>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -144,10 +126,27 @@ export default function Profile({ open, startRect, onClose }: ProfileProps) {
       setRender(false);
       setClosing(false);
       setPublicOpen(false);
+      setInterestsOpen(false);
+      setAvatarOpen(false);
     }, 480);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  useEffect(() => {
+    return () => {
+      if (avatarPhotoUrl) URL.revokeObjectURL(avatarPhotoUrl);
+    };
+  }, [avatarPhotoUrl]);
+
+  const locationLabel = `${identity.street} · ${identity.neighborhood}`;
+
+  const handlePhotoSelected = (file: File) => {
+    setAvatarPhotoUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return URL.createObjectURL(file);
+    });
+  };
 
   // Map the big avatar back onto the small header avatar (used on close)
   const flipAvatarToStart = () => {
@@ -204,35 +203,46 @@ export default function Profile({ open, startRect, onClose }: ProfileProps) {
       <div className="profile-bg" />
 
       <div className="profile-top">
-        <button type="button" className="profile-icon-btn" onClick={onClose} aria-label="סגירה">
+        <IconButton ariaLabel="סגירה" onClick={onClose}>
           <CloseIcon />
-        </button>
-        <span className="profile-top-title text-small-bold">הפרופיל שלי</span>
-        <button type="button" className="profile-icon-btn" aria-label="הגדרות">
-          <SettingsIcon />
-        </button>
+        </IconButton>
+        <span className="profile-top-title text-small-bold">ההגדרות שלי</span>
       </div>
 
       <div className="profile-scroll">
-        <div className="profile-avatar" ref={avatarRef} aria-hidden="true">
-          <Lottie
-            animationData={avatarAnim}
-            loop={false}
-            autoplay
-            className="profile-avatar-lottie"
-          />
-          <span className="profile-avatar-verified" aria-hidden="true">✓</span>
+        <div className="profile-avatar-wrap">
+          <div className="profile-avatar" ref={avatarRef}>
+            {avatarPhotoUrl ? (
+              <img src={avatarPhotoUrl} alt="" className="profile-avatar-photo" />
+            ) : (
+              <Lottie
+                animationData={avatarAnim}
+                loop={false}
+                autoplay
+                className="profile-avatar-lottie"
+              />
+            )}
+            <span className="profile-avatar-verified" aria-hidden="true">✓</span>
+          </div>
+          <button
+            type="button"
+            className="profile-avatar-edit"
+            onClick={() => setAvatarOpen(true)}
+            aria-label="שינוי תמונת פרופיל"
+          >
+            <PencilIcon />
+          </button>
         </div>
 
         <div className="profile-reveal profile-identity">
-          <h1 className="profile-name text-h2-bold">דולב בן ארי</h1>
-          <p className="profile-sub text-small-normal">רחוב האלון · גבעת אלה</p>
+          <h1 className="profile-name text-h2-bold">{identity.name}</h1>
+          <p className="profile-sub text-small-normal">{locationLabel}</p>
           <button
             type="button"
             className="btn-secondary profile-public-cta"
             onClick={() => setPublicOpen(true)}
           >
-            לפרופיל הציבורי שלי
+            תצוגה מקדימה של הפרופיל שלי
           </button>
         </div>
 
@@ -267,25 +277,57 @@ export default function Profile({ open, startRect, onClose }: ProfileProps) {
         </section>
 
         <section className="profile-reveal profile-block">
-          <h2 className="profile-block-title text-medium-bold">תחומי העניין שלי</h2>
+          <h2 className="profile-block-title text-medium-bold">
+            <svg className="profile-block-title-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2C12 2 12.8 7.2 14.5 9.5C16.8 11.2 22 12 22 12C22 12 16.8 12.8 14.5 15.1C12.8 16.8 12 22 12 22C12 22 11.2 16.8 9.5 15.1C7.2 12.8 2 12 2 12C2 12 7.2 11.2 9.5 9.5C11.2 7.2 12 2 12 2Z" fill="#1a1a1a"/>
+              <path d="M19 2C19 2 19.4 4.6 20.25 5.75C21.4 6.6 24 7 24 7C24 7 21.4 7.4 20.25 8.55C19.4 9.4 19 12 19 12C19 12 18.6 9.4 17.75 8.55C16.6 7.4 14 7 14 7C14 7 16.6 6.6 17.75 5.75C18.6 4.6 19 2 19 2Z" fill="#1a1a1a"/>
+            </svg>
+            תחומי העניין שלי
+          </h2>
+          <p className="profile-tags-note text-small-normal">
+            לפי תחומי העניין נבחר לך מה להציג בעדכונים
+          </p>
           <div className="profile-tags">
-            {INTERESTS.map((it) => (
-              <span className="profile-tag" key={it.label}>
-                <span className="profile-tag-emoji" aria-hidden="true">{it.emoji}</span>
-                <span className="text-small-normal">{it.label}</span>
-              </span>
-            ))}
-            <button type="button" className="profile-tag profile-tag-add text-small-bold">
+            {interestIds.map((id) => {
+              const item = getInterestById(id);
+              if (!item) return null;
+              return (
+                <span className="profile-tag" key={id}>
+                  <span className="profile-tag-emoji" aria-hidden="true">{item.emoji}</span>
+                  <span className="text-small-normal">{item.label}</span>
+                </span>
+              );
+            })}
+            <button
+              type="button"
+              className="profile-tag profile-tag-add text-small-bold"
+              onClick={() => setInterestsOpen(true)}
+            >
               + הוסף
             </button>
           </div>
-          <p className="profile-tags-note text-tiny-normal">
-            לפי תחומי העניין נבחר לך מה להציג בעדכונים
-          </p>
         </section>
       </div>
 
-      <PublicProfile open={publicOpen} onBack={() => setPublicOpen(false)} />
+      <InterestPicker
+        open={interestsOpen}
+        selectedIds={interestIds}
+        onBack={() => setInterestsOpen(false)}
+        onSave={setInterestIds}
+      />
+      <AvatarPickerSheet
+        open={avatarOpen}
+        onClose={() => setAvatarOpen(false)}
+        onPhotoSelected={handlePhotoSelected}
+      />
+      <PublicProfile
+        open={publicOpen}
+        onBack={() => setPublicOpen(false)}
+        name={identity.name}
+        location={locationLabel}
+        interestIds={interestIds}
+        avatarPhotoUrl={avatarPhotoUrl}
+      />
     </div>
   );
 }
