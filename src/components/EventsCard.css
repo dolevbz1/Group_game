@@ -209,23 +209,6 @@
   font-weight: var(--font-weight-thin);
 }
 
-.event-ticket-divider {
-  height: 0;
-  background: none;
-  border: none;
-  background-image: repeating-linear-gradient(
-    to left,
-    var(--color-card-border) 0px,
-    var(--color-card-border) 6px,
-    transparent 6px,
-    transparent 12px
-  );
-  background-size: 12px 1px;
-  background-repeat: repeat-x;
-  background-position: center;
-  padding-top: 0.5px;
-}
-
 .event-ticket-cta {
   background: var(--color-card-border);
   border: none;

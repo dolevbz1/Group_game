@@ -105,8 +105,6 @@ export default function EventsCard() {
           </div>
         </div>
 
-        <div className="event-ticket-divider" aria-hidden="true" />
-
         <button type="button" className="event-ticket-cta text-medium-normal">
           לפרטים והרשמה
         </button>

@@ -36,7 +36,7 @@
 
 .match-strip {
   position: absolute;
-  bottom: calc(var(--SP4) + var(--SP3) - var(--SP2));
+  bottom: var(--SP4);
   left: 0;
   right: 0;
   z-index: 1;

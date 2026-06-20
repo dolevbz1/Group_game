@@ -8,6 +8,7 @@ import NewsCard from './NewsCard';
 import VolunteerCard from './VolunteerCard';
 import PollsCard from './PollsCard';
 import EventsCard from './EventsCard';
+import MarketplaceCard from './MarketplaceCard';
 import './Carousel.css';
 
 const SECTIONS = [
@@ -15,7 +16,7 @@ const SECTIONS = [
   { id: 'volunteer',  title: 'התנדבות',         ctaLabel: 'לכל הבקשות',  navLabel: 'התנדבות',       color: '#FFC9D9', hasVolunteer: true, Component: VolunteerNav },
   { id: 'news',        title: 'עדכונים',        ctaLabel: 'לעדכונים ישנים', navLabel: 'עדכונים',       color: '#CEFF7E', hasNews: true,      Component: NewsNav },
   { id: 'events',     title: 'אירועים',  ctaLabel: 'לכל האירועים', navLabel: 'אירועים',       color: '#C3ECF6', hasEvents: true,    Component: EventsNav },
-  { id: 'marketplace',title: 'מרקטפלייס', ctaLabel: 'לכל המודעות', navLabel: 'מרקטפלייס',     color: '#FFD4A8',                     Component: MarketplaceNav },
+  { id: 'marketplace',title: 'מרקטפלייס', ctaLabel: 'לכל המודעות', navLabel: 'מרקטפלייס',     color: '#FFD4A8', hasMarketplace: true, Component: MarketplaceNav },
 ];
 
 const N = SECTIONS.length;
@@ -59,9 +60,10 @@ const offsetFromCenter = (i: number, p: number) => {
 interface CarouselProps {
   isReady?: boolean;
   onEventsOpen?: () => void;
+  onMarketplaceOpen?: () => void;
 }
 
-export default function Carousel({ isReady = false, onEventsOpen }: CarouselProps) {
+export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceOpen }: CarouselProps) {
   const [progress, setProgress] = useState(0);
   const [navAnimDone, setNavAnimDone] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -150,21 +152,24 @@ export default function Carousel({ isReady = false, onEventsOpen }: CarouselProp
                   onClick={(e) => {
                     e.stopPropagation();
                     if (section.id === 'events') onEventsOpen?.();
+                    else if (section.id === 'marketplace') onMarketplaceOpen?.();
                   }}
                   aria-label={section.ctaLabel}
                 >
                   {section.ctaLabel}
                 </button>
               </header>
-              <div className={`carousel-card-body${section.hasVolunteer ? ' is-full-bleed' : ''}${section.hasNews ? ' is-centered' : ''}`}>
+              <div className={`carousel-card-body${section.hasVolunteer ? ' is-full-bleed' : ''}${section.hasNews ? ' is-centered' : ''}${section.hasPolls ? ' is-polls' : ''}`}>
                 {section.hasNews ? (
                   <NewsCard />
                 ) : section.hasVolunteer ? (
                   <VolunteerCard />
                 ) : section.hasPolls ? (
-                  <PollsCard />
+                  <PollsCard isActive={i === activeIndex} />
                 ) : section.hasEvents ? (
                   <EventsCard />
+                ) : section.hasMarketplace ? (
+                  <MarketplaceCard />
                 ) : (
                   <p className="carousel-card-placeholder text-small-normal">
                     בקרוב — תוכן ופרטים נוספים על {section.title}.

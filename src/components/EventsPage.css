@@ -5,8 +5,10 @@
   background: #C3ECF6;
   display: flex;
   flex-direction: column;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  /* Profile-style reveal: fade the panel in, cascade the content up (no bottom slide) */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
 }
 
 @media (min-width: 600px) {
@@ -18,7 +20,55 @@
 }
 
 .events-page.is-open {
-  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0s;
+}
+
+/* Content cascade — sections fade + rise in, matching the Profile screen */
+.events-page-top,
+.events-tabs,
+.events-calendar,
+.events-list {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.events-page.is-open .events-page-top {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.1s;
+}
+
+.events-page.is-open .events-tabs {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.14s;
+}
+
+.events-page.is-open .events-calendar {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.17s;
+}
+
+.events-page.is-open .events-list {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.31s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .events-page,
+  .events-page.is-open,
+  .events-page-top,
+  .events-tabs,
+  .events-calendar,
+  .events-list {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
 }
 
 /* ─── Top bar ─── */
@@ -34,29 +84,72 @@
   color: var(--color-card-border);
 }
 
-.events-page-back,
 .events-page-back-spacer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: none;
-  border: none;
-  color: var(--color-card-border);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
 }
 
 .events-page-back-spacer {
   pointer-events: none;
 }
 
+/* ─── Tabs ─── */
+.events-tabs {
+  display: flex;
+  border-bottom: 0.5px solid rgba(34, 34, 51, 0.1);
+  flex-shrink: 0;
+}
+
+.events-tab {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--SP2);
+  background: none;
+  border: none;
+  padding: var(--SP2) 0 var(--SP3);
+  color: rgba(34, 34, 51, 0.5);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.events-tab-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.events-tab-icon svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.events-tab:not(.is-active) .events-tab-icon {
+  opacity: 0.5;
+}
+
+.events-tab.is-active {
+  color: var(--color-card-border);
+  font-weight: var(--font-weight-normal);
+}
+
+.events-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: var(--SP6);
+  right: var(--SP6);
+  bottom: -0.5px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-card-border);
+}
+
 /* ─── Calendar ─── */
 .events-calendar {
   flex-shrink: 0;
-  padding: 0 var(--SP5) var(--SP3);
+  padding: var(--SP4) var(--SP5) var(--SP3);
   border-bottom: 0.5px solid rgba(34, 34, 51, 0.1);
 }
 
@@ -88,14 +181,28 @@
   border-radius: 50%;
 }
 
+.events-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: var(--SP1);
+}
+
+.events-calendar-weekday {
+  text-align: center;
+  color: var(--color-secondary);
+}
+
+.events-calendar-rows {
+  overflow: hidden;
+}
+
 .events-calendar-grid {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   gap: var(--SP1);
 }
 
 .events-calendar-day {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,6 +214,32 @@
   border-radius: 12px;
   -webkit-tap-highlight-color: transparent;
   transition: background 0.15s ease;
+}
+
+.events-calendar-day.is-other-month .events-calendar-day-num {
+  color: rgba(34, 34, 51, 0.3);
+}
+
+/* Drag handle — pull down for the full month, up to collapse */
+.events-calendar-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--SP3) 0 var(--SP1);
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.events-calendar-handle:active {
+  cursor: grabbing;
+}
+
+.events-calendar-handle-bar {
+  width: 64px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(34, 34, 51, 0.2);
 }
 
 .events-calendar-day-name {
@@ -147,11 +280,21 @@
   background: #ffffff;
 }
 
-/* ─── Day label ─── */
+/* ─── Day group + label ─── */
+.events-day-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP4);
+  scroll-margin-top: var(--SP3);
+}
+
 .events-day-label {
-  flex-shrink: 0;
-  padding: var(--SP3) var(--SP5);
   color: var(--color-secondary);
+}
+
+.events-day-label.is-selected {
+  color: var(--color-card-border);
+  font-weight: var(--font-weight-bold);
 }
 
 /* ─── Events list ─── */
@@ -159,10 +302,10 @@
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 0 var(--SP5) calc(var(--SP6) + env(safe-area-inset-bottom, 0px));
+  padding: var(--SP4) var(--SP5) calc(var(--SP6) + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
-  gap: var(--SP5);
+  gap: var(--SP6);
 }
 
 .events-empty {

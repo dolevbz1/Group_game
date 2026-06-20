@@ -15,7 +15,7 @@ type ActionItem =
 const ACTIONS: ActionItem[] = [
   { lottie: busStopAnim, label: 'פתיחת שער' },
   { lottie: calendarAnim, label: 'הרשמה לאירוע' },
-  { lottie: telephoneAnim, label: 'דיווח תקלה' },
+  { lottie: telephoneAnim, label: 'שיחת חירום' },
   { lottie: barChartAnim, label: 'הצבעות' },
   { lottie: boxTimeAnim, label: 'סטטוס חבילות', isNew: true },
   { lottie: creditCardAnim, label: 'תשלום לוועד' },
@@ -98,9 +98,6 @@ export default function QuickActions({ open, onClose, onGateOpen }: QuickActions
       <div className="qa-sheet" dir="rtl" role="dialog" aria-label="פעולות מהירות">
         <div className="qa-head">
           <h2 className="qa-title text-h2-bold">פעולות מהירות</h2>
-          <button type="button" className="qa-more text-small-bold" onClick={onClose}>
-            עוד פעולות
-          </button>
         </div>
 
         <div className="qa-grid">

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './AddMenu.css';
 
 type AddItem = {
@@ -138,6 +138,13 @@ type AddMenuProps = {
 const THEME_META = () => document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
 
 export default function AddMenu({ open, onClose }: AddMenuProps) {
+  const [listKey, setListKey] = useState(0);
+
+  useEffect(() => {
+    if (!open) return;
+    setListKey((key) => key + 1);
+  }, [open]);
+
   useEffect(() => {
     const meta = THEME_META();
     if (!meta) return;
@@ -164,7 +171,7 @@ export default function AddMenu({ open, onClose }: AddMenuProps) {
           </button>
         </div>
 
-        <div className="add-list">
+        <div className="add-list" key={listKey}>
           {ADD_ITEMS.map((item) => (
             <button
               key={item.label}

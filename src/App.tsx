@@ -8,6 +8,7 @@ import AddMenu from './components/AddMenu';
 import AIBot from './components/AIBot';
 import Profile from './components/Profile';
 import EventsPage from './components/EventsPage';
+import MarketplacePage from './components/MarketplacePage';
 import LoadingScreen from './components/LoadingScreen';
 import GateSuccessModal from './components/GateSuccessModal';
 
@@ -22,6 +23,7 @@ export default function App() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [avatarRect, setAvatarRect] = useState<DOMRect | null>(null);
   const [eventsOpen, setEventsOpen] = useState(false);
+  const [marketplaceOpen, setMarketplaceOpen] = useState(false);
 
   const handleSearchClick = (rect: DOMRect) => {
     setSearchRect(rect);
@@ -58,7 +60,11 @@ export default function App() {
             onProfileClick={handleProfileClick}
           />
           <Hero onSearchSubmit={handleSearchSubmit} />
-          <Carousel isReady={!loading} onEventsOpen={() => setEventsOpen(true)} />
+          <Carousel
+            isReady={!loading}
+            onEventsOpen={() => setEventsOpen(true)}
+            onMarketplaceOpen={() => setMarketplaceOpen(true)}
+          />
         </div>
         <QuickActions open={quickActionsOpen} onClose={() => setQuickActionsOpen(false)} onGateOpen={() => setGateOpen(true)} />
         <AddMenu open={addMenuOpen} onClose={() => setAddMenuOpen(false)} />
@@ -66,6 +72,7 @@ export default function App() {
         <AIBot open={aiBotOpen} startRect={searchRect} onClose={() => { setAiBotOpen(false); setBotInitialMessage(undefined); }} initialMessage={botInitialMessage} />
         <Profile open={profileOpen} startRect={avatarRect} onClose={() => setProfileOpen(false)} />
         <EventsPage open={eventsOpen} onClose={() => setEventsOpen(false)} />
+        <MarketplacePage open={marketplaceOpen} onClose={() => setMarketplaceOpen(false)} />
       </div>
     </div>
   );

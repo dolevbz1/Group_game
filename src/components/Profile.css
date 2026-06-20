@@ -247,8 +247,8 @@
 }
 
 .profile-block-title-icon {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
 }
 
@@ -454,6 +454,45 @@
   color: rgba(34, 34, 51, 0.45);
   margin-top: calc(-1 * var(--SP2));
   margin-bottom: var(--SP3);
+}
+
+/* Mobile notifications toggle row */
+.profile-notify {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP3);
+  width: 100%;
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 16px;
+  padding: var(--SP3) var(--SP4);
+  cursor: pointer;
+  text-align: right;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.profile-notify-text {
+  color: var(--color-card-border);
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-notify-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-notify-lottie {
+  width: 48px;
+  height: 48px;
+}
+
+.profile-notify-lottie svg {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Close — content fades down and out */

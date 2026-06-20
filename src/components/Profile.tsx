@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
-import Lottie from 'lottie-react';
+import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import avatarAnim from '../assets/avatar-person.json';
+import toggleAnim from '../assets/toggle.json';
+import { overridePrimaryColor, BLACK } from '../utils/lottieColor';
 import { DEFAULT_INTEREST_IDS, getInterestById } from '../data/interests';
 import AvatarPickerSheet from './AvatarPickerSheet';
 import { type IdentityData } from './EditIdentity';
@@ -8,6 +10,8 @@ import { CloseIcon, IconButton, PencilIcon } from './IconButton';
 import InterestPicker from './InterestPicker';
 import PublicProfile from './PublicProfile';
 import './Profile.css';
+
+const notifyToggleAnim = overridePrimaryColor(toggleAnim, BLACK);
 
 type ProfileProps = {
   open: boolean;
@@ -110,7 +114,23 @@ export default function Profile({ open, startRect, onClose }: ProfileProps) {
   const [identity, setIdentity] = useState<IdentityData>(DEFAULT_IDENTITY);
   const [interestIds, setInterestIds] = useState<string[]>(DEFAULT_INTEREST_IDS);
   const [avatarPhotoUrl, setAvatarPhotoUrl] = useState<string | null>(null);
+  const [notificationsOn, setNotificationsOn] = useState(false);
   const avatarRef = useRef<HTMLDivElement>(null);
+  const notifyToggleRef = useRef<LottieRefCurrentProps>(null);
+
+  const handleNotificationsToggle = () => {
+    const anim = notifyToggleRef.current;
+    const next = !notificationsOn;
+    setNotificationsOn(next);
+    if (!anim) return;
+    anim.setDirection(1);
+    // morph-select runs off→selected(≈170)→off(200); play the half that matches the new state
+    if (next) {
+      anim.playSegments([140, 170], true); // slide to selected and hold
+    } else {
+      anim.playSegments([170, 200], true); // slide back to the default state
+    }
+  };
 
   useEffect(() => {
     if (open) {
@@ -278,9 +298,9 @@ export default function Profile({ open, startRect, onClose }: ProfileProps) {
 
         <section className="profile-reveal profile-block">
           <h2 className="profile-block-title text-medium-bold">
-            <svg className="profile-block-title-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 2C12 2 12.8 7.2 14.5 9.5C16.8 11.2 22 12 22 12C22 12 16.8 12.8 14.5 15.1C12.8 16.8 12 22 12 22C12 22 11.2 16.8 9.5 15.1C7.2 12.8 2 12 2 12C2 12 7.2 11.2 9.5 9.5C11.2 7.2 12 2 12 2Z" fill="#1a1a1a"/>
-              <path d="M19 2C19 2 19.4 4.6 20.25 5.75C21.4 6.6 24 7 24 7C24 7 21.4 7.4 20.25 8.55C19.4 9.4 19 12 19 12C19 12 18.6 9.4 17.75 8.55C16.6 7.4 14 7 14 7C14 7 16.6 6.6 17.75 5.75C18.6 4.6 19 2 19 2Z" fill="#1a1a1a"/>
+            <svg className="profile-block-title-icon" viewBox="0 0 500 500" fill="currentColor" aria-hidden="true">
+              <path d="M317.707 83.311H182.289c-77.555 0-140.65 63.095-140.65 140.65v135.418c0 31.604 25.712 57.316 57.316 57.316h6.46c21.385 0 41.787-6.769 59.003-19.578 17.212-12.806 29.581-30.416 35.787-50.982l10.005-33.607h79.576l10.022 33.663c6.189 20.51 18.558 38.12 35.77 50.926 17.216 12.809 37.618 19.578 59.003 19.578h6.459c31.604 0 57.317-25.712 57.317-57.316V223.961c0-77.555-63.095-140.65-140.65-140.65m109.35 276.068c0 14.346-11.671 26.016-26.017 26.016h-6.459c-29.586 0-56.235-19.84-64.792-48.191l-13.334-44.791a15.65 15.65 0 0 0-14.999-11.185H198.54a15.65 15.65 0 0 0-14.999 11.185l-13.317 44.735c-8.573 28.407-35.223 48.247-64.809 48.247h-6.46c-14.346 0-26.016-11.67-26.016-26.016V223.961c0-60.296 49.054-109.35 109.35-109.35h135.418c60.296 0 109.35 49.054 109.35 109.35z" />
+              <path d="M192.708 192.684h-10.394V182.29c0-8.643-7.006-15.65-15.65-15.65s-15.65 7.007-15.65 15.65v10.394H140.62c-8.644 0-15.65 7.007-15.65 15.65s7.006 15.65 15.65 15.65h10.394v10.394c0 8.643 7.006 15.65 15.65 15.65s15.65-7.007 15.65-15.65v-10.394h10.394c8.644 0 15.65-7.007 15.65-15.65s-7.006-15.65-15.65-15.65m119.052 32.472c-.13-.65-.291-1.3-.491-1.94-.189-.64-.419-1.28-.679-1.89-.25-.62-.54-1.23-.85-1.82-.32-.59-.66-1.17-1.03-1.72q-.555-.84-1.2-1.62c-.42-.52-.88-1.02-1.35-1.5-.471-.47-.98-.93-1.5-1.35a19.6 19.6 0 0 0-3.341-2.22c-.59-.32-1.199-.61-1.809-.86-.62-.26-1.26-.48-1.89-.68-.641-.19-1.301-.36-1.95-.49-.66-.13-1.32-.23-1.99-.3a21 21 0 0 0-4.031 0c-.67.07-1.33.17-1.989.3-.65.13-1.31.3-1.95.49-.63.2-1.271.42-1.891.68-.609.25-1.219.54-1.809.86-.59.31-1.17.66-1.73 1.02-.551.37-1.1.78-1.61 1.2-.521.42-1.03.88-1.5 1.35-.48.48-.929.98-1.36 1.5a21 21 0 0 0-2.22 3.34c-.31.59-.6 1.2-.861 1.82-.25.61-.479 1.25-.669 1.89-.2.64-.36 1.29-.491 1.94-.14.66-.239 1.33-.3 1.99-.069.67-.109 1.35-.109 2.02s.04 1.35.109 2.01c.061.67.16 1.34.3 1.99.131.66.291 1.31.491 1.95.19.64.419 1.27.669 1.89a22 22 0 0 0 1.891 3.54c.37.56.77 1.1 1.19 1.62.431.52.88 1.02 1.36 1.49.47.48.979.93 1.5 1.36a20.2 20.2 0 0 0 3.34 2.22c.59.31 1.2.6 1.809.86.62.25 1.261.48 1.891.68.64.19 1.3.36 1.95.49.659.13 1.33.23 1.989.3.67.07 1.351.1 2.021.1.66 0 1.34-.03 2.01-.1s1.33-.17 1.99-.3c.649-.13 1.309-.3 1.95-.49.63-.2 1.27-.43 1.89-.68.61-.26 1.219-.55 1.809-.86.591-.31 1.171-.66 1.721-1.03a19.5 19.5 0 0 0 3.12-2.55c.47-.47.93-.97 1.35-1.49q.645-.78 1.2-1.62c.37-.56.71-1.14 1.03-1.73.31-.58.6-1.19.85-1.81.26-.62.49-1.25.679-1.89q.298-.96.491-1.95c.14-.65.24-1.32.3-1.99.07-.66.11-1.34.11-2.01s-.04-1.35-.11-2.02c-.06-.66-.16-1.33-.3-1.99m62.51-41.659c-.13-.66-.301-1.31-.49-1.95-.2-.64-.42-1.27-.68-1.89-.25-.61-.541-1.23-.86-1.81-.311-.59-.66-1.17-1.02-1.73q-.57-.84-1.2-1.62c-.42-.52-.88-1.02-1.35-1.49-.48-.48-.98-.93-1.5-1.36a21 21 0 0 0-1.62-1.19c-.55-.37-1.13-.72-1.72-1.03s-1.2-.6-1.82-.86c-.61-.25-1.25-.48-1.89-.67-.641-.2-1.29-.36-1.94-.5-.66-.13-1.33-.23-1.99-.3-1.34-.13-2.7-.13-4.041 0-.659.07-1.33.17-1.979.3-.66.14-1.31.3-1.95.5-.64.19-1.27.42-1.89.67a21.5 21.5 0 0 0-3.54 1.89c-.561.37-1.1.77-1.62 1.19-.521.43-1.02.88-1.49 1.36-.479.47-.93.97-1.361 1.49a21 21 0 0 0-3.079 5.16c-.25.62-.48 1.25-.68 1.89-.189.64-.36 1.29-.491 1.95-.13.65-.229 1.32-.299 1.99-.069.66-.1 1.34-.1 2.01s.031 1.35.1 2.02c.07.66.169 1.33.299 1.99.131.65.302 1.3.491 1.94.2.64.43 1.28.68 1.89a20.4 20.4 0 0 0 1.89 3.54q.557.84 1.189 1.62.644.78 1.361 1.5c.47.47.969.93 1.49 1.35.52.42 1.059.83 1.62 1.2.56.36 1.14.71 1.73 1.02.58.32 1.19.61 1.81.86.62.26 1.25.48 1.89.68.64.19 1.29.36 1.95.49.649.13 1.32.23 1.979.3.67.07 1.351.1 2.021.1s1.35-.03 2.02-.1c.66-.07 1.33-.17 1.99-.3.65-.13 1.299-.3 1.94-.49.64-.2 1.28-.42 1.89-.68.62-.25 1.23-.54 1.82-.86.59-.31 1.17-.66 1.72-1.02a21.4 21.4 0 0 0 3.12-2.55c.47-.48.93-.98 1.35-1.5q.63-.78 1.2-1.62c.36-.55.709-1.13 1.02-1.72.319-.59.61-1.2.86-1.82.26-.61.48-1.25.68-1.89.189-.64.36-1.29.49-1.94.13-.66.23-1.33.299-1.99.07-.67.101-1.35.101-2.02s-.031-1.35-.101-2.01c-.069-.67-.169-1.34-.299-1.99" />
             </svg>
             תחומי העניין שלי
           </h2>
@@ -306,6 +326,37 @@ export default function Profile({ open, startRect, onClose }: ProfileProps) {
               + הוסף
             </button>
           </div>
+        </section>
+
+        <section className="profile-reveal profile-block">
+          <h2 className="profile-block-title text-medium-bold">
+            <svg className="profile-block-title-icon" viewBox="0 0 25 24" fill="none" aria-hidden="true">
+              <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5">
+                <path d="M12.5 2.75v2m5.46 8.92 1.79 3.58H5.25l1.79-3.58c.14-.28.21-.58.21-.89V10a5.25 5.25 0 1 1 10.5 0v2.78c0 .31.07.62.21.89m-3.21 3.58V19c0 1.24-1.01 2.25-2.25 2.25s-2.25-1.01-2.25-2.25v-1.75" />
+              </g>
+            </svg>
+            התראות לנייד
+          </h2>
+          <button
+            type="button"
+            className="profile-notify"
+            onClick={handleNotificationsToggle}
+            aria-pressed={notificationsOn}
+          >
+            <span className="profile-notify-toggle">
+              <Lottie
+                lottieRef={notifyToggleRef}
+                animationData={notifyToggleAnim}
+                loop={false}
+                autoplay={false}
+                onDOMLoaded={() => notifyToggleRef.current?.goToAndStop(60, true)}
+                className="profile-notify-lottie"
+              />
+            </span>
+            <span className="profile-notify-text text-small-normal">
+              אפשר לי לקבל התראות מהאפליקציה לנייד
+            </span>
+          </button>
         </section>
       </div>
 
