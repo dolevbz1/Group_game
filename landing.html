@@ -1,0 +1,1265 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#F5F5F5" />
+    <title>גרופס — תמיד ברור מה קורה בקהילה שלכם</title>
+    <link rel="stylesheet" href="./src/index.css" />
+    <style>
+      html { scroll-behavior: smooth; }
+
+      body {
+        overflow: auto;
+        background: #fff;
+        color: #222233;
+      }
+
+      a { color: inherit; }
+
+      .shell {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 var(--SP6);
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(34, 34, 51, 0.08);
+      }
+
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--SP4);
+        padding: var(--SP4) 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: var(--SP3);
+        text-decoration: none;
+        flex-shrink: 0;
+      }
+
+      .brand-mark {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #222233;
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: var(--SP6);
+        list-style: none;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+      }
+
+      .nav-links a:hover { color: #222233; }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 999px;
+        padding: var(--SP3) var(--SP6);
+        font: inherit;
+        font-weight: var(--font-weight-bold);
+        cursor: pointer;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .btn--primary {
+        background: #222233;
+        color: #fff;
+      }
+
+      .btn--ghost {
+        background: #fff;
+        color: #222233;
+        border: 1px solid rgba(34, 34, 51, 0.16);
+      }
+
+      .hero {
+        text-align: center;
+        padding: var(--SP12) 0 var(--SP8);
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 5.5vw, 56px);
+        line-height: 1.12;
+        font-weight: var(--font-weight-bold);
+        max-width: 16ch;
+        margin: 0 auto var(--SP5);
+      }
+
+      .hero-lead {
+        color: var(--color-secondary);
+        font-size: var(--font-size-medium);
+        line-height: 1.6;
+        max-width: 58ch;
+        margin: 0 auto var(--SP6);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--SP3);
+        margin-bottom: var(--SP5);
+      }
+
+      .hero-trust {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: var(--SP2);
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+        margin-bottom: var(--SP10);
+      }
+
+      .hero-trust strong { color: #222233; }
+
+      .dash {
+        border: 1px solid rgba(34, 34, 51, 0.1);
+        border-radius: 24px;
+        background: #F8F8FA;
+        padding: var(--SP5);
+        box-shadow: 0 32px 80px rgba(34, 34, 51, 0.08);
+        text-align: right;
+      }
+
+      .dash-head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--SP4);
+        margin-bottom: var(--SP5);
+      }
+
+      .dash-title {
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-h3);
+      }
+
+      .dash-sub {
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+      }
+
+      .dash-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--SP3);
+      }
+
+      .dash-stat {
+        background: #fff;
+        border: 1px solid rgba(34, 34, 51, 0.08);
+        border-radius: 16px;
+        padding: var(--SP4);
+      }
+
+      .dash-stat-label {
+        color: var(--color-secondary);
+        font-size: var(--font-size-tiny);
+        margin-bottom: var(--SP2);
+      }
+
+      .dash-stat-value {
+        font-size: var(--font-size-h2);
+        font-weight: var(--font-weight-bold);
+        line-height: 1.1;
+      }
+
+      .dash-body {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr;
+        gap: var(--SP3);
+        margin-top: var(--SP3);
+      }
+
+      .dash-panel {
+        background: #fff;
+        border: 1px solid rgba(34, 34, 51, 0.08);
+        border-radius: 16px;
+        padding: var(--SP4);
+        min-height: 200px;
+      }
+
+      .dash-panel h3 {
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP4);
+      }
+
+      .dash-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--SP3);
+        padding: var(--SP2) 0;
+        border-bottom: 1px solid rgba(34, 34, 51, 0.06);
+        font-size: var(--font-size-small);
+      }
+
+      .dash-row:last-child { border-bottom: none; }
+
+      .badge {
+        font-size: var(--font-size-tiny);
+        font-weight: var(--font-weight-bold);
+        padding: 2px var(--SP2);
+        border-radius: 999px;
+        background: rgba(34, 34, 51, 0.06);
+      }
+
+      .badge--urgent { background: #FFE4E4; color: #8B2020; }
+      .badge--ok { background: #E4F8E8; color: #1A5C2E; }
+
+      .section {
+        padding: var(--SP12) 0;
+      }
+
+      .section--muted {
+        background: #F8F8FA;
+      }
+
+      .section-head {
+        text-align: center;
+        max-width: 52ch;
+        margin: 0 auto var(--SP10);
+      }
+
+      .section-head h2 {
+        font-size: clamp(28px, 4vw, 40px);
+        line-height: 1.2;
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP4);
+      }
+
+      .section-head p {
+        color: var(--color-secondary);
+        line-height: 1.6;
+      }
+
+      .chaos {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: var(--SP6);
+        align-items: center;
+      }
+
+      .chaos-col {
+        display: grid;
+        gap: var(--SP3);
+      }
+
+      .chaos-card {
+        background: #fff;
+        border: 1px solid rgba(34, 34, 51, 0.1);
+        border-radius: 14px;
+        padding: var(--SP4);
+        font-size: var(--font-size-small);
+      }
+
+      .chaos-card-head {
+        display: flex;
+        justify-content: space-between;
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP2);
+      }
+
+      .chaos-arrow {
+        font-size: 28px;
+        color: var(--color-secondary);
+        text-align: center;
+      }
+
+      .unified {
+        border: 2px solid #222233;
+        border-radius: 20px;
+        padding: var(--SP5);
+        background: #fff;
+      }
+
+      .unified-brand {
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP4);
+        text-align: center;
+      }
+
+      .value {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: var(--SP10);
+        align-items: center;
+      }
+
+      .value-list {
+        list-style: none;
+        display: grid;
+        gap: var(--SP4);
+        margin-top: var(--SP6);
+      }
+
+      .value-list li {
+        display: flex;
+        gap: var(--SP3);
+        align-items: flex-start;
+        font-size: var(--font-size-medium);
+      }
+
+      .value-list li::before {
+        content: "✓";
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #222233;
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .day-panel {
+        border: 1px solid rgba(34, 34, 51, 0.1);
+        border-radius: 20px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .day-panel-head {
+        padding: var(--SP5);
+        border-bottom: 1px solid rgba(34, 34, 51, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .day-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--SP3);
+        padding: var(--SP4) var(--SP5);
+        background: #F8F8FA;
+      }
+
+      .day-stat strong {
+        display: block;
+        font-size: var(--font-size-h2);
+        font-weight: var(--font-weight-bold);
+      }
+
+      .day-stat span {
+        font-size: var(--font-size-tiny);
+        color: var(--color-secondary);
+      }
+
+      .day-feed {
+        padding: var(--SP4) var(--SP5);
+        display: grid;
+        gap: var(--SP3);
+      }
+
+      .feed-item {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: var(--SP3);
+        align-items: start;
+        padding: var(--SP3);
+        border-radius: 12px;
+        background: #F8F8FA;
+        font-size: var(--font-size-small);
+      }
+
+      .feed-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #222233;
+        margin-top: 6px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--SP5);
+      }
+
+      .step {
+        text-align: center;
+        padding: var(--SP6);
+      }
+
+      .step-num {
+        font-size: 48px;
+        font-weight: var(--font-weight-bold);
+        color: rgba(34, 34, 51, 0.12);
+        line-height: 1;
+        margin-bottom: var(--SP4);
+      }
+
+      .step h3 {
+        font-size: var(--font-size-h3);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP3);
+      }
+
+      .step p {
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+        line-height: 1.6;
+      }
+
+      .feature {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--SP10);
+        align-items: center;
+        padding: var(--SP10) 0;
+      }
+
+      .feature--reverse .feature-copy { order: 2; }
+      .feature--reverse .feature-visual { order: 1; }
+
+      .feature-copy h3 {
+        font-size: clamp(24px, 3vw, 32px);
+        font-weight: var(--font-weight-bold);
+        line-height: 1.25;
+        margin-bottom: var(--SP4);
+      }
+
+      .feature-copy p {
+        color: var(--color-secondary);
+        line-height: 1.6;
+        margin-bottom: var(--SP4);
+      }
+
+      .feature-visual {
+        border: 1px solid rgba(34, 34, 51, 0.1);
+        border-radius: 20px;
+        background: #F8F8FA;
+        padding: var(--SP5);
+        min-height: 280px;
+      }
+
+      .phone {
+        max-width: 260px;
+        margin: 0 auto;
+        border-radius: 28px;
+        border: 1px solid rgba(34, 34, 51, 0.12);
+        background: #fff;
+        padding: var(--SP4);
+        display: grid;
+        gap: var(--SP2);
+      }
+
+      .phone-card {
+        border-radius: 12px;
+        padding: var(--SP3);
+        font-size: var(--font-size-tiny);
+        border: 1px solid rgba(34, 34, 51, 0.08);
+      }
+
+      .benefits {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--SP5);
+        text-align: center;
+      }
+
+      .benefit {
+        padding: var(--SP6);
+        border-radius: 20px;
+        background: #fff;
+        border: 1px solid rgba(34, 34, 51, 0.08);
+      }
+
+      .benefit-minus {
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+        margin-bottom: var(--SP2);
+      }
+
+      .benefit-plus {
+        font-size: var(--font-size-h3);
+        font-weight: var(--font-weight-bold);
+      }
+
+      .pricing {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--SP5);
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .plan {
+        border: 1px solid rgba(34, 34, 51, 0.12);
+        border-radius: 20px;
+        padding: var(--SP6);
+        background: #fff;
+      }
+
+      .plan--featured {
+        border-color: #222233;
+        box-shadow: 0 16px 48px rgba(34, 34, 51, 0.1);
+      }
+
+      .plan-tag {
+        font-size: var(--font-size-tiny);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-secondary);
+        margin-bottom: var(--SP3);
+      }
+
+      .plan h3 {
+        font-size: var(--font-size-h3);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP4);
+      }
+
+      .plan-price {
+        font-size: 40px;
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP2);
+      }
+
+      .plan-price span {
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-normal);
+        color: var(--color-secondary);
+      }
+
+      .plan-desc {
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+        margin-bottom: var(--SP5);
+        line-height: 1.5;
+      }
+
+      .plan-list {
+        list-style: none;
+        display: grid;
+        gap: var(--SP3);
+        margin-bottom: var(--SP6);
+        font-size: var(--font-size-small);
+      }
+
+      .plan-list li::before {
+        content: "· ";
+        font-weight: 700;
+      }
+
+      .integrations {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--SP4);
+      }
+
+      .integration {
+        padding: var(--SP5);
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid rgba(34, 34, 51, 0.08);
+      }
+
+      .integration h3 {
+        font-size: var(--font-size-medium);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP2);
+      }
+
+      .integration p {
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+        line-height: 1.5;
+      }
+
+      .contact {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: var(--SP10);
+        align-items: start;
+      }
+
+      .contact-info {
+        display: grid;
+        gap: var(--SP5);
+      }
+
+      .contact-item strong {
+        display: block;
+        margin-bottom: var(--SP1);
+      }
+
+      .contact-item span {
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+      }
+
+      .form {
+        display: grid;
+        gap: var(--SP4);
+        background: #fff;
+        border: 1px solid rgba(34, 34, 51, 0.1);
+        border-radius: 20px;
+        padding: var(--SP6);
+      }
+
+      .form label {
+        display: grid;
+        gap: var(--SP2);
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-bold);
+      }
+
+      .form input,
+      .form textarea {
+        font: inherit;
+        border: 1px solid rgba(34, 34, 51, 0.16);
+        border-radius: 12px;
+        padding: var(--SP3) var(--SP4);
+        background: #fff;
+      }
+
+      .form textarea { min-height: 120px; resize: vertical; }
+
+      .faq {
+        max-width: 720px;
+        margin: 0 auto;
+        display: grid;
+        gap: var(--SP3);
+      }
+
+      .faq-item {
+        border: 1px solid rgba(34, 34, 51, 0.1);
+        border-radius: 14px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .faq-item summary {
+        padding: var(--SP4) var(--SP5);
+        font-weight: var(--font-weight-bold);
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .faq-item summary::-webkit-details-marker { display: none; }
+
+      .faq-item p {
+        padding: 0 var(--SP5) var(--SP5);
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+        line-height: 1.6;
+      }
+
+      .cta-final {
+        text-align: center;
+        padding: var(--SP12) var(--SP6);
+        background: #222233;
+        color: #fff;
+      }
+
+      .cta-final h2 {
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: var(--font-weight-bold);
+        max-width: 20ch;
+        margin: 0 auto var(--SP4);
+        line-height: 1.2;
+      }
+
+      .cta-final p {
+        color: rgba(255, 255, 255, 0.72);
+        max-width: 48ch;
+        margin: 0 auto var(--SP6);
+        line-height: 1.6;
+      }
+
+      .cta-final .btn--primary {
+        background: #fff;
+        color: #222233;
+      }
+
+      .footer {
+        background: #F8F8FA;
+        padding: var(--SP10) 0 var(--SP8);
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr repeat(3, 1fr);
+        gap: var(--SP8);
+        margin-bottom: var(--SP8);
+      }
+
+      .footer-brand p {
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+        margin-top: var(--SP3);
+        line-height: 1.5;
+      }
+
+      .footer-col h4 {
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--SP4);
+      }
+
+      .footer-col ul {
+        list-style: none;
+        display: grid;
+        gap: var(--SP2);
+      }
+
+      .footer-col a {
+        text-decoration: none;
+        color: var(--color-secondary);
+        font-size: var(--font-size-small);
+      }
+
+      .footer-col a:hover { color: #222233; }
+
+      .footer-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: var(--SP4);
+        padding-top: var(--SP6);
+        border-top: 1px solid rgba(34, 34, 51, 0.08);
+        color: var(--color-secondary);
+        font-size: var(--font-size-tiny);
+      }
+
+      .nav-toggle { display: none; }
+
+      @media (max-width: 900px) {
+        .nav-links { display: none; }
+        .nav-toggle { display: block; }
+
+        .dash-grid { grid-template-columns: repeat(2, 1fr); }
+        .dash-body { grid-template-columns: 1fr; }
+        .chaos { grid-template-columns: 1fr; }
+        .chaos-arrow { transform: rotate(90deg); }
+        .value, .feature, .contact { grid-template-columns: 1fr; }
+        .feature--reverse .feature-copy,
+        .feature--reverse .feature-visual { order: unset; }
+        .steps, .benefits, .pricing, .integrations, .footer-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="shell nav-inner">
+        <a class="brand" href="#">
+          <span class="brand-mark">ג</span>
+          <span class="text-h3-bold">גרופס</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="#features">יכולות</a></li>
+          <li><a href="#pricing">תמחור</a></li>
+          <li><a href="/index.html">אפליקציה</a></li>
+          <li><a href="#contact">צור קשר</a></li>
+          <li><a href="#faq">שאלות נפוצות</a></li>
+        </ul>
+        <a class="btn btn--primary" href="#contact" data-hook="landing-nav-cta">קבעו הדגמה</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="shell hero" aria-labelledby="hero-title">
+        <h1 id="hero-title">עם גרופס, תמיד ברור<br />מה קורה בקהילה שלכם</h1>
+        <p class="hero-lead">
+          מערכת ניהול קהילה חכמה שמרכזת עדכונים, אירועים, הצבעות, התנדבות, מרקטפלייס ותקשורת עם תושבים במקום אחד.
+          מתחילים את הבוקר עם תמונה מלאה של מה מחכה היום ביישוב, ומסיימים אותו כשכל מה שקרה מסודר, מתועד וברור.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="#contact" data-hook="landing-hero-cta">קבעו הדגמה תוך דקה</a>
+          <a class="btn btn--ghost" href="#features">גלה עוד</a>
+        </div>
+        <p class="hero-trust">
+          <strong>פיילוט פעיל בגבעת אלה</strong>
+          <span>|</span>
+          <span>נבנה על ידי אנשים, עבור קהילות. <a href="/presentation.html">קראו עוד</a></span>
+        </p>
+
+        <div class="dash" aria-label="תצוגה מקדימה של לוח הבקרה">
+          <div class="dash-head">
+            <div>
+              <div class="dash-title">סקירת קהילה · יוני 2026</div>
+              <div class="dash-sub">לוח בקרה למנהל קהילה · גבעת אלה</div>
+            </div>
+            <span class="badge badge--ok">3 עובדים במשמרת עכשיו</span>
+          </div>
+          <div class="dash-grid">
+            <div class="dash-stat">
+              <div class="dash-stat-label">פניות פתוחות</div>
+              <div class="dash-stat-value">7</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-label">עדכונים שפורסמו</div>
+              <div class="dash-stat-value">12</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-label">הצבעות פעילות</div>
+              <div class="dash-stat-value">2</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-label">תושבים פעילים השבוע</div>
+              <div class="dash-stat-value">340</div>
+            </div>
+          </div>
+          <div class="dash-body">
+            <div class="dash-panel">
+              <h3>תיבת פעולות — ממתין לאישור</h3>
+              <div class="dash-row">
+                <span>שאלה חוזרת: שעות בריכה</span>
+                <span class="badge">WhatsApp</span>
+              </div>
+              <div class="dash-row">
+                <span>טיוטת עדכון — מגרש כדורגל</span>
+                <span class="badge badge--urgent">AI</span>
+              </div>
+              <div class="dash-row">
+                <span>בקשת התנדבות — הסעות לקשישים</span>
+                <span class="badge">אפליקציה</span>
+              </div>
+            </div>
+            <div class="dash-panel">
+              <h3>פעילות אחרונה</h3>
+              <div class="dash-row"><span>עדכון בריכה פורסם</span><span class="dash-sub">10:42</span></div>
+              <div class="dash-row"><span>34 תושבים הצביעו בסקר</span><span class="dash-sub">09:15</span></div>
+              <div class="dash-row"><span>אירוע שוק קהילתי נוסף</span><span class="dash-sub">אתמול</span></div>
+            </div>
+            <div class="dash-panel">
+              <h3>מעקב פניות</h3>
+              <div class="dash-row"><span>רחל ש.</span><span class="badge badge--urgent">3 ימים</span></div>
+              <div class="dash-row"><span>אלון כ.</span><span class="badge">1 יום</span></div>
+              <div class="dash-row"><span>מיכל ל.</span><span class="badge badge--ok">טופל</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--muted">
+        <div class="shell">
+          <div class="section-head">
+            <h2>כשהמידע מפוזר,<br />אי אפשר לראות את התמונה המלאה</h2>
+            <p>
+              העדכונים בוואטסאפ, השאלות במייל, האירועים בקבוצת פייסבוק, ההצבעות בדף נפרד,
+              והפניות לועד בהודעות פרטיות — והיומן לא תמיד משקף את מה שבאמת קורה בקהילה.
+            </p>
+          </div>
+
+          <div class="chaos">
+            <div class="chaos-col">
+              <div class="chaos-card">
+                <div class="chaos-card-head"><span>וואטסאפ</span><span>12</span></div>
+                <div>מה שעות הבריכה השבוע?</div>
+              </div>
+              <div class="chaos-card">
+                <div class="chaos-card-head"><span>אימייל</span><span>3</span></div>
+                <div>בנוגע לתאורה בכיכר...</div>
+              </div>
+              <div class="chaos-card">
+                <div class="chaos-card-head"><span>קבוצת פייסבוק</span></div>
+                <div>מישהו יודע מתי השוק הקהילתי?</div>
+              </div>
+              <div class="chaos-card">
+                <div class="chaos-card-head"><span>משימות הועד</span></div>
+                <div>לפרסם עדכון על שיפוץ המגרש</div>
+                <div>לענות לרחל על תאורה</div>
+                <div>לאשר אירוע לשבת</div>
+              </div>
+            </div>
+
+            <div class="chaos-arrow" aria-hidden="true">←</div>
+
+            <div class="unified">
+              <div class="unified-brand">גרופס</div>
+              <div class="dash-panel" style="min-height:auto;border:none;padding:0">
+                <div class="dash-row"><span>תיבת פעולות</span><span class="badge">7 פתוחות</span></div>
+                <div class="dash-row"><span>עדכונים · אירועים · סקרים</span><span class="badge badge--ok">מסונכרן</span></div>
+                <div class="dash-row"><span>סוכן AI — המלצות לפרסום</span><span class="badge">3 חדשות</span></div>
+                <div class="dash-row"><span>אפליקציית תושבים</span><span class="badge badge--ok">פעיל</span></div>
+              </div>
+            </div>
+          </div>
+
+          <p class="section-head" style="margin-top:var(--SP10);margin-bottom:0">
+            גרופס מחברת את כל חלקי הקהילה למקום אחד, כדי שהניהול היומיומי יהיה פשוט, ברור ומסודר יותר.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="shell value">
+          <div>
+            <h2 class="text-h2-bold">כל מה שקורה בקהילה, במבט זריז</h2>
+            <p class="text-medium-normal" style="color:var(--color-secondary);margin-top:var(--SP4);line-height:1.6">
+              עדכונים, אירועים, סקרים, התנדבות ותקשורת עם תושבים לא פועלים בנפרד.
+              הם חלק ממהלך אחד שחי לאורך היום. גרופס מחברת את כל הנקודות האלה לתמונה ברורה.
+            </p>
+            <ul class="value-list">
+              <li>כל מה שצריך לקרות היום, במקום אחד</li>
+              <li>רואים לא רק מה מתוכנן, אלא גם מה קרה בפועל</li>
+              <li>הקהילה מתקדמת עם סדר שנשמר לאורך היום</li>
+            </ul>
+          </div>
+
+          <div class="day-panel">
+            <div class="day-panel-head">
+              <div>
+                <strong class="text-h3-bold">סקירת היום</strong>
+                <div class="text-small-normal" style="color:var(--color-secondary)">יום שבת 20.6.2026</div>
+              </div>
+            </div>
+            <div class="day-stats">
+              <div class="day-stat"><strong>4</strong><span>אירועים</span></div>
+              <div class="day-stat"><strong>34</strong><span>הצבעות היום</span></div>
+              <div class="day-stat"><strong>3</strong><span>עדכונים לפרסום</span></div>
+            </div>
+            <div class="day-feed">
+              <div class="feed-item">
+                <span class="feed-dot"></span>
+                <div><strong>עדכון בריכה פורסם</strong><br />גבעת אלה · 09:15</div>
+                <span class="badge badge--ok">פורסם</span>
+              </div>
+              <div class="feed-item">
+                <span class="feed-dot"></span>
+                <div><strong>34 תושבים הצביעו בסקר מגרש</strong><br />הצבעות · 10:02</div>
+                <span class="badge">פעיל</span>
+              </div>
+              <div class="feed-item">
+                <span class="feed-dot"></span>
+                <div><strong>שוק קהילתי — שבת 10:00</strong><br />אירועים · בקרוב</div>
+                <span class="badge">היום</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--muted">
+        <div class="shell">
+          <div class="section-head">
+            <h2>איך זה עובד?</h2>
+          </div>
+          <div class="steps">
+            <article class="step">
+              <div class="step-num">01</div>
+              <h3>עולים לאוויר בשבוע</h3>
+              <p>בלי התחייבות ארוכה. מגדירים מודולים, מחברים ערוצים קיימים ומעלים אפליקציית תושבים ממותגת.</p>
+            </article>
+            <article class="step">
+              <div class="step-num">02</div>
+              <h3>מחברים את הקהילה</h3>
+              <p>וואטסאפ, מייל, אפליקציה וסוכן AI — הכול מתחיל לעבוד יחד. התושבים מקבלים מקום אחד לשאול, והועד מקבל תיבת פעולות.</p>
+            </article>
+            <article class="step">
+              <div class="step-num">03</div>
+              <h3>רואים את ההבדל</h3>
+              <p>מנהלים את הקהילה בגרופס ומקבלים סדר, תיעוד ושליטה ברורה — פחות פניות חוזרות, יותר שקיפות לתושבים.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="shell">
+        <div class="feature">
+          <div class="feature-copy">
+            <h3>כשהכל מחובר, גם תקשורת עם תושבים מרגישה אחרת</h3>
+            <p>
+              בגרופס, פרסום עדכון לא מוציא אתכם מרצף העבודה. השאלות, הטיוטות, ההמלצות של AI
+              וכל המידע שאתם צריכים נשארים נגישים — אפשר לבדוק מה חסר ולחזור בדיוק לאותה נקודה.
+            </p>
+          </div>
+          <div class="feature-visual">
+            <div class="dash-panel" style="min-height:auto">
+              <h3>תיבת פעולות</h3>
+              <div class="dash-row">
+                <span>טיוטת עדכון — שעות בריכה</span>
+                <span class="badge">אשר ופרסם</span>
+              </div>
+              <div class="dash-row">
+                <span>מקור: 34 שאלות ב-7 ימים</span>
+                <span class="badge badge--urgent">ביטחון גבוה</span>
+              </div>
+              <div class="dash-row">
+                <span>תצוגה מקדימה באפליקציה</span>
+                <span class="badge badge--ok">מוכן</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature feature--reverse">
+          <div class="feature-copy">
+            <h3>ידע קהילתי מאפשר שקיפות — עם גרופס הידע בידיים שלכם</h3>
+            <p>
+              דשבורד מפורט שמציג נתוני פעילות בזמן אמת — פניות, עדכונים, הצבעות, אירועים ונושאים חוזרים.
+              הסוכן מזהה דפוסים וממליץ מה לפרסם לפני שהטלפון מצלצל.
+            </p>
+          </div>
+          <div class="feature-visual">
+            <div class="dash-grid" style="grid-template-columns:repeat(2,1fr)">
+              <div class="dash-stat"><div class="dash-stat-label">שאלות על בריכה</div><div class="dash-stat-value">34</div></div>
+              <div class="dash-stat"><div class="dash-stat-label">פניות שטופלו ב-AI</div><div class="dash-stat-value">78%</div></div>
+              <div class="dash-stat"><div class="dash-stat-label">עדכונים החודש</div><div class="dash-stat-value">12</div></div>
+              <div class="dash-stat"><div class="dash-stat-label">תושבים פעילים</div><div class="dash-stat-value">340</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-copy">
+            <h3>אפליקציית תושבים שמרגישה כמו הבית</h3>
+            <p>
+              עדכונים, הצבעות, התנדבות, אירועים ומרקטפלייס — עם חיפוש AI, פעולות מהירות
+              (פתיחת שער, חירום, תשלום לוועד) ופרופיל אישי. הכל במסך אחד, בעברית, מותאם ליישוב.
+            </p>
+            <a class="btn btn--ghost" href="/index.html">ראו את האפליקציה</a>
+          </div>
+          <div class="feature-visual">
+            <div class="phone">
+              <div class="phone-card" style="background:#CEFF7E">עדכון · שעות בריכה מעודכנות</div>
+              <div class="phone-card" style="background:#D8C5FF">סקר · שיפוץ מגרש הכדורגל</div>
+              <div class="phone-card" style="background:#C3ECF6">אירוע · שוק קהילתי שבת</div>
+              <div class="phone-card" style="background:#FFD4A8">מרקטפלייס · עגלת תינוק בחינם</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--muted">
+        <div class="shell">
+          <div class="section-head">
+            <h2>ככה זה מרגיש כשיש לכם שליטה על הקהילה</h2>
+          </div>
+          <div class="benefits">
+            <div class="benefit">
+              <div class="benefit-minus">פחות וואטסאפ</div>
+              <div class="benefit-plus">יותר שקיפות לתושבים</div>
+            </div>
+            <div class="benefit">
+              <div class="benefit-minus">פחות עומס על הועד</div>
+              <div class="benefit-plus">יותר זמן לקהילה</div>
+            </div>
+            <div class="benefit">
+              <div class="benefit-minus">פחות ניחושים</div>
+              <div class="benefit-plus">יותר החלטות מבוססות נתונים</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="shell">
+          <div class="section-head">
+            <h2>בחרו את המסלול שמתאים ליישוב שלכם</h2>
+            <p>כל המסלולים כוללים תקופת פיילוט. בלי התחייבות ארוכה, בלי הפתעות.</p>
+          </div>
+          <div class="pricing">
+            <article class="plan">
+              <div class="plan-tag">יישוב קטן</div>
+              <h3>שליטה מלאה לקהילה</h3>
+              <div class="plan-price">מ-₪890 <span>/ חודש</span></div>
+              <p class="plan-desc">תוכנית בסיס ליישובים עד 500 משפחות — אפליקציית תושבים, לוח בקרה וסוכן AI.</p>
+              <ul class="plan-list">
+                <li>עד 3 מנהלי קהילה</li>
+                <li>5 מודולים: עדכונים, אירועים, סקרים, התנדבות, מרקטפלייס</li>
+                <li>תיבת פעולות וסוכן AI</li>
+                <li>חיבור וואטסאפ ומייל</li>
+                <li>תמיכה בעברית</li>
+              </ul>
+              <a class="btn btn--ghost" href="#contact" style="width:100%">התחילו פיילוט</a>
+            </article>
+            <article class="plan plan--featured">
+              <div class="plan-tag">יישוב גדול</div>
+              <h3>שליטה מלאה + אוטומציה</h3>
+              <div class="plan-price">מ-₪1,690 <span>/ חודש</span></div>
+              <p class="plan-desc">תוכנית מתקדמת — כל הפיצ׳רים כולל אוטומציה מורחבת, דוחות ואינטגרציות.</p>
+              <ul class="plan-list">
+                <li>עד 10 מנהלי קהילה</li>
+                <li>כל המודולים ללא הגבלה</li>
+                <li>אוטומציה: פרסום אוטומטי לפי כללים</li>
+                <li>דוחות פעילות ותובנות AI</li>
+                <li>API ואינטגרציות מותאמות</li>
+                <li>מנהל הצלחה ייעודי</li>
+              </ul>
+              <a class="btn btn--primary" href="#contact" style="width:100%">התחילו פיילוט</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--muted">
+        <div class="shell">
+          <div class="section-head">
+            <h2>גרופס מתחברת לכל ערוץ קיים</h2>
+            <p>וואטסאפ, מייל, אפליקציה ומערכות ניהול — הכול נכנס למקום אחד ויוצא בצורה מסודרת.</p>
+          </div>
+          <div class="integrations">
+            <article class="integration">
+              <h3>וואטסאפ ומייל</h3>
+              <p>הודעות תושבים נכנסות לתיבת הפעולות. AI ממיין, מנסח טיוטות ומציע מה לפרסם.</p>
+            </article>
+            <article class="integration">
+              <h3>אפליקציית תושבים</h3>
+              <p>חוויית מובייל ממותגת ליישוב — עדכונים, אירועים, סקרים ופעולות מהירות במקום אחד.</p>
+            </article>
+            <article class="integration">
+              <h3>אוטומציות מותאמות</h3>
+              <p>היישוב שלכם דורש תהליכים ייחודיים? מגדירים כללים — AI מטפל בשגרה, הועד מאשר את השאר.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="shell">
+          <div class="section-head">
+            <h2>יש לכם שאלה? רוצים לשמוע עוד?</h2>
+            <p>השאירו פרטים ונחזור אליכם בהקדם.</p>
+          </div>
+          <div class="contact">
+            <div class="contact-info">
+              <h3 class="text-h3-bold">דרכים נוספות ליצור קשר</h3>
+              <div class="contact-item">
+                <strong>אימייל</strong>
+                <span>hello@groups.co.il</span>
+              </div>
+              <div class="contact-item">
+                <strong>הדגמה חיה</strong>
+                <span><a href="/index.html">אפליקציית תושבים</a> · <a href="/admin.html">לוח בקרה</a></span>
+              </div>
+              <div class="contact-item">
+                <strong>זמן תגובה ממוצע</strong>
+                <span>עד שעתיים בימי עסקים</span>
+              </div>
+            </div>
+            <form class="form" action="mailto:hello@groups.co.il" method="get" enctype="text/plain">
+              <label>
+                שם מלא
+                <input type="text" name="subject" placeholder="שם היישוב / ארגון" required />
+              </label>
+              <label>
+                אימייל
+                <input type="email" name="body" placeholder="your@email.com" required />
+              </label>
+              <label>
+                פנייה
+                <textarea placeholder="ספרו לנו על היישוב שלכם ומה אתם מחפשים"></textarea>
+              </label>
+              <button class="btn btn--primary" type="submit" data-hook="landing-contact-submit">שליחה</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--muted" id="faq">
+        <div class="shell">
+          <div class="section-head">
+            <h2>שאלות נפוצות</h2>
+          </div>
+          <div class="faq">
+            <details class="faq-item">
+              <summary>האם גרופס מתאימה ליישוב קטן?</summary>
+              <p>בהחלט. גרופס מתאימה ליישובים קהילתיים מכל הגדלים — מושב, קיבוץ, שכונה או מתחם מגורים. המערכת מתאימה את המודולים לפי צרכי היישוב.</p>
+            </details>
+            <details class="faq-item">
+              <summary>כמה זמן עד שאני רואה תוצאות?</summary>
+              <p>מהרגע שעולים לאוויר. ברגע שהתושבים מתחילים להשתמש, תוכלו לראות פניות, עדכונים ופעילות מסודרים. ככל שהקהילה משתמשת יותר, התמונה הופכת מדויקת יותר.</p>
+            </details>
+            <details class="faq-item">
+              <summary>המידע שלנו מאובטח?</summary>
+              <p>כן. המערכת מאוחסנת בשרתי ענן מאובטחים עם הצפנה, גיבויים אוטומטיים ובקרת גישה לפי הרשאות. המידע של הקהילה מוגן ברמה גבוהה.</p>
+            </details>
+            <details class="faq-item">
+              <summary>איך גרופס עוזרת עם פניות חוזרות?</summary>
+              <p>הסוכן AI מזהה נושאים חוזרים בשאלות תושבים, עונה אוטומטית כשאפשר, וממליץ לועד לפרסם עדכון כשיש צורך — לפני שהטלפון מצלצל.</p>
+            </details>
+            <details class="faq-item">
+              <summary>האם אפשר לנסות לפני שמתחייבים?</summary>
+              <p>כמובן. כל המסלולים כוללים תקופת פיילוט. אפשר להתחיל בלי התחייבות ארוכה ולראות את המערכת בפעולה על בסיס גבעת אלה.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-final">
+        <h2>קהילות שעובדות עם גרופס לא חוזרות אחורה. מוכנים לגלות למה?</h2>
+        <p>הצטרפו ליישובים שהפסיקו לנחש והתחילו לדעת. ההדגמה חינם, לוקחת 30 דקות, ואתם רואים תוצאות מהיום הראשון.</p>
+        <a class="btn btn--primary" href="#contact" data-hook="landing-final-cta">קבעו הדגמה</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="shell">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a class="brand" href="#">
+              <span class="brand-mark">ג</span>
+              <span class="text-h3-bold">גרופס</span>
+            </a>
+            <p>מערכת ניהול קהילה חכמה שמרכזת הכל במקום אחד.<br />נבנה על ידי אנשים, עבור קהילות.</p>
+          </div>
+          <div class="footer-col">
+            <h4>ניווט</h4>
+            <ul>
+              <li><a href="#features">יכולות</a></li>
+              <li><a href="#pricing">תמחור</a></li>
+              <li><a href="/index.html">אפליקציה</a></li>
+              <li><a href="#contact">צור קשר</a></li>
+              <li><a href="#faq">שאלות נפוצות</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>מוצר</h4>
+            <ul>
+              <li><a href="/index.html">אפליקציית תושבים</a></li>
+              <li><a href="/admin.html">לוח בקרה</a></li>
+              <li><a href="/presentation.html">גבעת אלה</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>צור קשר</h4>
+            <ul>
+              <li><a href="mailto:hello@groups.co.il">hello@groups.co.il</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 גרופס בע״מ. כל הזכויות שמורות.</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

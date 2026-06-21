@@ -9,6 +9,7 @@ import AIBot from './components/AIBot';
 import Profile from './components/Profile';
 import EventsPage from './components/EventsPage';
 import MarketplacePage from './components/MarketplacePage';
+import NewsDetailPage from './components/NewsDetailPage';
 import LoadingScreen from './components/LoadingScreen';
 import GateSuccessModal from './components/GateSuccessModal';
 
@@ -24,6 +25,8 @@ export default function App() {
   const [avatarRect, setAvatarRect] = useState<DOMRect | null>(null);
   const [eventsOpen, setEventsOpen] = useState(false);
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
+  const [newsDetailOpen, setNewsDetailOpen] = useState(false);
+  const [newsDetailId, setNewsDetailId] = useState<string | null>(null);
 
   const handleSearchClick = (rect: DOMRect) => {
     setSearchRect(rect);
@@ -64,6 +67,10 @@ export default function App() {
             isReady={!loading}
             onEventsOpen={() => setEventsOpen(true)}
             onMarketplaceOpen={() => setMarketplaceOpen(true)}
+            onNewsOpen={(id) => {
+              setNewsDetailId(id);
+              setNewsDetailOpen(true);
+            }}
           />
         </div>
         <QuickActions open={quickActionsOpen} onClose={() => setQuickActionsOpen(false)} onGateOpen={() => setGateOpen(true)} />
@@ -73,6 +80,14 @@ export default function App() {
         <Profile open={profileOpen} startRect={avatarRect} onClose={() => setProfileOpen(false)} />
         <EventsPage open={eventsOpen} onClose={() => setEventsOpen(false)} />
         <MarketplacePage open={marketplaceOpen} onClose={() => setMarketplaceOpen(false)} />
+        <NewsDetailPage
+          open={newsDetailOpen}
+          newsId={newsDetailId}
+          onClose={() => {
+            setNewsDetailOpen(false);
+            setNewsDetailId(null);
+          }}
+        />
       </div>
     </div>
   );

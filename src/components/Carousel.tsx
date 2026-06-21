@@ -61,9 +61,10 @@ interface CarouselProps {
   isReady?: boolean;
   onEventsOpen?: () => void;
   onMarketplaceOpen?: () => void;
+  onNewsOpen?: (id: string) => void;
 }
 
-export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceOpen }: CarouselProps) {
+export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceOpen, onNewsOpen }: CarouselProps) {
   const [progress, setProgress] = useState(0);
   const [navAnimDone, setNavAnimDone] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -161,7 +162,7 @@ export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceO
               </header>
               <div className={`carousel-card-body${section.hasVolunteer ? ' is-full-bleed' : ''}${section.hasNews ? ' is-centered' : ''}${section.hasPolls ? ' is-polls' : ''}`}>
                 {section.hasNews ? (
-                  <NewsCard />
+                  <NewsCard onOpenDetails={onNewsOpen} />
                 ) : section.hasVolunteer ? (
                   <VolunteerCard />
                 ) : section.hasPolls ? (
