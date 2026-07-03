@@ -91,7 +91,7 @@ const ACTIVITY: Activity[] = [
 ];
 
 const DEFAULT_IDENTITY: IdentityData = {
-  name: 'דולב בן ארי',
+  name: 'טל לוינסקי',
   street: 'רחוב האלון',
   neighborhood: 'גבעת אלה',
 };

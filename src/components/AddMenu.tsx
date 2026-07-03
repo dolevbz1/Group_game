@@ -133,11 +133,12 @@ const ADD_ITEMS: AddItem[] = [
 type AddMenuProps = {
   open: boolean;
   onClose: () => void;
+  onNewsReport?: () => void;
 };
 
 const THEME_META = () => document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
 
-export default function AddMenu({ open, onClose }: AddMenuProps) {
+export default function AddMenu({ open, onClose, onNewsReport }: AddMenuProps) {
   const [listKey, setListKey] = useState(0);
 
   useEffect(() => {
@@ -177,7 +178,10 @@ export default function AddMenu({ open, onClose }: AddMenuProps) {
               key={item.label}
               type="button"
               className={`add-row add-row--${item.id}`}
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                if (item.id === 'news') onNewsReport?.();
+              }}
             >
               <span className="add-row-icon" aria-hidden="true">
                 <item.Icon />

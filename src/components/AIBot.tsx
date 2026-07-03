@@ -194,7 +194,7 @@ export default function AIBot({ open, startRect, onClose, initialMessage }: AIBo
               </svg>
             </div>
             <h1 className="aibot-greeting text-h2-normal">
-              היי דולב,
+              היי טל,
               <br />
               <span className="aibot-greeting-rainbow">מה בא לך לדעת היום?</span>
             </h1>

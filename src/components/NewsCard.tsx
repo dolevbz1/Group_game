@@ -7,9 +7,10 @@ import './NewsCard.css';
 
 type NewsCardProps = {
   onOpenDetails?: (id: string) => void;
+  isActive?: boolean;
 };
 
-export default function NewsCard({ onOpenDetails }: NewsCardProps) {
+export default function NewsCard({ onOpenDetails, isActive = false }: NewsCardProps) {
   const [items, setItems] = useState(NEWS_ITEMS);
   const [dismissingId, setDismissingId] = useState<string | null>(null);
 
@@ -72,7 +73,7 @@ export default function NewsCard({ onOpenDetails }: NewsCardProps) {
               <div className="news-note-body">
                 <div className="news-note-visual">
                   {item.loopAnim ? (
-                    <Lottie animationData={item.anim} loop className="news-note-lottie" />
+                    <Lottie animationData={item.anim} loop={isActive} className="news-note-lottie" />
                   ) : item.hasLottie ? (
                     <Lottie
                       animationData={swimmingAnim}

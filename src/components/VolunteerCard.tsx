@@ -131,7 +131,7 @@ const HELP_REQUESTS = [
 
 const MAP_CONTAINER_STYLE = { width: '100%', height: '100%' };
 
-export default function VolunteerCard() {
+export default function VolunteerCard({ isActive = false }: { isActive?: boolean }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [claimedIds, setClaimedIds] = useState<string[]>([]);
   const [justClaimed, setJustClaimed] = useState<string | null>(null);
@@ -140,6 +140,7 @@ export default function VolunteerCard() {
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: API_KEY });
 
   useEffect(() => {
+    if (!isActive) return;
     const interval = setInterval(() => {
       setProofVisible(false);
       setTimeout(() => {
@@ -148,7 +149,7 @@ export default function VolunteerCard() {
       }, 400);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isActive]);
 
 
   const open = HELP_REQUESTS.filter((r) => !claimedIds.includes(r.id));
@@ -181,7 +182,7 @@ export default function VolunteerCard() {
         </p>
       </div>
       <div className="volunteer-map">
-        {isLoaded && (
+        {isActive && isLoaded && (
           <GoogleMap
             mapContainerStyle={MAP_CONTAINER_STYLE}
             center={MAP_CENTER}

@@ -60,31 +60,33 @@ const EVENTS = [
 
 const [closest, ...upcoming] = EVENTS;
 
-export default function EventsCard() {
+export default function EventsCard({ isActive = false }: { isActive?: boolean }) {
   return (
     <div className="events-body" dir="rtl">
 
       <div className="event-ticket">
         <div className="event-ticket-image">
-          <div className="event-ticket-ticker" aria-hidden="true" dir="ltr">
-            <div className="event-ticket-ticker-track">
-              {[0, 1].map((copy) => (
-                <div key={copy} className="event-ticket-ticker-segment">
-                  {Array.from({ length: 10 }).map((_, i) => (
-                    <span key={i} className="event-ticket-ticker-unit">
-                      <span className="event-ticket-ticker-text">האירוע הקרוב</span>
-                      <Lottie
-                        animationData={celebrationWhite}
-                        loop
-                        autoplay
-                        className="event-ticket-ticker-lottie"
-                      />
-                    </span>
-                  ))}
-                </div>
-              ))}
+          {isActive && (
+            <div className="event-ticket-ticker" aria-hidden="true" dir="ltr">
+              <div className="event-ticket-ticker-track">
+                {[0, 1].map((copy) => (
+                  <div key={copy} className="event-ticket-ticker-segment">
+                    {Array.from({ length: 10 }).map((_, i) => (
+                      <span key={i} className="event-ticket-ticker-unit">
+                        <span className="event-ticket-ticker-text">האירוע הקרוב</span>
+                        <Lottie
+                          animationData={celebrationWhite}
+                          loop
+                          autoplay
+                          className="event-ticket-ticker-lottie"
+                        />
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="event-ticket-notch" aria-hidden="true">

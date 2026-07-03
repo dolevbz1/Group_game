@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import NewsNav from './NewsNav';
 import VolunteerNav from './VolunteerNav';
 import PollsNav from './PollsNav';
@@ -29,13 +29,11 @@ const INACTIVE_DROP = 24;
 
 const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 
-// How "focused" circle i is for a given continuous progress p (1 at center, 0 once a full step away)
 const closeAt = (i: number, p: number) => Math.max(0, 1 - Math.abs(i - p));
 const slotAt = (i: number, p: number) =>
   i < 0 || i > N - 1 ? SLOT_BASE : SLOT_BASE + (SLOT_MAX - SLOT_BASE) * closeAt(i, p);
 const pitchAt = (k: number, p: number) => GAP + slotAt(k, p) / 2 + slotAt(k + 1, p) / 2;
 
-// Screen-x offset of circle i from the centered position (+ = right). Higher index sits to the left (RTL).
 const offsetFromCenter = (i: number, p: number) => {
   if (i === p) return 0;
   let sum = 0;
@@ -65,19 +63,50 @@ interface CarouselProps {
 }
 
 export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceOpen, onNewsOpen }: CarouselProps) {
-  const [progress, setProgress] = useState(0);
+  const NEWS_INDEX = SECTIONS.findIndex((s) => s.id === 'news');
+
+  const [activeIndex, setActiveIndex] = useState(NEWS_INDEX);
   const [navAnimDone, setNavAnimDone] = useState(false);
+
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const circleRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const iconRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  const activeIndex = clamp(Math.round(progress), 0, N - 1);
+  const pitchRef = useRef(0);
+  const activeIndexRef = useRef(NEWS_INDEX);
+  const scrollRafRef = useRef(0);
+  const scrollEndTimerRef = useRef(0);
 
-  // Continuous progress read straight from the cards' real positions — RTL-safe.
-  const measureProgress = () => {
+  const measurePitch = useCallback(() => {
+    const c0 = cardRefs.current[0];
+    const c1 = cardRefs.current[1];
+    if (!c0 || !c1) return;
+    const pitch = Math.abs(c1.offsetLeft - c0.offsetLeft);
+    if (pitch > 0) pitchRef.current = pitch;
+  }, []);
+
+  const getProgressFromScroll = useCallback(() => {
+    const track = trackRef.current;
+    const pitch = pitchRef.current;
+    if (!track || !pitch) return activeIndexRef.current;
+
+    const max = track.scrollWidth - track.clientWidth;
+    if (max <= 0) return 0;
+
+    const sl = track.scrollLeft;
+    const traveled = sl <= 0 ? -sl : max - sl;
+    return clamp(traveled / pitch, 0, N - 1);
+  }, []);
+
+  const measureProgressExact = useCallback(() => {
     const track = trackRef.current;
     const c0 = cardRefs.current[0];
     const c1 = cardRefs.current[1];
-    if (!track || !c0 || !c1) return 0;
+    if (!track || !c0 || !c1) return activeIndexRef.current;
+
     const tr = track.getBoundingClientRect();
     const center = tr.left + tr.width / 2;
     const r0 = c0.getBoundingClientRect();
@@ -85,16 +114,63 @@ export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceO
     const cen0 = r0.left + r0.width / 2;
     const cen1 = r1.left + r1.width / 2;
     const pitch = cen1 - cen0;
-    if (!pitch) return 0;
+    if (!pitch) return activeIndexRef.current;
     return clamp((center - cen0) / pitch, 0, N - 1);
-  };
+  }, []);
 
-  const NEWS_INDEX = SECTIONS.findIndex(s => s.id === 'news');
+  const applyVisuals = useCallback((p: number) => {
+    const active = clamp(Math.round(p), 0, N - 1);
+    const indexChanged = active !== activeIndexRef.current;
 
+    for (let i = 0; i < N; i++) {
+      const card = cardRefs.current[i];
+      if (card) {
+        const cardFocus = closeAt(i, p);
+        card.style.transform = `scale3d(1, ${0.8 + 0.2 * cardFocus}, 1)`;
+        card.style.opacity = String(0.55 + 0.45 * cardFocus);
+        if (indexChanged) {
+          card.classList.toggle('is-active', i === active);
+          card.dataset.inactive = i === active ? 'false' : 'true';
+        }
+      }
+
+      const tab = tabRefs.current[i];
+      const circle = circleRefs.current[i];
+      const icon = iconRefs.current[i];
+      const label = labelRefs.current[i];
+      if (!tab || !circle || !icon) continue;
+
+      const c = closeAt(i, p);
+      const circleSize = CIRCLE_BASE + (CIRCLE_MAX - CIRCLE_BASE) * c;
+      const x = offsetFromCenter(i, p);
+      const y = (1 - c) * INACTIVE_DROP;
+
+      tab.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), 0)`;
+      circle.style.width = `${circleSize}px`;
+      circle.style.height = `${circleSize}px`;
+      icon.style.transform = `scale(${circleSize / CIRCLE_BASE})`;
+
+      if (indexChanged) {
+        tab.classList.toggle('is-active', i === active);
+        if (i === active) tab.setAttribute('aria-current', 'true');
+        else tab.removeAttribute('aria-current');
+        if (label) label.style.display = i === active ? 'none' : 'block';
+      }
+    }
+
+    if (indexChanged) {
+      activeIndexRef.current = active;
+      setActiveIndex(active);
+    }
+  }, []);
 
   useEffect(() => {
     cardRefs.current[NEWS_INDEX]?.scrollIntoView({ behavior: 'instant', inline: 'center', block: 'nearest' });
-  }, []);
+    requestAnimationFrame(() => {
+      measurePitch();
+      applyVisuals(NEWS_INDEX);
+    });
+  }, [NEWS_INDEX, applyVisuals, measurePitch]);
 
   useEffect(() => {
     if (!isReady) return;
@@ -105,22 +181,39 @@ export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceO
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-    let raf = 0;
+
     const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        setProgress(measureProgress());
-      });
+      if (!scrollRafRef.current) {
+        scrollRafRef.current = requestAnimationFrame(() => {
+          scrollRafRef.current = 0;
+          applyVisuals(getProgressFromScroll());
+        });
+      }
+
+      window.clearTimeout(scrollEndTimerRef.current);
+      scrollEndTimerRef.current = window.setTimeout(() => {
+        measurePitch();
+        applyVisuals(measureProgressExact());
+      }, 100);
     };
+
+    const onResize = () => {
+      measurePitch();
+      applyVisuals(getProgressFromScroll());
+    };
+
     track.addEventListener('scroll', onScroll, { passive: true });
-    setProgress(measureProgress());
+    window.addEventListener('resize', onResize);
+    measurePitch();
+    applyVisuals(getProgressFromScroll());
+
     return () => {
       track.removeEventListener('scroll', onScroll);
-      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      if (scrollRafRef.current) cancelAnimationFrame(scrollRafRef.current);
+      window.clearTimeout(scrollEndTimerRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [applyVisuals, getProgressFromScroll, measurePitch, measureProgressExact]);
 
   const goTo = (i: number) => {
     cardRefs.current[i]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
@@ -129,97 +222,85 @@ export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceO
   return (
     <section className="carousel" dir="rtl">
       <div className="carousel-track" ref={trackRef}>
-        {SECTIONS.map((section, i) => {
-          const cardFocus = closeAt(i, progress);
-          const cardScale = 0.8 + 0.2 * cardFocus;
-
-          return (
-            <article
-              key={section.id}
-              ref={(el) => { cardRefs.current[i] = el; }}
-              data-index={i}
-              className={`carousel-card${i === activeIndex ? ' is-active' : ''}`}
-              style={{
-                background: section.color,
-                transform: `scaleY(${cardScale})`,
-              }}
-              onClick={() => i !== activeIndex && goTo(i)}
-            >
-              <header className="carousel-card-header">
-                <h3 className="carousel-card-title text-h2-bold">{section.title}</h3>
-                <button
-                  type="button"
-                  className="btn-secondary carousel-card-cta text-small-thin"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (section.id === 'events') onEventsOpen?.();
-                    else if (section.id === 'marketplace') onMarketplaceOpen?.();
-                  }}
-                  aria-label={section.ctaLabel}
-                >
-                  {section.ctaLabel}
-                </button>
-              </header>
-              <div className={`carousel-card-body${section.hasVolunteer ? ' is-full-bleed' : ''}${section.hasNews ? ' is-centered' : ''}${section.hasPolls ? ' is-polls' : ''}`}>
-                {section.hasNews ? (
-                  <NewsCard onOpenDetails={onNewsOpen} />
-                ) : section.hasVolunteer ? (
-                  <VolunteerCard />
-                ) : section.hasPolls ? (
-                  <PollsCard isActive={i === activeIndex} />
-                ) : section.hasEvents ? (
-                  <EventsCard />
-                ) : section.hasMarketplace ? (
-                  <MarketplaceCard />
-                ) : (
-                  <p className="carousel-card-placeholder text-small-normal">
-                    בקרוב — תוכן ופרטים נוספים על {section.title}.
-                  </p>
-                )}
-              </div>
-            </article>
-          );
-        })}
+        {SECTIONS.map((section, i) => (
+          <article
+            key={section.id}
+            ref={(el) => { cardRefs.current[i] = el; }}
+            data-index={i}
+            data-inactive={i === activeIndex ? 'false' : 'true'}
+            className={`carousel-card${i === activeIndex ? ' is-active' : ''}`}
+            style={{ background: section.color }}
+            onClick={() => i !== activeIndex && goTo(i)}
+          >
+            <header className="carousel-card-header">
+              <h3 className="carousel-card-title text-h2-bold">{section.title}</h3>
+              <button
+                type="button"
+                className="btn-secondary carousel-card-cta text-small-thin"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (section.id === 'events') onEventsOpen?.();
+                  else if (section.id === 'marketplace') onMarketplaceOpen?.();
+                }}
+                aria-label={section.ctaLabel}
+              >
+                {section.ctaLabel}
+              </button>
+            </header>
+            <div className={`carousel-card-body${section.hasVolunteer ? ' is-full-bleed' : ''}${section.hasNews ? ' is-centered' : ''}${section.hasPolls ? ' is-polls' : ''}`}>
+              {section.hasNews ? (
+                <NewsCard onOpenDetails={onNewsOpen} isActive={i === activeIndex} />
+              ) : section.hasVolunteer ? (
+                <VolunteerCard isActive={i === activeIndex} />
+              ) : section.hasPolls ? (
+                <PollsCard isActive={i === activeIndex} />
+              ) : section.hasEvents ? (
+                <EventsCard isActive={i === activeIndex} />
+              ) : section.hasMarketplace ? (
+                <MarketplaceCard />
+              ) : (
+                <p className="carousel-card-placeholder text-small-normal">
+                  בקרוב — תוכן ופרטים נוספים על {section.title}.
+                </p>
+              )}
+            </div>
+          </article>
+        ))}
       </div>
 
       <nav className={`carousel-nav${isReady ? ' is-ready' : ''}${navAnimDone ? ' nav-anim-done' : ''}`} aria-label="ניווט בין הקטגוריות">
         {SECTIONS.map((section, i) => {
-          const c = closeAt(i, progress);
           const isActive = i === activeIndex;
-          const circleSize = CIRCLE_BASE + (CIRCLE_MAX - CIRCLE_BASE) * c;
-          const iconScale = circleSize / CIRCLE_BASE;
-          const x = offsetFromCenter(i, progress);
-          const y = (1 - c) * INACTIVE_DROP;
           const distAbs = Math.abs(i - NEWS_INDEX);
           const NavComponent = section.Component;
           return (
             <button
               key={section.id}
+              ref={(el) => { tabRefs.current[i] = el; }}
               type="button"
               className={`carousel-tab${isActive ? ' is-active' : ''}`}
-              style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`, '--dist-abs': distAbs } as React.CSSProperties}
+              style={{ '--dist-abs': distAbs } as React.CSSProperties}
               onClick={() => { setNavAnimDone(true); goTo(i); }}
               aria-label={section.title}
-              aria-current={isActive}
+              aria-current={isActive ? true : undefined}
             >
               <span
+                ref={(el) => { circleRefs.current[i] = el; }}
                 className="carousel-tab-circle"
                 style={{
                   '--tab-color': section.color,
-                  '--x-offset': `${x}px`,
+                  '--x-offset': '0px',
                   '--dist-abs': distAbs,
-                  width: circleSize,
-                  height: circleSize,
+                  width: CIRCLE_BASE,
+                  height: CIRCLE_BASE,
                 } as React.CSSProperties}
               >
-                <span
-                  className="carousel-tab-circle-icon"
-                  style={{ transform: `scale(${iconScale})` }}
-                >
+                <span ref={(el) => { iconRefs.current[i] = el; }} className="carousel-tab-circle-icon">
                   <NavComponent isActive={isActive} />
                 </span>
               </span>
               <span
+                ref={(el) => { labelRefs.current[i] = el; }}
                 className="carousel-tab-label text-tiny-normal"
                 style={{ display: isActive ? 'none' : 'block' }}
               >

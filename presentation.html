@@ -360,6 +360,611 @@
         padding: 0 24px;
       }
 
+      .slide--flow {
+        padding: 32px 24px;
+      }
+
+      .flow-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        width: 100%;
+        max-height: 100vh;
+        box-sizing: border-box;
+      }
+
+      .flow-heading {
+        margin: 0;
+        font-size: 36px;
+        line-height: 51px;
+        font-weight: 700;
+        color: var(--color-card-border);
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .flow-diagram {
+        position: relative;
+        width: min(860px, 94vw);
+        flex-shrink: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 16px;
+        row-gap: 0;
+        overflow: visible;
+      }
+
+      .flow-connectors {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: visible;
+      }
+
+      .flow-line {
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .flow-link {
+        opacity: 0;
+      }
+
+      .slide--flow.is-active .flow-link {
+        opacity: 1;
+      }
+
+      .flow-line-track {
+        stroke: rgba(34, 34, 51, 0.14);
+        stroke-width: 2;
+        stroke-dashoffset: var(--flow-line-length, 120);
+        stroke-dasharray: var(--flow-line-length, 120);
+      }
+
+      .slide--flow.is-active .flow-line-track {
+        animation: flow-track-draw 0.65s ease forwards;
+        animation-delay: var(--flow-draw-delay, 0s);
+      }
+
+      @keyframes flow-track-draw {
+        from { stroke-dashoffset: var(--flow-line-length, 120); opacity: 0.2; }
+        to { stroke-dashoffset: 0; opacity: 1; }
+      }
+
+      .flow-line-flow {
+        stroke-width: 3;
+        stroke-dasharray: 6 18;
+        stroke-dashoffset: 0;
+        opacity: 0;
+      }
+
+      .slide--flow.is-active .flow-line-flow {
+        opacity: 0.9;
+        animation: flow-data-stream 1.15s linear infinite;
+        animation-delay: calc(var(--flow-draw-delay, 0s) + 0.55s);
+      }
+
+      @keyframes flow-data-stream {
+        to { stroke-dashoffset: -24; }
+      }
+
+      .flow-particle {
+        opacity: 0;
+        filter: url(#flow-particle-glow);
+      }
+
+      .slide--flow.is-active .flow-particle {
+        opacity: 1;
+        transition: opacity 0.35s ease;
+        transition-delay: calc(var(--flow-draw-delay, 0s) + 0.45s);
+      }
+
+      .flow-sources {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 0;
+      }
+
+      .flow-card {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 18px 16px 16px;
+        border-radius: 20px;
+        border: 0.5px solid var(--color-card-border);
+        background: #ffffff;
+        box-shadow: 0 8px 32px rgba(34, 34, 51, 0.06);
+        text-align: center;
+        opacity: 0;
+        transform: translateY(14px);
+        transition:
+          opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .slide--flow.is-active .flow-card {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .slide--flow.is-active .flow-sources .flow-card:nth-child(1) { transition-delay: 0.08s; }
+      .slide--flow.is-active .flow-sources .flow-card:nth-child(2) { transition-delay: 0.16s; }
+      .slide--flow.is-active .flow-sources .flow-card:nth-child(3) { transition-delay: 0.24s; }
+      .slide--flow.is-active .flow-card--gatekeeper { transition-delay: 0.42s; }
+      .slide--flow.is-active .flow-card--admin { transition-delay: 0.62s; }
+      .slide--flow.is-active .flow-card--output { transition-delay: 0.82s; }
+
+      .flow-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .flow-icon svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      .flow-icon--whatsapp { background: rgba(37, 211, 102, 0.14); color: #1a9e4b; }
+      .flow-icon--email { background: rgba(255, 159, 69, 0.16); color: #e07a1a; }
+      .flow-icon--app-in { background: rgba(79, 195, 232, 0.16); color: #2a9fc4; }
+      .flow-icon--gatekeeper { background: rgba(155, 123, 232, 0.16); color: #7c5fd4; }
+      .flow-icon--admin { background: rgba(45, 156, 156, 0.14); color: #1f8a8a; }
+      .flow-icon--app-out { background: rgba(206, 255, 126, 0.35); color: #3d6b12; }
+
+      .flow-card-title {
+        margin: 0;
+        font-size: 18px;
+        line-height: 26px;
+        font-weight: 700;
+        color: var(--color-card-border);
+      }
+
+      .flow-card-sub {
+        margin: 0;
+        font-size: 13px;
+        line-height: 18px;
+        font-weight: 500;
+        color: var(--color-secondary);
+      }
+
+      .flow-card--gatekeeper {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: min(420px, 88vw);
+        padding: 22px 24px 20px;
+        border-width: 1.5px;
+        border-color: rgba(155, 123, 232, 0.45);
+        background: linear-gradient(180deg, #ffffff 0%, rgba(155, 123, 232, 0.06) 100%);
+        box-shadow: 0 12px 40px rgba(155, 123, 232, 0.12);
+        margin: 28px 0 0;
+      }
+
+      .flow-card--admin,
+      .flow-card--output {
+        grid-column: 2;
+        justify-self: center;
+        width: min(260px, 72vw);
+        margin-top: 28px;
+      }
+
+      .flow-card--output {
+        margin-bottom: 0;
+      }
+
+      @media (max-height: 820px) {
+        .flow-heading {
+          font-size: 30px;
+          line-height: 42px;
+        }
+
+        .flow-stage {
+          gap: 16px;
+        }
+
+        .flow-card--gatekeeper,
+        .flow-card--admin,
+        .flow-card--output {
+          margin-top: 20px;
+        }
+
+        .flow-card {
+          padding: 14px 12px 12px;
+          gap: 8px;
+        }
+
+        .flow-icon {
+          width: 42px;
+          height: 42px;
+          border-radius: 12px;
+        }
+
+        .flow-card-title {
+          font-size: 16px;
+          line-height: 22px;
+        }
+      }
+
+      .flow-decisions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 4px;
+      }
+
+      .flow-pill {
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 600;
+        border: 0.5px solid var(--color-card-border);
+        background: #ffffff;
+        color: var(--color-card-border);
+      }
+
+      .flow-pill--approve { background: rgba(37, 211, 102, 0.12); border-color: rgba(37, 211, 102, 0.35); color: #1a7a3a; }
+      .flow-pill--decline { background: rgba(255, 107, 107, 0.1); border-color: rgba(255, 107, 107, 0.3); color: #c0392b; }
+      .flow-pill--review { background: rgba(155, 123, 232, 0.1); border-color: rgba(155, 123, 232, 0.35); color: #6b4fc9; }
+
+      .slide--video {
+        padding: 16px;
+      }
+
+      .slide-video-stage {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        pointer-events: auto;
+      }
+
+      .slide--video-with-heading .slide-video-stage {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .slide-video-heading {
+        margin: 0;
+        font-size: 36px;
+        line-height: 51px;
+        font-weight: 700;
+        color: var(--color-card-border);
+        text-align: center;
+        max-width: 720px;
+        padding: 0 24px;
+        flex-shrink: 0;
+      }
+
+      .slide--video-with-heading .slide-video {
+        width: min(430px, calc((100vh - 122px) * 390 / 844));
+        max-height: calc(100vh - 122px);
+      }
+
+      .slide--admin {
+        padding: 24px;
+      }
+
+      .slide-admin-stage {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        pointer-events: auto;
+      }
+
+      .slide--admin-with-heading .slide-admin-stage {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .slide--admin-with-heading .slide-admin-viewport {
+        height: min(848px, calc(100vh - 122px));
+      }
+
+      .slide--admin-with-heading .slide-video-heading {
+        max-width: 1000px;
+      }
+
+      .slide-admin-viewport {
+        width: min(1180px, calc(100vw - 48px));
+        height: min(848px, calc(100vh - 48px));
+        min-width: 901px;
+        overflow: hidden;
+        border-radius: 28px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
+        background: #f0f0f3;
+      }
+
+      .slide-admin-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+        background: #f0f0f3;
+      }
+
+      .slide--landing .slide-landing-viewport {
+        width: min(1120px, calc(100vw - 48px));
+        height: min(calc(100vh - 122px), 800px);
+        min-width: 0;
+        border-radius: 20px;
+        background: #ffffff;
+      }
+
+      .slide--landing .slide-landing-iframe {
+        background: #ffffff;
+      }
+
+      .slide-video {
+        width: min(430px, calc((100vh - 32px) * 390 / 844));
+        max-height: calc(100vh - 32px);
+        height: auto;
+        aspect-ratio: 390 / 844;
+        border: none;
+        display: block;
+        border-radius: 24px;
+        box-shadow: 0 24px 64px rgba(34, 34, 51, 0.12);
+        background: #000000;
+        object-fit: contain;
+        object-position: center;
+        cursor: pointer;
+      }
+
+      .slide--timeline {
+        padding: 34px 29px;
+      }
+
+      .timeline-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        width: min(1176px, 96vw);
+        max-height: calc(100vh - 67px);
+      }
+
+      .timeline-heading {
+        margin: 0;
+        font-size: 43px;
+        line-height: 61px;
+        font-weight: 700;
+        color: var(--color-card-border);
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .timeline-summary {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        flex-shrink: 0;
+      }
+
+      .timeline-summary-track {
+        flex: 1;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(34, 34, 51, 0.08);
+        overflow: hidden;
+      }
+
+      .timeline-summary-fill {
+        height: 100%;
+        width: 75%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #3dbb6d 0%, #CEFF7E 100%);
+      }
+
+      .timeline-summary-label {
+        font-size: 17px;
+        line-height: 24px;
+        font-weight: 600;
+        color: var(--color-secondary);
+        white-space: nowrap;
+      }
+
+      .timeline-board {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 19px;
+        width: 100%;
+        min-height: 0;
+        flex: 1;
+      }
+
+      .timeline-column {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        background: #ffffff;
+        border: 0.5px solid var(--color-card-border);
+        border-radius: 24px;
+        padding: 22px 24px 17px;
+        box-shadow: 0 10px 38px rgba(34, 34, 51, 0.05);
+        opacity: 0;
+        transform: translateY(14px);
+        transition:
+          opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .slide--timeline.is-active .timeline-column--done { transition-delay: 0.1s; }
+      .slide--timeline.is-active .timeline-column--pending { transition-delay: 0.22s; }
+
+      .slide--timeline.is-active .timeline-column {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .timeline-column--done {
+        border-top: 4px solid #3dbb6d;
+      }
+
+      .timeline-column--pending {
+        border-top: 4px solid rgba(34, 34, 51, 0.18);
+      }
+
+      .timeline-column-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 14px;
+        flex-shrink: 0;
+      }
+
+      .timeline-badge {
+        font-size: 22px;
+        line-height: 31px;
+        font-weight: 700;
+        color: var(--color-card-border);
+      }
+
+      .timeline-count {
+        min-width: 34px;
+        height: 34px;
+        padding: 0 10px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .timeline-column--done .timeline-count {
+        background: rgba(61, 187, 109, 0.14);
+        color: #1a7a3a;
+      }
+
+      .timeline-column--pending .timeline-count {
+        background: rgba(34, 34, 51, 0.06);
+        color: var(--color-secondary);
+      }
+
+      .timeline-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+        min-height: 0;
+      }
+
+      .timeline-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 11px 0;
+        border-bottom: 1px solid rgba(34, 34, 51, 0.06);
+        font-size: 17px;
+        line-height: 24px;
+        font-weight: 500;
+        color: var(--color-card-border);
+        opacity: 0;
+        transform: translateX(10px);
+        transition:
+          opacity 0.45s ease,
+          transform 0.45s ease;
+      }
+
+      .slide--timeline.is-active .timeline-item {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .timeline-column--done .timeline-item:nth-child(1) { transition-delay: 0.18s; }
+      .timeline-column--done .timeline-item:nth-child(2) { transition-delay: 0.24s; }
+      .timeline-column--done .timeline-item:nth-child(3) { transition-delay: 0.3s; }
+      .timeline-column--done .timeline-item:nth-child(4) { transition-delay: 0.36s; }
+      .timeline-column--done .timeline-item:nth-child(5) { transition-delay: 0.42s; }
+      .timeline-column--done .timeline-item:nth-child(6) { transition-delay: 0.48s; }
+      .timeline-column--done .timeline-item:nth-child(7) { transition-delay: 0.54s; }
+      .timeline-column--done .timeline-item:nth-child(8) { transition-delay: 0.6s; }
+      .timeline-column--done .timeline-item:nth-child(9) { transition-delay: 0.66s; }
+
+      .timeline-column--pending .timeline-item:nth-child(1) { transition-delay: 0.3s; }
+      .timeline-column--pending .timeline-item:nth-child(2) { transition-delay: 0.38s; }
+      .timeline-column--pending .timeline-item:nth-child(3) { transition-delay: 0.46s; }
+
+      .timeline-item:last-child {
+        border-bottom: none;
+      }
+
+      .timeline-marker {
+        width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        flex-shrink: 0;
+        margin-top: 1px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .timeline-marker--done {
+        background: rgba(61, 187, 109, 0.16);
+        color: #1a7a3a;
+      }
+
+      .timeline-marker--done svg {
+        width: 13px;
+        height: 13px;
+      }
+
+      .timeline-marker--pending {
+        border: 2px dashed rgba(34, 34, 51, 0.22);
+        background: #ffffff;
+      }
+
+      .timeline-column--pending .timeline-item {
+        color: var(--color-secondary);
+      }
+
+      @media (max-height: 820px) {
+        .timeline-heading {
+          font-size: 36px;
+          line-height: 50px;
+        }
+
+        .timeline-stage {
+          gap: 17px;
+        }
+
+        .timeline-column {
+          padding: 17px 19px 12px;
+        }
+
+        .timeline-badge {
+          font-size: 19px;
+          line-height: 26px;
+        }
+
+        .timeline-item {
+          font-size: 16px;
+          line-height: 22px;
+          padding: 8px 0;
+        }
+      }
+
       .slide--bento {
         padding: var(--SP5);
         overflow: visible;
@@ -855,18 +1460,18 @@
         <div class="cons-cards">
           <div class="stats-card stats-card--people cons-card" data-cons-index="0">
             <div class="cons-lottie" id="cons-lottie-0" aria-hidden="true"></div>
-            <span class="cons-title">חסרון 1</span>
-            <p class="cons-text">טקסט מקום — תאר כאן חסרון בשימוש בוואטסאפ לקהילות</p>
+            <span class="cons-title">חוסר אוריאנטציה</span>
+            <p class="cons-text">אין אפשרות להתמצא, לחזור להודעות קודמות, למצוא משהו ספציפי.</p>
           </div>
           <div class="stats-card stats-card--people cons-card" data-cons-index="1">
             <div class="cons-lottie" id="cons-lottie-1" aria-hidden="true"></div>
-            <span class="cons-title">חסרון 2</span>
-            <p class="cons-text">טקסט מקום — תאר כאן חסרון בשימוש בוואטסאפ לקהילות</p>
+            <span class="cons-title">התוכן לא מותאם אלי</span>
+            <p class="cons-text">התוכן שמפורסם מותאם לכולם, לא ספציפית אלי, אני יכול לבזבז זמן על תוכן שלא רלוונטי אלי</p>
           </div>
           <div class="stats-card stats-card--people cons-card" data-cons-index="2">
             <div class="cons-lottie" id="cons-lottie-2" aria-hidden="true"></div>
-            <span class="cons-title">חסרון 3</span>
-            <p class="cons-text">טקסט מקום — תאר כאן חסרון בשימוש בוואטסאפ לקהילות</p>
+            <span class="cons-title">אין סינון</span>
+            <p class="cons-text">או שכל אחד יכול לפרסם, או שאף אחד לא יכול לפרסם תוכן</p>
           </div>
         </div>
       </section>
@@ -878,7 +1483,7 @@
       <section class="slide" aria-label="שקופית 11">
         <div class="slide-carousel-stage">
           <div class="slide-carousel-lottie" id="carousel-lottie" aria-hidden="true"></div>
-          <span class="slide-carousel-label" id="carousel-label">קרוסלה</span>
+          <span class="slide-carousel-label" id="carousel-label">גרופס</span>
         </div>
       </section>
 
@@ -1004,7 +1609,245 @@
       <section class="slide" aria-label="שקופית 13">
         <div class="slide-sparkle-stage">
           <div class="slide-sparkle-lottie" id="sparkle-lottie" aria-hidden="true"></div>
-          <span class="slide-sparkle-label">כל התוכן שמוצע למשתמש מותאם אליו ספציפית</span>
+          <span class="slide-sparkle-label">כל התוכן שהמשתמשים רואים מותאם ספציפית אליהם בעזרת מודל של AI</span>
+        </div>
+      </section>
+
+      <section class="slide slide--flow" aria-label="שקופית 14">
+        <div class="flow-stage">
+          <h2 class="flow-heading">זרימת המידע במערכת</h2>
+          <div class="flow-diagram">
+            <svg class="flow-connectors" id="flow-connectors-svg" aria-hidden="true"></svg>
+            <div class="flow-sources">
+                <article class="flow-card" data-flow-node="source">
+                  <div class="flow-icon flow-icon--whatsapp" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  </div>
+                  <h3 class="flow-card-title">WhatsApp</h3>
+                  <p class="flow-card-sub">קבוצות וואטסאפ</p>
+                </article>
+                <article class="flow-card" data-flow-node="source">
+                  <div class="flow-icon flow-icon--email" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  </div>
+                  <h3 class="flow-card-title">דוא״ל</h3>
+                  <p class="flow-card-sub">הודעות מהוועד</p>
+                </article>
+                <article class="flow-card" data-flow-node="source">
+                  <div class="flow-icon flow-icon--app-in" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                  </div>
+                  <h3 class="flow-card-title">אפליקציה</h3>
+                  <p class="flow-card-sub">פניות מהקהילה</p>
+                </article>
+              </div>
+
+              <article class="flow-card flow-card--gatekeeper">
+                <div class="flow-icon flow-icon--gatekeeper" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5L12 3z"/><path d="M5 19l1 2 2-1-1-2-2 1z"/><path d="M19 15l1 2 2-1-1-2-2 1z"/></svg>
+                </div>
+                <h3 class="flow-card-title">שומר הסף · AI</h3>
+                <p class="flow-card-sub">מנתח כל עדכון ומחליט על המשך</p>
+                <div class="flow-decisions">
+                  <span class="flow-pill flow-pill--approve">אישור אוטומטי</span>
+                  <span class="flow-pill flow-pill--decline">דחייה</span>
+                  <span class="flow-pill flow-pill--review">שליחה למנהל</span>
+                </div>
+              </article>
+
+              <article class="flow-card flow-card--admin">
+                <div class="flow-icon flow-icon--admin" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h3 class="flow-card-title">מנהל הקהילה</h3>
+                <p class="flow-card-sub">מאשר או דוחה ידנית</p>
+              </article>
+
+              <article class="flow-card flow-card--output">
+                <div class="flow-icon flow-icon--app-out" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+                </div>
+                <h3 class="flow-card-title">אפליקציה</h3>
+                <p class="flow-card-sub">עדכונים מותאמים לתושבים</p>
+              </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--video slide--video-with-heading" aria-label="שקופית 15">
+        <div class="slide-video-stage">
+          <h2 class="slide-video-heading">המשתמש עובר על האפליקציה וחוקר אותה</h2>
+          <video
+            id="app-preview-video"
+            class="slide-video"
+            src="/presentation-overview2.mp4"
+            muted
+            playsinline
+            loop
+            preload="auto"
+          ></video>
+        </div>
+      </section>
+
+      <section class="slide slide--video slide--video-with-heading" aria-label="שקופית 16">
+        <div class="slide-video-stage">
+          <h2 class="slide-video-heading">הוספת עדכון חדש</h2>
+          <video
+            id="upload-news-video"
+            class="slide-video"
+            src="/presentation-upload-news.mp4"
+            muted
+            playsinline
+            loop
+            preload="auto"
+          ></video>
+        </div>
+      </section>
+
+      <section class="slide slide--admin slide--admin-with-heading" aria-label="שקופית 17">
+        <div class="slide-admin-stage">
+          <h2 class="slide-video-heading">מנהל הקהילה רואה את העדכון באייפד שלו, או שהוא מאשר אותו או שהוא מאושר אוטומטית</h2>
+          <div class="slide-admin-viewport">
+            <iframe
+              id="admin-dashboard-frame"
+              class="slide-admin-iframe"
+              title="לוח ניהול קהילה"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--video slide--video-with-heading" aria-label="שקופית 18">
+        <div class="slide-video-stage">
+          <h2 class="slide-video-heading">שימוש ב AI הראשי</h2>
+          <video
+            id="ai-search-video"
+            class="slide-video"
+            src="/presentation-ai-search.mp4"
+            muted
+            playsinline
+            loop
+            preload="auto"
+          ></video>
+        </div>
+      </section>
+
+      <section class="slide slide--admin slide--admin-with-heading slide--landing" aria-label="שקופית 19">
+        <div class="slide-admin-stage slide-landing-stage">
+          <h2 class="slide-video-heading">דף הנחיתה של גרופס</h2>
+          <div class="slide-admin-viewport slide-landing-viewport">
+            <iframe
+              id="landing-preview-frame"
+              class="slide-admin-iframe slide-landing-iframe"
+              title="דף נחיתה — גרופס"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" aria-label="שקופית 20">
+        <img
+          src="/presentation-booth.png"
+          alt="תצוגת גרופס"
+          class="slide-photo"
+        />
+      </section>
+
+      <section class="slide slide--timeline" aria-label="שקופית 21">
+        <div class="timeline-stage">
+          <h2 class="timeline-heading">מה עשינו · מה הלאה</h2>
+          <div class="timeline-summary">
+            <div class="timeline-summary-track" aria-hidden="true">
+              <div class="timeline-summary-fill"></div>
+            </div>
+            <span class="timeline-summary-label">9 מתוך 12 הושלמו</span>
+          </div>
+          <div class="timeline-board">
+            <div class="timeline-column timeline-column--done">
+              <div class="timeline-column-head">
+                <span class="timeline-badge">מוכן</span>
+                <span class="timeline-count">9</span>
+              </div>
+              <ol class="timeline-list">
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  מחקר משתמשים (תושבים + מנהלי קהילה)
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  אפיון אפליקציה
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  אפיון High fidelity
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  פיתוח שפה גרפית
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  ייצור מערכת עיצובית — פונטים, צבעים, בורדרים, איורים, אנימציות
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  יישום לעיצוב אפליקציה
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  עיצוב כלל המסכים של האפליקציה
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  יישום בקוד דרך Claude Code + Cursor
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--done" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg>
+                  </span>
+                  אפיון דף נחיתה
+                </li>
+              </ol>
+            </div>
+            <div class="timeline-column timeline-column--pending">
+              <div class="timeline-column-head">
+                <span class="timeline-badge">לא מוכן עדיין</span>
+                <span class="timeline-count">3</span>
+              </div>
+              <ol class="timeline-list">
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--pending" aria-hidden="true"></span>
+                  עיצוב דף נחיתה על סמך השפה העיצובית של האפליקציה
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--pending" aria-hidden="true"></span>
+                  עיצוב צד מנהל הקהילה (3–5 מסכים)
+                </li>
+                <li class="timeline-item">
+                  <span class="timeline-marker timeline-marker--pending" aria-hidden="true"></span>
+                  עיצוב עמדה (כמו בהדמיה)
+                </li>
+              </ol>
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -1024,6 +1867,17 @@
       const CAROUSEL_LOTTIE_SLIDE_INDEX = 10;
       const BENTO_SLIDE_INDEX = 11;
       const SPARKLE_SLIDE_INDEX = 12;
+      const FLOW_SLIDE_INDEX = 13;
+      const APP_PREVIEW_SLIDE_INDEX = 14;
+      const UPLOAD_NEWS_SLIDE_INDEX = 15;
+      const ADMIN_DASHBOARD_SLIDE_INDEX = 16;
+      const AI_SEARCH_SLIDE_INDEX = 17;
+      const LANDING_SLIDE_INDEX = 18;
+      const VIDEO_SLIDE_IDS = {
+        [APP_PREVIEW_SLIDE_INDEX]: 'app-preview-video',
+        [UPLOAD_NEWS_SLIDE_INDEX]: 'upload-news-video',
+        [AI_SEARCH_SLIDE_INDEX]: 'ai-search-video',
+      };
       const SPARKLE_LOTTIE_PATH = './src/assets/cat-sparkles.json';
       const COUNTER_DURATION = 3600;
       const GRID_GAP = 12;
@@ -1054,6 +1908,57 @@
       const bentoLottieAnims = new Map();
       let sparkleLottieAnim = null;
 
+      function resetDeckVideos() {
+        Object.values(VIDEO_SLIDE_IDS).forEach((id) => {
+          const video = document.getElementById(id);
+          if (!video) return;
+          video.pause();
+          video.currentTime = 0;
+        });
+      }
+
+      function playDeckVideo(slideIndex) {
+        const id = VIDEO_SLIDE_IDS[slideIndex];
+        if (!id) return;
+        const video = document.getElementById(id);
+        if (!video) return;
+        video.currentTime = 0;
+        const playPromise = video.play();
+        if (playPromise) playPromise.catch(() => {});
+      }
+
+      function toggleDeckVideo(video) {
+        if (!video) return;
+        if (video.paused) {
+          const playPromise = video.play();
+          if (playPromise) playPromise.catch(() => {});
+        } else {
+          video.pause();
+        }
+      }
+
+      Object.values(VIDEO_SLIDE_IDS).forEach((id) => {
+        const video = document.getElementById(id);
+        if (!video) return;
+        video.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleDeckVideo(video);
+        });
+      });
+
+      const adminDashboardFrame = document.getElementById('admin-dashboard-frame');
+      const landingPreviewFrame = document.getElementById('landing-preview-frame');
+
+      function ensureAdminDashboard() {
+        if (!adminDashboardFrame || adminDashboardFrame.src) return;
+        adminDashboardFrame.src = '/admin.html';
+      }
+
+      function ensureLandingPreview() {
+        if (!landingPreviewFrame || landingPreviewFrame.src) return;
+        landingPreviewFrame.src = '/landing.html';
+      }
+
       function playSparkleLottie() {
         const container = document.getElementById('sparkle-lottie');
         if (!container) return;
@@ -1073,6 +1978,146 @@
       function resetSparkleLottie() {
         if (sparkleLottieAnim) sparkleLottieAnim.goToAndStop(0, true);
       }
+
+      const flowDiagram = document.querySelector('.slide--flow .flow-diagram');
+      const flowConnectorsSvg = document.getElementById('flow-connectors-svg');
+      let flowConnectorsTimer = 0;
+      const FLOW_SOURCE_COLORS = ['#25D366', '#FF9F45', '#4FC3E8'];
+      const FLOW_GATE_COLOR = '#9B7BE8';
+      const FLOW_OUTPUT_COLOR = '#2d9c9c';
+
+      function ensureFlowDefs(svg) {
+        if (svg.querySelector('#flow-defs')) return;
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        defs.setAttribute('id', 'flow-defs');
+        defs.innerHTML = `
+          <filter id="flow-particle-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="1.8" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMergeNode>
+          </filter>
+        `;
+        svg.appendChild(defs);
+      }
+
+      function flowEdgePoint(el, edge, box) {
+        const rect = el.getBoundingClientRect();
+        return {
+          x: rect.left + rect.width / 2 - box.left,
+          y: edge === 'bottom' ? rect.bottom - box.top : rect.top - box.top,
+        };
+      }
+
+      function flowOrthogonalPath(from, to) {
+        const midY = from.y + (to.y - from.y) * 0.5;
+        if (Math.abs(from.x - to.x) < 1.5) {
+          return `M ${from.x} ${from.y} L ${to.x} ${to.y}`;
+        }
+        return `M ${from.x} ${from.y} L ${from.x} ${midY} L ${to.x} ${midY} L ${to.x} ${to.y}`;
+      }
+
+      function flowAppendParticle(group, d, color, beginOffset, duration) {
+        const particle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        particle.setAttribute('r', '3.5');
+        particle.setAttribute('fill', color);
+        particle.setAttribute('class', 'flow-particle');
+
+        const motion = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
+        motion.setAttribute('dur', `${duration}s`);
+        motion.setAttribute('repeatCount', 'indefinite');
+        motion.setAttribute('path', d);
+        motion.setAttribute('begin', `${beginOffset}s`);
+        motion.setAttribute('calcMode', 'linear');
+        motion.setAttribute('rotate', 'auto');
+        particle.appendChild(motion);
+        group.appendChild(particle);
+      }
+
+      function flowAppendPath(svg, d, delay, color) {
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        group.setAttribute('class', 'flow-link');
+        group.style.setProperty('--flow-draw-delay', `${delay}s`);
+
+        const track = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        track.setAttribute('d', d);
+        track.setAttribute('class', 'flow-line flow-line-track');
+
+        const flow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        flow.setAttribute('d', d);
+        flow.setAttribute('class', 'flow-line flow-line-flow');
+        flow.style.stroke = color;
+
+        group.appendChild(track);
+        group.appendChild(flow);
+
+        const length = track.getTotalLength();
+        track.style.setProperty('--flow-line-length', String(length));
+        track.style.strokeDasharray = String(length);
+
+        const streamDuration = 1.6 + (length % 40) / 40;
+        flowAppendParticle(group, d, color, delay + 0.5, streamDuration);
+        flowAppendParticle(group, d, color, delay + 0.5 + streamDuration * 0.45, streamDuration);
+
+        svg.appendChild(group);
+      }
+
+      function renderFlowConnectors() {
+        if (!flowDiagram || !flowConnectorsSvg) return;
+
+        const box = flowDiagram.getBoundingClientRect();
+        if (box.width < 1 || box.height < 1) return;
+
+        flowConnectorsSvg.setAttribute('width', String(box.width));
+        flowConnectorsSvg.setAttribute('height', String(box.height));
+        flowConnectorsSvg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+        flowConnectorsSvg.innerHTML = '';
+        ensureFlowDefs(flowConnectorsSvg);
+
+        const gatekeeper = flowDiagram.querySelector('.flow-card--gatekeeper');
+        const admin = flowDiagram.querySelector('.flow-card--admin');
+        const output = flowDiagram.querySelector('.flow-card--output');
+        const sources = [...flowDiagram.querySelectorAll('.flow-sources .flow-card')];
+        if (!gatekeeper || !admin || !output || sources.length === 0) return;
+
+        const gateTop = flowEdgePoint(gatekeeper, 'top', box);
+        sources.forEach((source, index) => {
+          const from = flowEdgePoint(source, 'bottom', box);
+          const path = flowOrthogonalPath(from, gateTop);
+          flowAppendPath(
+            flowConnectorsSvg,
+            path,
+            0.3 + index * 0.1,
+            FLOW_SOURCE_COLORS[index] ?? FLOW_SOURCE_COLORS[0],
+          );
+        });
+
+        const gateBottom = flowEdgePoint(gatekeeper, 'bottom', box);
+        const adminTop = flowEdgePoint(admin, 'top', box);
+        flowAppendPath(flowConnectorsSvg, flowOrthogonalPath(gateBottom, adminTop), 0.72, FLOW_GATE_COLOR);
+
+        const adminBottom = flowEdgePoint(admin, 'bottom', box);
+        const outputTop = flowEdgePoint(output, 'top', box);
+        flowAppendPath(flowConnectorsSvg, flowOrthogonalPath(adminBottom, outputTop), 0.9, FLOW_OUTPUT_COLOR);
+      }
+
+      function scheduleFlowConnectors() {
+        window.clearTimeout(flowConnectorsTimer);
+        requestAnimationFrame(renderFlowConnectors);
+        flowConnectorsTimer = window.setTimeout(renderFlowConnectors, 620);
+      }
+
+      if (flowDiagram && typeof ResizeObserver !== 'undefined') {
+        const flowResizeObserver = new ResizeObserver(() => {
+          if (current === FLOW_SLIDE_INDEX) scheduleFlowConnectors();
+        });
+        flowResizeObserver.observe(flowDiagram);
+      }
+
+      window.addEventListener('resize', () => {
+        if (current === FLOW_SLIDE_INDEX) scheduleFlowConnectors();
+      });
 
       function loadBentoLottie({ id, path, loop, idleFrame }) {
         const container = document.getElementById(id);
@@ -1389,6 +2434,8 @@
       }
 
       function onSlideChange(index) {
+        resetDeckVideos();
+
         if (index === STATS_SLIDE_INDEX) {
           stopGridCounters();
           setTimeout(animateCounter, 200);
@@ -1413,6 +2460,35 @@
           resetCarouselLottie();
           resetAllConsCards();
           setTimeout(playSparkleLottie, 200);
+        } else if (index === FLOW_SLIDE_INDEX) {
+          resetBentoLotties();
+          resetCarouselLottie();
+          resetAllConsCards();
+          resetSparkleLottie();
+          scheduleFlowConnectors();
+        } else if (index === ADMIN_DASHBOARD_SLIDE_INDEX) {
+          resetBentoLotties();
+          resetCarouselLottie();
+          resetAllConsCards();
+          resetSparkleLottie();
+          ensureAdminDashboard();
+        } else if (index === LANDING_SLIDE_INDEX) {
+          resetBentoLotties();
+          resetCarouselLottie();
+          resetAllConsCards();
+          resetSparkleLottie();
+          resetDeckVideos();
+          ensureLandingPreview();
+        } else if (
+          index === APP_PREVIEW_SLIDE_INDEX ||
+          index === UPLOAD_NEWS_SLIDE_INDEX ||
+          index === AI_SEARCH_SLIDE_INDEX
+        ) {
+          resetBentoLotties();
+          resetCarouselLottie();
+          resetAllConsCards();
+          resetSparkleLottie();
+          setTimeout(() => playDeckVideo(index), 150);
         } else {
           resetBentoLotties();
           resetCarouselLottie();
@@ -1452,6 +2528,7 @@
       }
 
       deck.addEventListener('click', (e) => {
+        if (e.target.closest('.slide-video-stage') || e.target.closest('.slide-admin-stage') || e.target.closest('.slide-landing-stage')) return;
         const mid = window.innerWidth / 2;
         if (e.clientX < mid) {
           goPrev();

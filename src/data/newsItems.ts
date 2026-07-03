@@ -6,11 +6,22 @@ import rachelAvatarAnim from '../assets/volunteer-avatar-rachel.json';
 import davidAvatarAnim from '../assets/volunteer-avatar-david.json';
 import avrahamAvatarAnim from '../assets/volunteer-avatar-avraham.json';
 
+export type NewsReply = {
+  id: string;
+  name: string;
+  text: string;
+  avatar?: object;
+  isAiAvatar?: boolean;
+  postedAt: string;
+};
+
 export type NewsComment = {
   id: string;
   name: string;
   text: string;
   avatar: object;
+  replies?: NewsReply[];
+  lastReplyAt?: string;
 };
 
 export type NewsItem = {
@@ -38,6 +49,7 @@ export type NewsItem = {
   updatedAt: string;
   readMinutes: number;
   body: string;
+  heroImage?: string;
   comments: NewsComment[];
 };
 
@@ -107,6 +119,7 @@ export const NEWS_ITEMS: NewsItem[] = [
     postedAt: '20 ביוני 2026',
     updatedAt: '20 ביוני 2026 · 06:30',
     readMinutes: 1,
+    heroImage: '/pool-hero.png',
     body:
       'השמחים לעדכן כי שעות הפעילות בבריכה הקהילתית הוארכו לקיץ: בימים א׳–ה׳ בין 06:30–21:00, ובימי שישי בין 08:00–19:00.\n\nשיעורי הארובה לילדים יתקיימו כרגיל בימי שני ורביעי. כרטיסייה לעונה תקפה לכל התושבים הרשומים למועדון.',
     comments: [
@@ -115,6 +128,16 @@ export const NEWS_ITEMS: NewsItem[] = [
         name: 'נועה ברק',
         text: 'סוף סוף! האם צריך להירשם מראש לשיעורי שחייה?',
         avatar: rachelAvatarAnim,
+        lastReplyAt: 'לפני שעה',
+        replies: [
+          {
+            id: 'c1-r1',
+            name: 'עוזר ה AI',
+            text: 'לא צריך להירשם מראש — מגיעים בשעות השיעור ונרשמים במקום 🏊',
+            isAiAvatar: true,
+            postedAt: 'לפני שעה',
+          },
+        ],
       },
       {
         id: 'c2',

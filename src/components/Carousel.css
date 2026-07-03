@@ -38,9 +38,17 @@
   overflow-y: visible;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
   padding: 0 0 calc(124px - var(--SP8) + env(safe-area-inset-bottom, 0px));
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .carousel-track {
+    scroll-behavior: auto;
+  }
 }
 
 .carousel-track::-webkit-scrollbar {
@@ -50,6 +58,7 @@
 .carousel-card {
   flex: 0 0 calc(100% - var(--SP5) * 2);
   scroll-snap-align: center;
+  scroll-snap-stop: always;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -62,12 +71,18 @@
   -webkit-tap-highlight-color: transparent;
   opacity: 0.55;
   transform-origin: center center;
-  will-change: transform;
+  backface-visibility: hidden;
+  contain: layout paint;
   transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .carousel-card.is-active {
   opacity: 1;
+  will-change: transform;
+}
+
+.carousel-card[data-inactive="true"] .carousel-card-body {
+  pointer-events: none;
 }
 
 .carousel-card:first-child {
@@ -169,6 +184,7 @@
   padding: 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  will-change: transform;
 }
 
 /* ── Nav entrance: non-active circles slide out from behind the center circle ── */

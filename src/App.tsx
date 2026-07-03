@@ -10,6 +10,8 @@ import Profile from './components/Profile';
 import EventsPage from './components/EventsPage';
 import MarketplacePage from './components/MarketplacePage';
 import NewsDetailPage from './components/NewsDetailPage';
+import ReportNewsPage from './components/ReportNewsPage';
+import ReportNewsSuccessModal from './components/ReportNewsSuccessModal';
 import LoadingScreen from './components/LoadingScreen';
 import GateSuccessModal from './components/GateSuccessModal';
 
@@ -27,6 +29,8 @@ export default function App() {
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
   const [newsDetailOpen, setNewsDetailOpen] = useState(false);
   const [newsDetailId, setNewsDetailId] = useState<string | null>(null);
+  const [reportNewsOpen, setReportNewsOpen] = useState(false);
+  const [reportNewsSuccessOpen, setReportNewsSuccessOpen] = useState(false);
 
   const handleSearchClick = (rect: DOMRect) => {
     setSearchRect(rect);
@@ -74,7 +78,11 @@ export default function App() {
           />
         </div>
         <QuickActions open={quickActionsOpen} onClose={() => setQuickActionsOpen(false)} onGateOpen={() => setGateOpen(true)} />
-        <AddMenu open={addMenuOpen} onClose={() => setAddMenuOpen(false)} />
+        <AddMenu
+          open={addMenuOpen}
+          onClose={() => setAddMenuOpen(false)}
+          onNewsReport={() => setReportNewsOpen(true)}
+        />
         <GateSuccessModal open={gateOpen} onClose={() => setGateOpen(false)} />
         <AIBot open={aiBotOpen} startRect={searchRect} onClose={() => { setAiBotOpen(false); setBotInitialMessage(undefined); }} initialMessage={botInitialMessage} />
         <Profile open={profileOpen} startRect={avatarRect} onClose={() => setProfileOpen(false)} />
@@ -87,6 +95,18 @@ export default function App() {
             setNewsDetailOpen(false);
             setNewsDetailId(null);
           }}
+        />
+        <ReportNewsPage
+          open={reportNewsOpen}
+          onClose={() => setReportNewsOpen(false)}
+          onPublished={() => {
+            setReportNewsOpen(false);
+            setReportNewsSuccessOpen(true);
+          }}
+        />
+        <ReportNewsSuccessModal
+          open={reportNewsSuccessOpen}
+          onClose={() => setReportNewsSuccessOpen(false)}
         />
       </div>
     </div>
