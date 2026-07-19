@@ -296,7 +296,7 @@ export default function Carousel({ isReady = false, onEventsOpen, onMarketplaceO
                 } as React.CSSProperties}
               >
                 <span ref={(el) => { iconRefs.current[i] = el; }} className="carousel-tab-circle-icon">
-                  <NavComponent isActive={isActive} />
+                  <NavComponent isActive={isActive} isReady={isReady} />
                 </span>
               </span>
               <span

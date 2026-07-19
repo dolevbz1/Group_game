@@ -1,37 +1,47 @@
 import { useEffect, useRef } from 'react';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import calendarAnim from '../assets/nav-calendar.json';
-import { overridePrimaryColor, overrideStrokeWidth, BLACK } from '../utils/lottieColor';
 
-const animData = overrideStrokeWidth(overridePrimaryColor(calendarAnim, BLACK), 2.3);
+type EventsNavProps = { isActive: boolean; isReady?: boolean };
 
-type EventsNavProps = { isActive: boolean };
+const REVEAL: [number, number] = [0, 65];
+const PINCH: [number, number] = [75, 222.5];
 
-export default function EventsNav({ isActive }: EventsNavProps) {
+export default function EventsNav({ isActive, isReady = true }: EventsNavProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const hasRevealedRef = useRef(false);
 
   const applyState = () => {
     const anim = lottieRef.current;
     if (!anim) return;
-    if (isActive) {
-      anim.playSegments([1, 59], true);
-    } else {
-      anim.goToAndStop(59, true);
+    if (isReady && !hasRevealedRef.current) {
+      hasRevealedRef.current = true;
+      anim.playSegments(REVEAL, true);
+      return;
     }
+    if (!isReady) return;
+    if (isActive) {
+      anim.playSegments(PINCH, true);
+    }
+    // Deselecting doesn't interrupt playback: the pinch finishes on its own.
   };
 
   useEffect(() => {
+    if (isReady && !hasRevealedRef.current) {
+      const t = window.setTimeout(applyState, 750);
+      return () => window.clearTimeout(t);
+    }
     applyState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isActive]);
+  }, [isActive, isReady]);
 
   return (
     <Lottie
       lottieRef={lottieRef}
-      animationData={animData}
+      animationData={calendarAnim}
       loop={false}
       autoplay={false}
-      initialSegment={[1, 59]}
+      initialSegment={REVEAL}
       onDOMLoaded={applyState}
       style={{ width: 36, height: 36 }}
     />

@@ -1,38 +1,48 @@
 import { useEffect, useRef } from 'react';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import homeAnim from '../assets/nav-home.json';
-import { overridePrimaryColor, overrideStrokeWidth, BLACK } from '../utils/lottieColor';
 import './NewsNav.css';
 
-const animData = overrideStrokeWidth(overridePrimaryColor(homeAnim, BLACK), 2.3);
+type NewsNavProps = { isActive: boolean; isReady?: boolean };
 
-type NewsNavProps = { isActive: boolean };
+const REVEAL: [number, number] = [0, 60];
+const PINCH: [number, number] = [70, 190];
 
-export default function NewsNav({ isActive }: NewsNavProps) {
+export default function NewsNav({ isActive, isReady = true }: NewsNavProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const hasRevealedRef = useRef(false);
 
   const applyState = () => {
     const anim = lottieRef.current;
     if (!anim) return;
-    if (isActive) {
-      anim.playSegments([1, 39], true);
-    } else {
-      anim.goToAndStop(39, true);
+    if (isReady && !hasRevealedRef.current) {
+      hasRevealedRef.current = true;
+      anim.playSegments(REVEAL, true);
+      return;
     }
+    if (!isReady) return;
+    if (isActive) {
+      anim.playSegments(PINCH, true);
+    }
+    // Deselecting doesn't interrupt playback: the pinch finishes on its own.
   };
 
   useEffect(() => {
+    if (isReady && !hasRevealedRef.current) {
+      const t = window.setTimeout(applyState, 750);
+      return () => window.clearTimeout(t);
+    }
     applyState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isActive]);
+  }, [isActive, isReady]);
 
   return (
     <Lottie
       lottieRef={lottieRef}
-      animationData={animData}
+      animationData={homeAnim}
       loop={false}
       autoplay={false}
-      initialSegment={[1, 39]}
+      initialSegment={REVEAL}
       onDOMLoaded={applyState}
       className="news-nav-lottie"
     />
