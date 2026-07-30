@@ -1,0 +1,216 @@
+/* Pangea — Latin */
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-LightItalic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-MediumItalic.woff2') format('woff2'); font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-SemiBoldItalic.woff2') format('woff2'); font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
+
+/* Pangea — Hebrew (auto-activates for Hebrew characters) */
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-LightItalic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-MediumItalic.woff2') format('woff2'); font-weight: 500; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-SemiBoldItalic.woff2') format('woff2'); font-weight: 600; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+
+/* COLBO — Condensed / SemiCondensed / SemiExtended / Extended widths */
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-LightCondensed.otf') format('opentype'); font-weight: 300; font-stretch: condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-LightSemiCondensed.otf') format('opentype'); font-weight: 300; font-stretch: semi-condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-LightSemiExtended.otf') format('opentype'); font-weight: 300; font-stretch: semi-expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-LightExtended.otf') format('opentype'); font-weight: 300; font-stretch: expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-RegularCondensed.otf') format('opentype'); font-weight: 400; font-stretch: condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-RegularSemiCondensed.otf') format('opentype'); font-weight: 400; font-stretch: semi-condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-RegularSemiExtended.otf') format('opentype'); font-weight: 400; font-stretch: semi-expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-RegularExtended.otf') format('opentype'); font-weight: 400; font-stretch: expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-BoldCondensed.otf') format('opentype'); font-weight: 700; font-stretch: condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-BoldSemiCondensed.otf') format('opentype'); font-weight: 700; font-stretch: semi-condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-BoldSemiExtended.otf') format('opentype'); font-weight: 700; font-stretch: semi-expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-BoldExtended.otf') format('opentype'); font-weight: 700; font-stretch: expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-BlackCondensed.otf') format('opentype'); font-weight: 800; font-stretch: condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-BlackSemiCondensed.otf') format('opentype'); font-weight: 800; font-stretch: semi-condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-BlackSemiExtended.otf') format('opentype'); font-weight: 800; font-stretch: semi-expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-BlackExtended.otf') format('opentype'); font-weight: 800; font-stretch: expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-UltraBlackCondensed.otf') format('opentype'); font-weight: 900; font-stretch: condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-UltraBlackSemiCondensed.otf') format('opentype'); font-weight: 900; font-stretch: semi-condensed; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-UltraBlackSemiExtended.otf') format('opentype'); font-weight: 900; font-stretch: semi-expanded; font-display: swap; }
+@font-face { font-family: 'COLBO'; src: url('./assets/COLBO_desk/COLBO-UltraBlackExtended.otf') format('opentype'); font-weight: 900; font-stretch: expanded; font-display: swap; }
+
+/* COLBO Dingbat — decorative glyph/icon set, separate family */
+@font-face { font-family: 'COLBO Dingbat'; src: url('./assets/COLBO_desk/COLBO-DINGBAT.otf') format('opentype'); font-display: swap; }
+
+:root {
+  /* Typography — body sizes */
+  --font-size-tiny:   12px;
+  --font-size-small:  14px;
+  --font-size-medium: 16px;
+  --font-size-display: 48px;
+
+  /* Typography — body line heights (140%) */
+  --line-height-tiny:   17px;
+  --line-height-small:  20px;
+  --line-height-medium: 22px;
+
+  /* Typography — heading sizes (H1–H6) */
+  --font-size-h1: 32px;
+  --font-size-h2: 24px;
+  --font-size-h3: 16px;
+  --font-size-h4: 16px;
+  --font-size-h5: 10px;
+  --font-size-h6: 12px;
+
+  /* Typography — heading line heights (140%) */
+  --line-height-h1: 45px;
+  --line-height-h2: 34px;
+  --line-height-h3: 22px;
+  --line-height-h4: 22px;
+  --line-height-h5: 14px;
+  --line-height-h6: 17px;
+
+  /* Typography — weights */
+  --font-weight-thin:   400;
+  --font-weight-normal: 500; /* WDS "normal" = 530, mapped to Pangea Medium (500) */
+  --font-weight-bold:   700;
+
+  /* Spacing */
+  --SP1: 4px;
+  --SP2: 8px;
+  --SP3: 12px;
+  --SP4: 16px;
+  --SP5: 20px;
+  --SP6: 24px;
+  --SP7: 28px;
+  --SP8: 32px;
+  --SP9: 36px;
+  --SP10: 40px;
+  --SP11: 44px;
+  --SP12: 48px;
+
+  /* Colors */
+  --color-new-black: #222233;
+  --color-card-border: #222233;
+  --color-light-surface: #ffffff;
+  --color-stat-blue: #C3ECF6;
+  --color-secondary: rgba(34, 34, 51, 0.6);
+  --color-gray: rgba(34, 34, 51, 0.04);
+
+  /* App background gradient */
+  --color-bg-top: #F5F5F5;
+  --color-bg-bottom: #F5F5F5;
+  --color-news-card: #CEFF7E;
+  --color-news-blue: #91B3FF;
+  --color-nav-polls: #0061FE;
+  --color-nav-volunteer: #FF4208;
+  --color-nav-events: #FFD101;
+  --color-nav-marketplace: #25B752;
+  --color-nav-polls-soft: rgba(0, 97, 254, 0.1);
+  --color-nav-volunteer-soft: rgba(255, 66, 8, 0.1);
+  --color-nav-events-soft: rgba(255, 209, 1, 0.14);
+  --color-nav-marketplace-soft: rgba(37, 183, 82, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Pangea', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: var(--color-bg-top);
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
+
+/* Typography utility classes */
+.text-tiny-thin   { font-size: var(--font-size-tiny);   line-height: var(--line-height-tiny);   font-weight: var(--font-weight-thin); }
+.text-tiny-normal { font-size: var(--font-size-tiny);   line-height: var(--line-height-tiny);   font-weight: var(--font-weight-normal); }
+.text-tiny-bold   { font-size: var(--font-size-tiny);   line-height: var(--line-height-tiny);   font-weight: var(--font-weight-bold); }
+
+.text-small-thin   { font-size: var(--font-size-small);  line-height: var(--line-height-small);  font-weight: var(--font-weight-thin); }
+.text-small-normal { font-size: var(--font-size-small);  line-height: var(--line-height-small);  font-weight: var(--font-weight-normal); }
+.text-small-bold   { font-size: var(--font-size-small);  line-height: var(--line-height-small);  font-weight: var(--font-weight-bold); }
+
+.text-medium-thin   { font-size: var(--font-size-medium); line-height: var(--line-height-medium); font-weight: var(--font-weight-thin); }
+.text-medium-normal { font-size: var(--font-size-medium); line-height: var(--line-height-medium); font-weight: var(--font-weight-normal); }
+.text-medium-bold   { font-size: var(--font-size-medium); line-height: var(--line-height-medium); font-weight: var(--font-weight-bold); }
+
+/* Heading typography utility classes (H1–H6 × thin/normal/bold) */
+.text-h1-thin   { font-size: var(--font-size-h1); line-height: var(--line-height-h1); font-weight: var(--font-weight-thin); }
+.text-h1-normal { font-size: var(--font-size-h1); line-height: var(--line-height-h1); font-weight: var(--font-weight-normal); }
+.text-h1-bold   { font-size: var(--font-size-h1); line-height: var(--line-height-h1); font-weight: var(--font-weight-bold); }
+
+.text-h2-thin   { font-size: var(--font-size-h2); line-height: var(--line-height-h2); font-weight: var(--font-weight-thin); }
+.text-h2-normal { font-size: var(--font-size-h2); line-height: var(--line-height-h2); font-weight: var(--font-weight-normal); }
+.text-h2-bold   { font-size: var(--font-size-h2); line-height: var(--line-height-h2); font-weight: var(--font-weight-bold); }
+
+.text-h3-thin   { font-size: var(--font-size-h3); line-height: var(--line-height-h3); font-weight: var(--font-weight-thin); }
+.text-h3-normal { font-size: var(--font-size-h3); line-height: var(--line-height-h3); font-weight: var(--font-weight-normal); }
+.text-h3-bold   { font-size: var(--font-size-h3); line-height: var(--line-height-h3); font-weight: var(--font-weight-bold); }
+
+.text-h4-thin   { font-size: var(--font-size-h4); line-height: var(--line-height-h4); font-weight: var(--font-weight-thin); }
+.text-h4-normal { font-size: var(--font-size-h4); line-height: var(--line-height-h4); font-weight: var(--font-weight-normal); }
+.text-h4-bold   { font-size: var(--font-size-h4); line-height: var(--line-height-h4); font-weight: var(--font-weight-bold); }
+
+.text-h5-thin   { font-size: var(--font-size-h5); line-height: var(--line-height-h5); font-weight: var(--font-weight-thin); }
+.text-h5-normal { font-size: var(--font-size-h5); line-height: var(--line-height-h5); font-weight: var(--font-weight-normal); }
+.text-h5-bold   { font-size: var(--font-size-h5); line-height: var(--line-height-h5); font-weight: var(--font-weight-bold); }
+
+.text-h6-thin   { font-size: var(--font-size-h6); line-height: var(--line-height-h6); font-weight: var(--font-weight-thin); }
+.text-h6-normal { font-size: var(--font-size-h6); line-height: var(--line-height-h6); font-weight: var(--font-weight-normal); }
+.text-h6-bold   { font-size: var(--font-size-h6); line-height: var(--line-height-h6); font-weight: var(--font-weight-bold); }
+
+/* Shared buttons */
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--SP2);
+  height: 44px;
+  background: transparent;
+  color: var(--color-card-border);
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 999px;
+  padding: 0 var(--SP4);
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  background: var(--color-card-border);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 0 var(--SP4);
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}

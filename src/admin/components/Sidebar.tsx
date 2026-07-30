@@ -1,4 +1,4 @@
-export type AdminSection = 'inbox' | 'ai' | 'content' | 'residents' | 'insights' | 'settings';
+export type AdminSection = 'inbox' | 'tasks' | 'ai' | 'content' | 'residents' | 'insights' | 'new' | 'settings';
 
 type NavItem = {
   id: AdminSection;
@@ -12,6 +12,18 @@ function InboxIcon() {
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M22 12h-6l-2 3h-4l-2-3H2" />
       <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+    </svg>
+  );
+}
+
+function TasksIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="3" width="16" height="18" rx="2" />
+      <path d="m8 8 1.5 1.5L12 7" />
+      <path d="M14 9h3" />
+      <path d="m8 14 1.5 1.5L12 13" />
+      <path d="M14 15h3" />
     </svg>
   );
 }
@@ -56,6 +68,17 @@ function InsightsIcon() {
   );
 }
 
+function FlowMapIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="9" width="6" height="6" rx="1" />
+      <rect x="16" y="3" width="6" height="6" rx="1" />
+      <rect x="16" y="15" width="6" height="6" rx="1" />
+      <path d="M8 12h4M12 12v-6h4M12 12v6h4" />
+    </svg>
+  );
+}
+
 function SettingsIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -67,19 +90,22 @@ function SettingsIcon() {
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'inbox', label: 'תיבת פעולות', icon: InboxIcon },
-  { id: 'ai', label: 'סוכן AI', icon: AIIcon },
+  { id: 'tasks', label: 'משימות', icon: TasksIcon },
+  { id: 'ai', label: 'סוכן AI לתושבים', icon: AIIcon },
   { id: 'content', label: 'תוכן', icon: ContentIcon },
   { id: 'residents', label: 'תושבים', icon: ResidentsIcon },
   { id: 'insights', label: 'תובנות', icon: InsightsIcon },
+  { id: 'new', label: 'מפת מידע', icon: FlowMapIcon },
 ];
 
 type SidebarProps = {
   active: AdminSection;
   onNavigate: (section: AdminSection) => void;
   pendingCount: number;
+  taskCount: number;
 };
 
-export default function Sidebar({ active, onNavigate, pendingCount }: SidebarProps) {
+export default function Sidebar({ active, onNavigate, pendingCount, taskCount }: SidebarProps) {
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar-top">
@@ -95,7 +121,12 @@ export default function Sidebar({ active, onNavigate, pendingCount }: SidebarPro
       <nav className="admin-nav" aria-label="ניווט ראשי">
         {NAV_ITEMS.map((item) => {
           const isActive = active === item.id;
-          const badge = item.id === 'inbox' ? pendingCount : undefined;
+          const badge =
+            item.id === 'inbox'
+              ? pendingCount
+              : item.id === 'tasks'
+                ? taskCount
+                : undefined;
           return (
             <button
               key={item.id}

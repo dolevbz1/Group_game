@@ -1,0 +1,145 @@
+.gate-modal-root {
+  position: absolute;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+@media (min-width: 600px) {
+  .gate-modal-root {
+    inset: 12px;
+    border-radius: 38px;
+    overflow: hidden;
+  }
+}
+
+.gate-modal-root.is-open {
+  pointer-events: auto;
+}
+
+/* ─── Backdrop ─── */
+.gate-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(0px) saturate(100%);
+  -webkit-backdrop-filter: blur(0px) saturate(100%);
+  opacity: 0;
+  transition: opacity 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease;
+}
+
+.gate-modal-root.is-open .gate-modal-backdrop {
+  opacity: 1;
+  backdrop-filter: blur(6px) saturate(130%);
+  -webkit-backdrop-filter: blur(6px) saturate(130%);
+}
+
+/* ─── Sheet ─── */
+.gate-modal {
+  position: relative;
+  width: 100%;
+  min-height: calc(344px + env(safe-area-inset-bottom, 0px));
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding: var(--SP6) var(--SP5) calc(var(--SP6) + env(safe-area-inset-bottom, 0px));
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.gate-modal-root.is-open .gate-modal {
+  transform: translateY(0);
+}
+
+/* ─── Icon: absolutely centered, transitions to top ─── */
+.gate-modal-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: top 0.5s cubic-bezier(0, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.gate-modal-icon.is-top {
+  top: var(--SP6);
+  transform: translate(-50%, 0);
+}
+
+/* ─── Lottie sizes ─── */
+.gate-modal-lottie-spinner,
+.gate-modal-lottie-check {
+  width: 80px;
+  height: 80px;
+}
+
+/* ─── Content body: appears at bottom, items stagger in ─── */
+.gate-modal-body {
+  position: absolute;
+  bottom: calc(var(--SP6) + env(safe-area-inset-bottom, 0px));
+  left: var(--SP5);
+  right: var(--SP5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--SP1);
+  text-align: center;
+  pointer-events: none;
+}
+
+.gate-modal-body.is-visible {
+  pointer-events: auto;
+}
+
+/* Each child animates in with staggered delay */
+.gate-modal-body > * {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.gate-modal-body.is-visible > *:nth-child(1) {
+  animation: gate-item-in 0.35s cubic-bezier(0, 0, 0.2, 1) 0ms forwards;
+}
+.gate-modal-body.is-visible > *:nth-child(2) {
+  animation: gate-item-in 0.35s cubic-bezier(0, 0, 0.2, 1) 250ms forwards;
+}
+.gate-modal-body.is-visible > *:nth-child(3) {
+  animation: gate-item-in 0.35s cubic-bezier(0, 0, 0.2, 1) 500ms forwards;
+}
+.gate-modal-body.is-visible > *:nth-child(4) {
+  animation: gate-item-in 0.35s cubic-bezier(0, 0, 0.2, 1) 650ms forwards;
+}
+
+@keyframes gate-item-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gate-modal-title {
+  color: var(--color-card-border);
+  margin: 0;
+}
+
+.gate-modal-sub {
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.btn-cta.gate-modal-close,
+.btn-secondary.gate-modal-retry {
+  width: 100%;
+  height: 56px;
+}
+
+.gate-modal-close {
+  margin-top: var(--SP4);
+}
+
+.btn-secondary.gate-modal-retry {
+  border: none;
+  color: var(--color-secondary);
+}

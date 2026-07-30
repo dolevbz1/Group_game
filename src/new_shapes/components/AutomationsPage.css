@@ -1,0 +1,423 @@
+.automations-page {
+  --automations-accent: #B9B09F;
+  --automations-accent-soft: #E9E5DE;
+  --automations-canvas: #F4F1EC;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1250;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--automations-canvas);
+  box-shadow: inset 0 0 0 2px var(--automations-accent);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(24px);
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 600px) {
+  .automations-page {
+    position: absolute;
+    border-radius: 38px;
+  }
+}
+
+.automations-page.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.automations-page-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 76px;
+  padding: calc(var(--SP3) + env(safe-area-inset-top, 0px)) var(--SP4) var(--SP3);
+  background: var(--automations-accent-soft);
+}
+
+.automations-page-top .screen-icon-btn {
+  background: var(--color-light-surface);
+  border: none;
+  color: var(--color-new-black);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--color-card-border) 14%, transparent);
+}
+
+.automations-page-title {
+  position: absolute;
+  left: 50%;
+  color: var(--color-new-black);
+  font-family: 'COLBO', sans-serif;
+  font-size: 24px;
+  font-stretch: expanded;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: normal;
+  transform: translateX(-50%);
+}
+
+.automations-page-spacer {
+  width: 44px;
+  height: 44px;
+}
+
+.automations-page-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--SP4) var(--SP4) var(--SP6);
+}
+
+.automations-page-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--SP3);
+  margin-bottom: var(--SP5);
+  padding: var(--SP4);
+  background: var(--color-light-surface);
+  border-radius: var(--SP3);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-light-surface) 80%, transparent),
+    0 8px 20px color-mix(in srgb, var(--color-card-border) 6%, transparent);
+}
+
+.automations-page-hero > span:last-child {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--SP1);
+}
+
+.automations-page-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--automations-accent-soft);
+  border-radius: var(--SP2);
+  color: var(--color-new-black);
+}
+
+.automations-page-hero-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.automations-page-hero-copy {
+  color: var(--color-secondary);
+}
+
+.automations-page-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP3);
+}
+
+.automations-page-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP3);
+  padding: var(--SP4);
+  background: var(--color-light-surface);
+  border-radius: var(--SP3);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-card-border) 10%, transparent),
+    0 8px 20px color-mix(in srgb, var(--color-card-border) 6%, transparent);
+}
+
+.automations-page-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--SP3);
+}
+
+.automations-page-card-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--SP1);
+  color: var(--color-new-black);
+}
+
+.automations-page-card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--SP2);
+  flex-shrink: 0;
+}
+
+.automations-page-toggle {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  padding: 0;
+  background: var(--color-nav-marketplace);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.automations-page-toggle > span {
+  position: absolute;
+  top: 3px;
+  right: 21px;
+  width: 18px;
+  height: 18px;
+  background: var(--color-light-surface);
+  border-radius: 999px;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--color-card-border) 24%, transparent);
+  transition: right 0.2s ease;
+}
+
+.automations-page-toggle[aria-pressed='false'] {
+  background: color-mix(in srgb, var(--color-card-border) 18%, transparent);
+}
+
+.automations-page-toggle[aria-pressed='false'] > span {
+  right: 3px;
+}
+
+.automations-page-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: var(--color-gray);
+  border: none;
+  border-radius: 999px;
+  color: var(--color-new-black);
+  cursor: pointer;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.automations-page-status {
+  display: flex;
+  align-items: center;
+  gap: var(--SP1);
+  color: var(--color-nav-marketplace);
+}
+
+.automations-page-status > span {
+  width: 6px;
+  height: 6px;
+  background: var(--color-nav-marketplace);
+  border-radius: 999px;
+}
+
+.automations-page-status.is-paused {
+  color: var(--color-secondary);
+}
+
+.automations-page-status.is-paused > span {
+  background: var(--color-secondary);
+}
+
+.automations-page-flow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--SP2);
+}
+
+.automations-page-flow > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--SP1);
+  padding: var(--SP3);
+  background: var(--color-gray);
+  border-radius: var(--SP2);
+  color: var(--color-new-black);
+}
+
+.automations-page-flow > div > span:first-child {
+  color: var(--color-secondary);
+}
+
+.automations-page-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--SP2);
+  padding: var(--SP8) var(--SP4);
+  background: var(--color-light-surface);
+  border-radius: var(--SP3);
+  color: var(--color-new-black);
+  text-align: center;
+}
+
+.automations-page-empty > span:last-child {
+  color: var(--color-secondary);
+}
+
+.automations-page-empty-icon {
+  font-size: 28px;
+}
+
+.automations-page-footer {
+  padding: var(--SP3) var(--SP4) calc(var(--SP3) + env(safe-area-inset-bottom, 0px));
+  background: var(--color-light-surface);
+}
+
+.automations-page-create {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--SP4);
+  background: var(--color-card-border);
+  border: none;
+  border-radius: 4px;
+  color: var(--color-light-surface);
+  cursor: pointer;
+}
+
+.automations-page-create:active {
+  transform: scale(0.98);
+}
+
+.automations-page-overlay {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: var(--SP4);
+  background: color-mix(in srgb, var(--color-card-border) 42%, transparent);
+}
+
+.automations-page-actions-sheet,
+.automations-page-editor,
+.automations-page-delete-dialog {
+  display: flex;
+  width: 100%;
+  max-width: 420px;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-light-surface);
+  border-radius: var(--SP4);
+  box-shadow: 0 20px 48px color-mix(in srgb, var(--color-card-border) 20%, transparent);
+  animation: automations-sheet-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes automations-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.automations-page-actions-title {
+  padding: var(--SP4);
+  color: var(--color-new-black);
+}
+
+.automations-page-sheet-action {
+  min-height: 52px;
+  padding: 0 var(--SP4);
+  background: transparent;
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--color-card-border) 10%, transparent);
+  color: var(--color-new-black);
+  cursor: pointer;
+  text-align: right;
+}
+
+.automations-page-sheet-action.is-destructive {
+  color: #c62828;
+}
+
+.automations-page-sheet-cancel {
+  min-height: 52px;
+  margin: var(--SP2);
+  background: var(--color-gray);
+  border: none;
+  border-radius: var(--SP2);
+  color: var(--color-new-black);
+  cursor: pointer;
+}
+
+.automations-page-editor,
+.automations-page-delete-dialog {
+  gap: var(--SP4);
+  padding: var(--SP4);
+}
+
+.automations-page-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP2);
+  color: var(--color-new-black);
+}
+
+.automations-page-field input,
+.automations-page-field textarea {
+  width: 100%;
+  padding: var(--SP3);
+  resize: none;
+  background: var(--color-gray);
+  border: 1px solid color-mix(in srgb, var(--color-card-border) 16%, transparent);
+  border-radius: var(--SP2);
+  color: var(--color-new-black);
+  font-family: inherit;
+}
+
+.automations-page-field input {
+  min-height: 48px;
+}
+
+.automations-page-editor-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--SP2);
+}
+
+.automations-page-editor-cancel,
+.automations-page-editor-save,
+.automations-page-delete-confirm {
+  min-height: 44px;
+  padding: 0 var(--SP3);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.automations-page-editor-cancel {
+  background: transparent;
+  border: 1px solid var(--color-card-border);
+  color: var(--color-new-black);
+}
+
+.automations-page-editor-save {
+  background: var(--color-card-border);
+  border: 1px solid var(--color-card-border);
+  color: var(--color-light-surface);
+}
+
+.automations-page-editor-save:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.automations-page-delete-dialog p {
+  color: var(--color-secondary);
+}
+
+.automations-page-delete-confirm {
+  background: #c62828;
+  border: 1px solid #c62828;
+  color: var(--color-light-surface);
+}

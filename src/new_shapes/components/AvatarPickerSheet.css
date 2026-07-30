@@ -1,0 +1,79 @@
+.avatar-sheet-root {
+  position: fixed;
+  inset: 0;
+  z-index: 1250;
+  pointer-events: none;
+}
+
+.avatar-sheet-root.is-open {
+  pointer-events: auto;
+}
+
+@media (min-width: 600px) {
+  .avatar-sheet-root {
+    position: absolute;
+    inset: 0;
+    border-radius: 38px;
+    overflow: hidden;
+  }
+}
+
+.avatar-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 34, 51, 0.35);
+  border: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.avatar-sheet-root.is-open .avatar-sheet-backdrop {
+  opacity: 1;
+}
+
+.avatar-sheet {
+  position: absolute;
+  left: var(--SP5);
+  right: var(--SP5);
+  bottom: calc(var(--SP5) + env(safe-area-inset-bottom, 0px));
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 20px;
+  padding: var(--SP4);
+  transform: translateY(calc(100% + var(--SP5)));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.avatar-sheet-root.is-open .avatar-sheet {
+  transform: translateY(0);
+}
+
+.avatar-sheet-title {
+  color: var(--color-card-border);
+  text-align: center;
+  margin-bottom: var(--SP3);
+}
+
+.avatar-sheet-action,
+.avatar-sheet-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  background: var(--color-gray);
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 14px;
+  color: var(--color-card-border);
+  cursor: pointer;
+  margin-bottom: var(--SP2);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.avatar-sheet-cancel {
+  background: transparent;
+  border-color: transparent;
+  color: rgba(34, 34, 51, 0.55);
+  margin-bottom: 0;
+}

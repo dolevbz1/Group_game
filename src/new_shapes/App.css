@@ -1,0 +1,50 @@
+/* Mobile-first: the app fills the whole device screen (real product) */
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  background: var(--color-bg-top);
+}
+
+.device {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+}
+
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* On larger screens (e.g. desktop preview), show an iPhone 14 mockup
+   frame as a design reference — 390 × 844 logical points */
+@media (min-width: 600px) {
+  .stage {
+    background: #f0f0f3;
+    padding: 24px;
+  }
+
+  .device {
+    width: 414px;
+    height: 844px;
+    background: #000;
+    border-radius: 50px;
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  .screen {
+    border-radius: 38px;
+    overflow: hidden;
+  }
+}

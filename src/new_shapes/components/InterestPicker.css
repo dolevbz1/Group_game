@@ -1,0 +1,168 @@
+.interest-pick {
+  position: fixed;
+  inset: 0;
+  z-index: 1250;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-top);
+  transform: translateX(100%);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.interest-pick.is-open {
+  transform: translateX(0);
+}
+
+.interest-pick.is-closing {
+  transform: translateX(100%);
+}
+
+@media (min-width: 600px) {
+  .interest-pick {
+    position: absolute;
+    inset: 0;
+    border-radius: 38px;
+    overflow: hidden;
+  }
+}
+
+.interest-pick-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP3);
+  padding: calc(var(--SP3) + env(safe-area-inset-top, 0px)) var(--SP5) var(--SP3);
+  flex-shrink: 0;
+}
+
+.interest-pick-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 12px;
+  color: var(--color-card-border);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.interest-pick-top-title {
+  color: var(--color-card-border);
+}
+
+.interest-pick-save {
+  background: none;
+  border: none;
+  color: var(--color-card-border);
+  cursor: pointer;
+  padding: var(--SP2) var(--SP1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.interest-pick-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 var(--SP5) var(--SP4);
+}
+
+.interest-pick-heading {
+  color: var(--color-card-border);
+  margin-bottom: var(--SP2);
+}
+
+.interest-pick-note {
+  color: rgba(34, 34, 51, 0.55);
+  margin-bottom: var(--SP4);
+}
+
+.interest-pick-search {
+  display: flex;
+  align-items: center;
+  gap: var(--SP2);
+  background: var(--color-gray);
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 14px;
+  padding: 0 var(--SP4);
+  height: 48px;
+  margin-bottom: var(--SP4);
+  color: rgba(34, 34, 51, 0.45);
+}
+
+.interest-pick-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-card-border);
+}
+
+.interest-pick-search-input:focus {
+  outline: none;
+}
+
+.interest-pick-selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--SP2);
+  margin-bottom: var(--SP4);
+}
+
+.interest-pick-section {
+  color: var(--color-card-border);
+  margin-bottom: var(--SP3);
+}
+
+.interest-pick-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--SP2);
+  padding-bottom: var(--SP4);
+}
+
+.interest-pick-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--SP2);
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 999px;
+  padding: var(--SP2) var(--SP4);
+  color: var(--color-card-border);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.interest-pick-tag.is-selected {
+  background: var(--color-card-border);
+  color: #ffffff;
+  border-color: var(--color-card-border);
+}
+
+.interest-pick-tag.is-disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.interest-pick-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP3);
+  padding: var(--SP4) var(--SP5) calc(var(--SP4) + env(safe-area-inset-bottom, 0px));
+  border-top: 0.5px solid rgba(34, 34, 51, 0.1);
+  background: var(--color-bg-top);
+  flex-shrink: 0;
+}
+
+.interest-pick-count {
+  color: rgba(34, 34, 51, 0.55);
+}
+
+.interest-pick-done {
+  min-width: 120px;
+}

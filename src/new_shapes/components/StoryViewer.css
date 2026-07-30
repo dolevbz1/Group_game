@@ -1,0 +1,213 @@
+.story-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  overflow: hidden;
+  background: var(--color-new-black);
+  color: var(--color-light-surface);
+}
+
+@media (min-width: 600px) {
+  .story-viewer {
+    position: absolute;
+    border-radius: 38px;
+  }
+}
+
+.story-viewer-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-viewer::before,
+.story-viewer::after {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  left: 0;
+  content: '';
+  pointer-events: none;
+}
+
+.story-viewer::before {
+  top: 0;
+  height: 160px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-new-black) 66%, transparent),
+    transparent
+  );
+}
+
+.story-viewer::after {
+  bottom: 0;
+  height: 150px;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-new-black) 72%, transparent),
+    transparent
+  );
+}
+
+.story-viewer-tap-zone {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.story-viewer-tap-zone--next {
+  left: 0;
+}
+
+.story-viewer-tap-zone--previous {
+  right: 0;
+}
+
+.story-viewer-header {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  direction: rtl;
+  gap: var(--SP2);
+  padding: calc(var(--SP3) + env(safe-area-inset-top, 0px)) var(--SP3) 0;
+}
+
+.story-viewer-progress {
+  position: absolute;
+  top: calc(var(--SP2) + env(safe-area-inset-top, 0px));
+  right: var(--SP2);
+  left: var(--SP2);
+  display: flex;
+  direction: ltr;
+  gap: var(--SP1);
+}
+
+.story-viewer-progress-track {
+  flex: 1;
+  height: 3px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-light-surface) 38%, transparent);
+  border-radius: 99px;
+}
+
+.story-viewer-progress-track.is-complete {
+  background: var(--color-light-surface);
+}
+
+.story-viewer-meta {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: var(--SP2);
+  margin-top: var(--SP2);
+}
+
+.story-viewer-avatar {
+  box-sizing: border-box;
+  width: 38px;
+  height: 38px;
+  padding: var(--SP1);
+  background: var(--color-light-surface);
+  border-radius: 50%;
+}
+
+.story-viewer-title {
+  overflow: hidden;
+  color: var(--color-light-surface);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.story-viewer-time {
+  flex-shrink: 0;
+  color: color-mix(in srgb, var(--color-light-surface) 72%, transparent);
+}
+
+.story-viewer-close {
+  position: absolute;
+  top: calc(var(--SP3) + env(safe-area-inset-top, 0px));
+  left: var(--SP2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--color-light-surface);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.story-viewer-close svg {
+  width: 30px;
+  height: 30px;
+}
+
+.story-viewer-actions {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--SP2);
+  padding: var(--SP3) var(--SP3) calc(var(--SP3) + env(safe-area-inset-bottom, 0px));
+}
+
+.story-viewer-reply {
+  box-sizing: border-box;
+  min-width: 0;
+  height: 48px;
+  flex: 1;
+  padding: 0 var(--SP4);
+  background: color-mix(in srgb, var(--color-new-black) 42%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-light-surface) 72%, transparent);
+  border-radius: 24px;
+  color: var(--color-light-surface);
+  outline: none;
+}
+
+.story-viewer-reply::placeholder {
+  color: color-mix(in srgb, var(--color-light-surface) 82%, transparent);
+}
+
+.story-viewer-reply:focus {
+  border-color: var(--color-light-surface);
+}
+
+.story-viewer-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--color-light-surface);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.story-viewer-action svg {
+  width: 28px;
+  height: 28px;
+}

@@ -1,0 +1,191 @@
+.add-root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.add-root.is-open {
+  pointer-events: auto;
+}
+
+@media (min-width: 600px) {
+  .add-root {
+    position: absolute;
+    inset: 12px;
+    border-radius: 38px;
+  }
+}
+
+.add-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(0px) saturate(100%);
+  -webkit-backdrop-filter: blur(0px) saturate(100%);
+  opacity: 0;
+  transition: opacity 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease;
+}
+
+.add-root.is-open .add-backdrop {
+  opacity: 1;
+  backdrop-filter: blur(6px) saturate(130%);
+  -webkit-backdrop-filter: blur(6px) saturate(130%);
+}
+
+.add-sheet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP4);
+  background: var(--color-bg-top);
+  border-radius: 0 0 24px 24px;
+  padding: calc(var(--SP6) + env(safe-area-inset-top, 0px)) var(--SP5) var(--SP5);
+  transform: translateY(-105%);
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.add-root.is-open .add-sheet {
+  transform: translateY(0);
+}
+
+.add-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--SP3);
+}
+
+.add-title {
+  color: var(--color-card-border);
+}
+
+.add-close {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-card-border);
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.add-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP2);
+}
+
+@keyframes add-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-row {
+  --add-accent: var(--color-news-blue);
+  --add-accent-soft: color-mix(in srgb, var(--add-accent) 14%, transparent);
+
+  display: flex;
+  align-items: center;
+  gap: var(--SP3);
+  width: 100%;
+  min-height: 60px;
+  background: var(--color-light-surface);
+  border: 1px solid var(--add-accent);
+  border-radius: 12px;
+  padding: var(--SP2);
+  cursor: pointer;
+  text-align: right;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-card-border) 6%, transparent);
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.add-row:active {
+  background: var(--add-accent-soft);
+  transform: scale(0.98);
+}
+
+.add-root.is-open .add-row:nth-child(1) {
+  animation: add-row-in 0.3s ease 0.15s forwards;
+}
+
+.add-root.is-open .add-row:nth-child(2) {
+  animation: add-row-in 0.3s ease 0.19s forwards;
+}
+
+.add-root.is-open .add-row:nth-child(3) {
+  animation: add-row-in 0.3s ease 0.23s forwards;
+}
+
+.add-root.is-open .add-row:nth-child(4) {
+  animation: add-row-in 0.3s ease 0.27s forwards;
+}
+
+.add-root.is-open .add-row:nth-child(5) {
+  animation: add-row-in 0.3s ease 0.31s forwards;
+}
+
+.add-row-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background: var(--add-accent-soft);
+  border: 1px solid var(--add-accent);
+  border-radius: var(--SP2);
+}
+
+.add-row--news {
+  --add-accent: var(--color-news-blue);
+  --add-accent-soft: color-mix(in srgb, var(--color-news-blue) 14%, transparent);
+}
+
+.add-row--events {
+  --add-accent: var(--color-nav-events);
+  --add-accent-soft: var(--color-nav-events-soft);
+}
+
+.add-row--polls {
+  --add-accent: var(--color-nav-polls);
+  --add-accent-soft: var(--color-nav-polls-soft);
+}
+
+.add-row--volunteer {
+  --add-accent: var(--color-nav-volunteer);
+  --add-accent-soft: var(--color-nav-volunteer-soft);
+}
+
+.add-row--marketplace {
+  --add-accent: var(--color-nav-marketplace);
+  --add-accent-soft: var(--color-nav-marketplace-soft);
+}
+
+.add-row-lottie {
+  width: 36px;
+  height: 36px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.add-row-label {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-card-border);
+}

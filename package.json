@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:phone": "bash scripts/phone-preview.sh",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },

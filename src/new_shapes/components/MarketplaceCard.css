@@ -1,0 +1,289 @@
+.market-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP4);
+}
+
+/* ── Ticket-style listing card (adapted from the Events ticket) ── */
+.market-ticket {
+  display: flex;
+  flex-direction: column;
+  height: 336px;
+  background: var(--color-light-surface);
+  border: none;
+  border-radius: var(--SP3);
+  overflow: hidden;
+  animation: market-ticket-in 420ms cubic-bezier(0, 0, 0.2, 1) both;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-light-surface) 80%, transparent),
+    0 8px 20px color-mix(in srgb, var(--color-card-border) 6%, transparent);
+}
+
+/* Staggered entrance */
+.market-ticket:nth-child(1) { animation-delay: 60ms; }
+.market-ticket:nth-child(2) { animation-delay: 150ms; }
+.market-ticket:nth-child(3) { animation-delay: 240ms; }
+
+@keyframes market-ticket-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .market-ticket { animation: none; }
+}
+
+/* Hero "photo" zone — emoji stand-in or image carousel */
+.market-ticket-image {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: var(--color-light-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.market-ticket-emoji {
+  font-size: 44px;
+  line-height: 1;
+}
+
+/* Real listing photos — stacked, cross-fading carousel */
+.market-ticket-photo {
+  position: absolute;
+  top: var(--SP2);
+  left: var(--SP2);
+  width: calc(100% - var(--SP2) * 2);
+  height: calc(100% - var(--SP2));
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.market-ticket-photo.is-active {
+  opacity: 1;
+}
+
+/* Bottom scrim — keeps the white arrows/dots legible on light photos */
+.market-ticket-scrim {
+  position: absolute;
+  left: var(--SP2);
+  right: var(--SP2);
+  bottom: 0;
+  height: 64px;
+  border-radius: 0 0 12px 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Side navigation arrows */
+.market-ticket-nav {
+  position: absolute;
+  bottom: var(--SP2);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.market-ticket-nav-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.market-ticket-nav-icon svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.market-ticket-nav--prev {
+  right: var(--SP4);
+}
+
+.market-ticket-nav--next {
+  left: var(--SP4);
+  transform: scaleX(-1);
+}
+
+/* Pagination dots */
+.market-ticket-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--SP1);
+  z-index: 2;
+}
+
+.market-ticket-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.2s ease, background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.market-ticket-dot.is-active {
+  width: 18px;
+  background: #ffffff;
+}
+
+/* ── Details ── */
+.market-ticket-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP2);
+  padding: var(--SP3);
+}
+
+.market-ticket-titlerow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--SP2);
+}
+
+.market-ticket-title {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  color: var(--color-new-black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Price tag — punch-hole tag shape; lime for free items */
+.market-ticket-price {
+  position: relative;
+  flex-shrink: 0;
+  background: var(--carousel-accent);
+  color: #ffffff;
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  white-space: nowrap;
+  padding: var(--SP1) var(--SP3);
+  padding-left: var(--SP5);
+  clip-path: polygon(9px 0, 100% 0, 100% 100%, 9px 100%, 0 50%);
+}
+
+.market-ticket-price::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.market-ticket-price.is-free {
+  background: #ceff7e;
+  color: var(--color-card-border);
+}
+
+.market-ticket-price.is-free::before {
+  background: var(--color-card-border);
+}
+
+/* Seller text — name and tags grouped on one line */
+.market-ticket-seller-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--SP2);
+  min-width: 0;
+}
+
+/* Meta line with inline icons */
+.market-ticket-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-secondary);
+}
+
+.market-meta-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.market-ticket-meta-sep {
+  color: rgba(34, 34, 51, 0.3);
+  margin: 0 2px;
+}
+
+/* Seller / trust row */
+.market-ticket-seller {
+  display: flex;
+  align-items: center;
+  gap: var(--SP2);
+}
+
+.market-ticket-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-gray);
+  border: 0.5px solid rgba(34, 34, 51, 0.12);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.market-ticket-avatar-lottie {
+  width: 100%;
+  height: 100%;
+}
+
+.market-ticket-avatar-lottie svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.market-ticket-seller-name {
+  color: var(--color-new-black);
+  white-space: nowrap;
+}
+
+/* Primary action */
+.market-ticket-cta {
+  height: 44px;
+  width: auto;
+  margin: 0 var(--SP3) var(--SP3);
+  padding: 0 var(--SP3);
+  background: var(--carousel-accent-soft);
+  border: 1px solid var(--carousel-accent);
+  border-radius: 4px;
+  color: var(--color-new-black);
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.market-ticket-cta:active {
+  transform: scale(0.98);
+}

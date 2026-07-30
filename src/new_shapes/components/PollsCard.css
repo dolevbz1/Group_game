@@ -1,0 +1,153 @@
+.polls-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding-bottom: var(--SP4);
+  box-sizing: border-box;
+}
+
+.poll-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--color-light-surface);
+  border: none;
+  border-radius: var(--SP3);
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-light-surface) 80%, transparent),
+    0 8px 20px color-mix(in srgb, var(--color-card-border) 6%, transparent);
+}
+
+.poll-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--SP3);
+  min-height: 0;
+  padding: var(--SP3);
+}
+
+.poll-question {
+  color: var(--color-new-black);
+  margin: 0;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.poll-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--SP3);
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.poll-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP2);
+  min-width: 0;
+  min-height: 0;
+}
+
+.poll-column-track {
+  position: relative;
+  flex: 1;
+  min-height: 96px;
+  border: none;
+  border-radius: var(--SP3);
+  background: var(--color-gray);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-card-border) 14%, transparent);
+}
+
+/* height is driven by JS — no CSS transition here */
+.poll-column-fill {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 0;
+  background: var(--carousel-accent-soft);
+  border-radius: 0 0 11px 11px;
+}
+
+.poll-column.is-leading .poll-column-fill {
+  background: var(--carousel-accent);
+}
+
+/* Lottie: always visible, fixed SP4 from bottom, never moves */
+.poll-column-lottie {
+  position: absolute;
+  bottom: var(--SP4);
+  left: 50%;
+  width: 72px;
+  height: 72px;
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.poll-column-lottie > div {
+  width: 100%;
+  height: 100%;
+}
+
+.poll-column-lottie svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* bottom is driven by JS — only opacity fades via CSS */
+.poll-column-pct {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(calc(-1 * var(--SP3)));
+  color: var(--color-new-black);
+  white-space: nowrap;
+  opacity: 0;
+  z-index: 3;
+  transition: opacity 300ms ease;
+}
+
+.poll-card.is-rising .poll-column-pct {
+  opacity: 1;
+}
+
+.poll-column-label {
+  color: var(--color-secondary);
+  text-align: center;
+  line-height: 1.25;
+  flex-shrink: 0;
+}
+
+.poll-card-footer {
+  display: flex;
+  padding: 0 var(--SP3) var(--SP3);
+  border-top: none;
+  flex-shrink: 0;
+}
+
+.poll-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 44px;
+  padding: 0 var(--SP3);
+  background: var(--carousel-accent-soft);
+  border: 1px solid var(--carousel-accent);
+  border-radius: 4px;
+  color: var(--color-new-black);
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.poll-card-cta:active {
+  transform: scale(0.98);
+}

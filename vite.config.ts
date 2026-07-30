@@ -7,11 +7,15 @@ export default defineConfig({
   plugins: [react(), svgr()],
   server: {
     host: true,
+    hmr: {
+      clientPort: 5173,
+    },
   },
   build: {
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        newShapes: resolve(__dirname, 'new_shapes.html'),
         admin: resolve(__dirname, 'admin.html'),
         presentation: resolve(__dirname, 'presentation.html'),
         landing: resolve(__dirname, 'landing.html'),
