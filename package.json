@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "dev:phone": "bash scripts/phone-preview.sh",
+    "deploy": "bash scripts/deploy-vercel.sh",
     "build": "vite build",
     "build:check": "tsc --noEmit && vite build",
     "preview": "vite preview"
