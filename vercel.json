@@ -1,0 +1,10 @@
+{
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/new_shapes", "destination": "/new_shapes.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/presentation", "destination": "/presentation.html" },
+    { "source": "/landing", "destination": "/landing.html" }
+  ]
+}
