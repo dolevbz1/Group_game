@@ -1,26 +1,26 @@
 /* Pangea — Latin */
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-LightItalic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-MediumItalic.woff2') format('woff2'); font-weight: 500; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-SemiBoldItalic.woff2') format('woff2'); font-weight: 600; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/Pangea-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-LightItalic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-MediumItalic.woff2') format('woff2'); font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-SemiBoldItalic.woff2') format('woff2'); font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/Pangea-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
 
 /* Pangea — Hebrew (auto-activates for Hebrew characters) */
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-LightItalic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-MediumItalic.woff2') format('woff2'); font-weight: 500; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-SemiBoldItalic.woff2') format('woff2'); font-weight: 600; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
-@font-face { font-family: 'Pangea'; src: url('../sources/Pangea_font/PangeaHebr-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-LightItalic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-MediumItalic.woff2') format('woff2'); font-weight: 500; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-SemiBoldItalic.woff2') format('woff2'); font-weight: 600; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
+@font-face { font-family: 'Pangea'; src: url('../Sources/Pangea_font/PangeaHebr-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4E; }
 
 /* COLBO — Condensed / SemiCondensed / SemiExtended / Extended widths */
 @font-face { font-family: 'COLBO'; src: url('./new_shapes/assets/COLBO_desk/COLBO-LightCondensed.otf') format('opentype'); font-weight: 300; font-stretch: condensed; font-display: swap; }

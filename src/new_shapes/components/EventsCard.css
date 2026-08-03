@@ -131,7 +131,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--color-bg-bottom);
+  background: #ffffff;
   border: 1px solid color-mix(in srgb, var(--color-card-border) 12%, transparent);
   flex-shrink: 0;
 }

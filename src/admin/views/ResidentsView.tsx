@@ -7,6 +7,7 @@ import {
   type ResidentEngagement,
   type ResidentStatus,
 } from '../data/residentsMockData';
+import ResidentAvatar from '../components/ResidentAvatar';
 
 type ResidentsViewProps = {
   onSelectResident: (resident: Resident) => void;
@@ -15,7 +16,6 @@ type ResidentsViewProps = {
 type SortKey = 'name' | 'engagement' | 'lastActive';
 type SortDirection = 'ascending' | 'descending';
 
-const PAGE_SIZE = 7;
 const ENGAGEMENT_WEIGHT: Record<ResidentEngagement, number> = {
   high: 3,
   medium: 2,
@@ -42,7 +42,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
   const [street, setStreet] = useState('all');
   const [sortKey, setSortKey] = useState<SortKey>('lastActive');
   const [sortDirection, setSortDirection] = useState<SortDirection>('ascending');
-  const [page, setPage] = useState(1);
 
   const streets = useMemo(
     () => Array.from(new Set(RESIDENTS.map((resident) => resident.street))).sort((a, b) => a.localeCompare(b, 'he')),
@@ -77,12 +76,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
     });
   }, [engagement, query, sortDirection, sortKey, status, street]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredResidents.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
-  const visibleResidents = filteredResidents.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
-  );
   const activeFilterCount =
     Number(Boolean(query.trim())) +
     Number(status !== 'all') +
@@ -96,7 +89,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
       setSortKey(nextKey);
       setSortDirection('ascending');
     }
-    setPage(1);
   };
 
   const clearFilters = () => {
@@ -104,7 +96,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
     setStatus('all');
     setEngagement('all');
     setStreet('all');
-    setPage(1);
   };
 
   const exportResidents = () => {
@@ -155,7 +146,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value);
-                setPage(1);
               }}
               className="residents-search-input text-small-normal"
               placeholder="חיפוש לפי שם, כתובת, טלפון או מייל"
@@ -168,7 +158,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               value={status}
               onChange={(event) => {
                 setStatus(event.target.value as 'all' | ResidentStatus);
-                setPage(1);
               }}
               className="text-small-normal"
             >
@@ -185,7 +174,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               value={engagement}
               onChange={(event) => {
                 setEngagement(event.target.value as 'all' | ResidentEngagement);
-                setPage(1);
               }}
               className="text-small-normal"
             >
@@ -202,7 +190,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               value={street}
               onChange={(event) => {
                 setStreet(event.target.value);
-                setPage(1);
               }}
               className="text-small-normal"
             >
@@ -223,7 +210,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               {query.trim() && (
                 <button type="button" className="resident-filter-chip text-tiny-normal" onClick={() => {
                   setQuery('');
-                  setPage(1);
                 }}>
                   חיפוש: {query} ×
                 </button>
@@ -231,7 +217,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               {status !== 'all' && (
                 <button type="button" className="resident-filter-chip text-tiny-normal" onClick={() => {
                   setStatus('all');
-                  setPage(1);
                 }}>
                   {RESIDENT_STATUS_LABELS[status]} ×
                 </button>
@@ -239,7 +224,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               {engagement !== 'all' && (
                 <button type="button" className="resident-filter-chip text-tiny-normal" onClick={() => {
                   setEngagement('all');
-                  setPage(1);
                 }}>
                   מעורבות {RESIDENT_ENGAGEMENT_LABELS[engagement]} ×
                 </button>
@@ -247,7 +231,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               {street !== 'all' && (
                 <button type="button" className="resident-filter-chip text-tiny-normal" onClick={() => {
                   setStreet('all');
-                  setPage(1);
                 }}>
                   {street} ×
                 </button>
@@ -287,7 +270,7 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
               </tr>
             </thead>
             <tbody>
-              {visibleResidents.map((resident) => (
+              {filteredResidents.map((resident) => (
                 <tr
                   key={resident.id}
                   className="resident-table-row"
@@ -303,9 +286,10 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
                 >
                   <th scope="row">
                     <div className="resident-cell-identity">
-                      <span className={`resident-avatar resident-avatar--${resident.engagement}`} aria-hidden="true">
-                        {resident.initials}
-                      </span>
+                      <ResidentAvatar
+                        animationData={resident.avatarAnimation}
+                        engagement={resident.engagement}
+                      />
                       <span>
                         <strong className="resident-cell-name text-small-bold">{resident.name}</strong>
                         <span className="resident-cell-sub text-tiny-normal">
@@ -340,7 +324,7 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
             </tbody>
           </table>
 
-          {visibleResidents.length === 0 && (
+          {filteredResidents.length === 0 && (
             <div className="residents-empty">
               <span aria-hidden="true">⌕</span>
               <p className="text-small-bold">לא נמצאו תושבים שמתאימים לסינון</p>
@@ -350,34 +334,6 @@ export default function ResidentsView({ onSelectResident }: ResidentsViewProps) 
             </div>
           )}
         </div>
-
-        <footer className="residents-pagination">
-          <p className="text-tiny-normal">
-            מציג {visibleResidents.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1}–
-            {Math.min(currentPage * PAGE_SIZE, filteredResidents.length)} מתוך {filteredResidents.length}
-          </p>
-          <div>
-            <button
-              type="button"
-              className="residents-page-btn text-small-bold"
-              disabled={currentPage === 1}
-              onClick={() => setPage((current) => Math.max(1, current - 1))}
-              aria-label="העמוד הקודם"
-            >
-              ›
-            </button>
-            <span className="text-tiny-bold">{currentPage} / {totalPages}</span>
-            <button
-              type="button"
-              className="residents-page-btn text-small-bold"
-              disabled={currentPage === totalPages}
-              onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
-              aria-label="העמוד הבא"
-            >
-              ‹
-            </button>
-          </div>
-        </footer>
       </section>
     </div>
   );

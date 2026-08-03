@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hagasha</title>
+    <link rel="stylesheet" href="./src/index.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #F5F5F5;
+        overflow: hidden;
+        font-family: 'Pangea', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .deck-viewport {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #F5F5F5;
+      }
+
+      .slide-title {
+        margin: 0;
+        font-size: clamp(64px, 12vw, 160px);
+        line-height: 1.05;
+        font-weight: 700;
+        color: var(--color-card-border, #1a1a1a);
+        letter-spacing: -0.03em;
+        text-align: center;
+        padding: 0 48px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="deck-viewport" id="deck">
+      <section class="slide is-active" aria-label="שקופית 1">
+        <h1 class="slide-title">תוסיף כאן</h1>
+      </section>
+    </div>
+  </body>
+</html>

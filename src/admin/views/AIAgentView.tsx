@@ -4,9 +4,11 @@ import {
   AI_ADVICE,
   AI_ACTIVITY,
   SOURCE_LABELS,
+  SOURCE_BREAKDOWN,
 } from '../data/adminMockData';
-import TopicStats from '../components/TopicStats';
+import SourceBars from '../components/SourceBars';
 import AIAdviceCard from '../components/AIAdviceCard';
+import ResidentAIBotPreview from '../components/ResidentAIBotPreview';
 
 export default function AIAgentView() {
   const [dismissedAdvice, setDismissedAdvice] = useState<string[]>([]);
@@ -17,48 +19,62 @@ export default function AIAgentView() {
       <header className="admin-view-header">
         <h1 className="admin-view-title text-h2-bold">סוכן AI</h1>
         <p className="admin-view-sub text-small-normal">
-          נושאים שתושבים שואלים עליהם · המלצות לפעולה
+          מקורות מידע לסוכן · המלצות לפעולה
         </p>
       </header>
 
-      <div className="admin-ai-top-row">
-        <section className="admin-card admin-card--topics">
+      <div className="admin-ai-split-row">
+        <section className="admin-card admin-card--bars">
           <div className="admin-card-head">
             <div>
-              <h2 className="admin-card-title text-small-bold">נושאים נפוצים בשאלות</h2>
-              <p className="admin-card-sub text-tiny-normal">7 ימים אחרונים · כל המקורות</p>
+              <h2 className="admin-card-title text-medium-bold">מקורות מידע</h2>
+              <p className="admin-card-sub text-tiny-normal">מאיפה מגיע המידע לסוכן</p>
             </div>
-            <span className="admin-card-pill text-tiny-bold">117 שאלות</span>
           </div>
-          <TopicStats topics={TOPIC_STATS} />
-          <p className="admin-topics-hint text-tiny-normal">
-            נושאים עם עלייה חדה מסומנים — שקול לפרסם עדכון קבוע
-          </p>
+          <SourceBars items={SOURCE_BREAKDOWN} />
+          <div className="admin-widget-cta">
+            <p className="admin-widget-cta-text text-tiny-normal">
+              WhatsApp מספק 38% מהפניות — ודא שכל קבוצות השכונה מחוברות
+            </p>
+            <button type="button" className="admin-widget-cta-action text-tiny-bold">
+              נהל מקורות
+            </button>
+          </div>
         </section>
 
-        <section className="admin-card admin-card--advice">
+        <section className="admin-card admin-card--bot-preview">
           <div className="admin-card-head">
-            <h2 className="admin-card-title text-small-bold">המלצות AI לפעולה</h2>
-            <span className="admin-card-count text-tiny-bold">{visibleAdvice.length}</span>
+            <div>
+              <h2 className="admin-card-title text-medium-bold">תצוגת העוזר באפליקציה</h2>
+              <p className="admin-card-sub text-tiny-normal">כפי שתושבים רואים בעוזר החכם</p>
+            </div>
           </div>
-          <div className="admin-advice-list">
-            {visibleAdvice.length === 0 ? (
-              <p className="admin-empty text-small-normal">אין המלצות חדשות כרגע</p>
-            ) : (
-              visibleAdvice.map((advice) => (
-                <AIAdviceCard
-                  key={advice.id}
-                  advice={advice}
-                  onDismiss={() => setDismissedAdvice((ids) => [...ids, advice.id])}
-                />
-              ))
-            )}
-          </div>
+          <ResidentAIBotPreview />
         </section>
       </div>
 
+      <section className="admin-card admin-card--advice">
+        <div className="admin-card-head">
+          <h2 className="admin-card-title text-medium-bold">המלצות AI לפעולה</h2>
+          <span className="admin-card-count text-tiny-bold">{visibleAdvice.length}</span>
+        </div>
+        <div className="admin-advice-list">
+          {visibleAdvice.length === 0 ? (
+            <p className="admin-empty text-small-normal">אין המלצות חדשות כרגע</p>
+          ) : (
+            visibleAdvice.map((advice) => (
+              <AIAdviceCard
+                key={advice.id}
+                advice={advice}
+                onDismiss={() => setDismissedAdvice((ids) => [...ids, advice.id])}
+              />
+            ))
+          )}
+        </div>
+      </section>
+
       <section className="admin-card admin-card--activity">
-        <h2 className="admin-card-title text-small-bold">יומן פעילות הסוכן</h2>
+        <h2 className="admin-card-title text-medium-bold">יומן פעילות הסוכן</h2>
         <p className="admin-card-sub text-tiny-normal">היום</p>
         <ul className="admin-activity-list">
           {AI_ACTIVITY.map((entry) => (

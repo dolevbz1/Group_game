@@ -1,17 +1,31 @@
-export type AdminSection = 'inbox' | 'tasks' | 'ai' | 'content' | 'residents' | 'insights' | 'new' | 'settings';
+import { useEffect, useState } from 'react';
+import {
+  CONTENT_SECTIONS,
+  isContentAdminSection,
+  toContentAdminSection,
+  type ContentAdminSection,
+} from '../data/contentSectionsData';
+
+export type AdminSection =
+  | 'inbox'
+  | 'tasks'
+  | 'ai'
+  | ContentAdminSection
+  | 'residents'
+  | 'new'
+  | 'settings';
 
 type NavItem = {
-  id: AdminSection;
+  id: Exclude<AdminSection, ContentAdminSection>;
   label: string;
   icon: () => React.ReactElement;
-  badge?: number;
 };
 
-function InboxIcon() {
+function HomeIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M22 12h-6l-2 3h-4l-2-3H2" />
-      <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
     </svg>
   );
 }
@@ -58,16 +72,6 @@ function ResidentsIcon() {
   );
 }
 
-function InsightsIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <line x1="18" y1="20" x2="18" y2="10" />
-      <line x1="12" y1="20" x2="12" y2="4" />
-      <line x1="6" y1="20" x2="6" y2="14" />
-    </svg>
-  );
-}
-
 function FlowMapIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -88,24 +92,97 @@ function SettingsIcon() {
   );
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { id: 'inbox', label: 'תיבת פעולות', icon: InboxIcon },
+function NavChevronIcon({ expanded }: { expanded: boolean }) {
+  return (
+    <svg
+      className={`admin-nav-chevron${expanded ? ' is-expanded' : ''}`}
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+const NAV_ITEMS_BEFORE_CONTENT: NavItem[] = [
+  { id: 'inbox', label: 'דף הבית', icon: HomeIcon },
   { id: 'tasks', label: 'משימות', icon: TasksIcon },
   { id: 'ai', label: 'סוכן AI לתושבים', icon: AIIcon },
-  { id: 'content', label: 'תוכן', icon: ContentIcon },
+];
+
+const NAV_ITEMS_AFTER_CONTENT: NavItem[] = [
   { id: 'residents', label: 'תושבים', icon: ResidentsIcon },
-  { id: 'insights', label: 'תובנות', icon: InsightsIcon },
   { id: 'new', label: 'מפת מידע', icon: FlowMapIcon },
 ];
 
 type SidebarProps = {
   active: AdminSection;
   onNavigate: (section: AdminSection) => void;
+  onOpenResidentPreview: () => void;
   pendingCount: number;
   taskCount: number;
 };
 
-export default function Sidebar({ active, onNavigate, pendingCount, taskCount }: SidebarProps) {
+function renderNavItem(
+  item: NavItem,
+  active: AdminSection,
+  onNavigate: (section: AdminSection) => void,
+  badge?: number,
+) {
+  const isActive = active === item.id;
+
+  return (
+    <button
+      key={item.id}
+      type="button"
+      className={`admin-nav-item${isActive ? ' is-active' : ''}`}
+      onClick={() => onNavigate(item.id)}
+      aria-current={isActive ? 'page' : undefined}
+    >
+      <span className="admin-nav-icon" aria-hidden="true">
+        <item.icon />
+      </span>
+      <span className="admin-nav-label text-small-normal">{item.label}</span>
+      {badge !== undefined && badge > 0 && (
+        <span className="admin-nav-badge text-tiny-bold">{badge}</span>
+      )}
+    </button>
+  );
+}
+
+export default function Sidebar({
+  active,
+  onNavigate,
+  onOpenResidentPreview,
+  pendingCount,
+  taskCount,
+}: SidebarProps) {
+  const contentActive = isContentAdminSection(active);
+  const [contentOpen, setContentOpen] = useState(contentActive);
+
+  useEffect(() => {
+    if (!contentActive) setContentOpen(false);
+  }, [contentActive]);
+
+  const handleContentToggle = () => {
+    if (contentOpen) {
+      setContentOpen(false);
+      return;
+    }
+
+    setContentOpen(true);
+    if (!contentActive) {
+      onNavigate(toContentAdminSection(CONTENT_SECTIONS[0].id));
+    }
+  };
+
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar-top">
@@ -119,32 +196,57 @@ export default function Sidebar({ active, onNavigate, pendingCount, taskCount }:
       </div>
 
       <nav className="admin-nav" aria-label="ניווט ראשי">
-        {NAV_ITEMS.map((item) => {
-          const isActive = active === item.id;
-          const badge =
-            item.id === 'inbox'
-              ? pendingCount
-              : item.id === 'tasks'
-                ? taskCount
-                : undefined;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              className={`admin-nav-item${isActive ? ' is-active' : ''}`}
-              onClick={() => onNavigate(item.id)}
-              aria-current={isActive ? 'page' : undefined}
-            >
-              <span className="admin-nav-icon" aria-hidden="true">
-                <item.icon />
-              </span>
-              <span className="admin-nav-label text-small-normal">{item.label}</span>
-              {badge !== undefined && badge > 0 && (
-                <span className="admin-nav-badge text-tiny-bold">{badge}</span>
-              )}
-            </button>
-          );
-        })}
+        {NAV_ITEMS_BEFORE_CONTENT.map((item) =>
+          renderNavItem(
+            item,
+            active,
+            onNavigate,
+            item.id === 'inbox' ? pendingCount : item.id === 'tasks' ? taskCount : undefined,
+          ),
+        )}
+
+        <div className={`admin-nav-group${contentOpen ? ' is-expanded' : ''}${contentActive ? ' is-active' : ''}`}>
+          <button
+            type="button"
+            className={`admin-nav-item admin-nav-item--group${contentActive ? ' is-active' : ''}`}
+            onClick={handleContentToggle}
+            aria-expanded={contentOpen}
+            aria-controls="admin-content-subnav"
+          >
+            <span className="admin-nav-icon" aria-hidden="true">
+              <ContentIcon />
+            </span>
+            <span className="admin-nav-label text-small-normal">תוכן</span>
+            <NavChevronIcon expanded={contentOpen} />
+          </button>
+
+          {contentOpen && (
+            <div id="admin-content-subnav" className="admin-nav-sublist">
+              {CONTENT_SECTIONS.map((section) => {
+                const sectionId = toContentAdminSection(section.id);
+                const isSubActive = active === sectionId;
+
+                return (
+                  <button
+                    key={section.id}
+                    type="button"
+                    className={`admin-nav-item admin-nav-item--child${isSubActive ? ' is-active' : ''}`}
+                    onClick={() => onNavigate(sectionId)}
+                    aria-current={isSubActive ? 'page' : undefined}
+                  >
+                    <span
+                      className={`admin-nav-child-accent admin-nav-child-accent--${section.id}`}
+                      aria-hidden="true"
+                    />
+                    <span className="admin-nav-label text-small-normal">{section.title}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {NAV_ITEMS_AFTER_CONTENT.map((item) => renderNavItem(item, active, onNavigate))}
       </nav>
 
       <div className="admin-sidebar-promo">
@@ -164,9 +266,13 @@ export default function Sidebar({ active, onNavigate, pendingCount, taskCount }:
           <span className="admin-nav-icon" aria-hidden="true"><SettingsIcon /></span>
           <span className="admin-nav-label text-small-normal">הגדרות</span>
         </button>
-        <a href="/" className="admin-preview-link text-tiny-normal" target="_blank" rel="noreferrer">
-          תצוגת אפליקציית תושבים ↗
-        </a>
+        <button
+          type="button"
+          className="admin-preview-link text-tiny-normal"
+          onClick={onOpenResidentPreview}
+        >
+          תצוגת אפליקציית תושבים
+        </button>
       </div>
     </aside>
   );

@@ -178,7 +178,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
-  background: var(--color-bg-bottom);
+  background: #ffffff;
   margin-inline: calc(-1 * var(--SP4));
   margin-bottom: calc(-1 * var(--SP4));
   padding-inline: var(--SP4);

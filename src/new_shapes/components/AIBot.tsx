@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react';
-import Lottie from 'lottie-react';
+import Lottie, { type LottieRefCurrentProps } from 'lottie-react';
 import eventsGarlandsAnimation from '../assets/ai-events-garlands.json';
 import poolSwimmerAnimation from '../assets/ai-pool-swimmer.json';
 import swimmingAnimation from '../assets/swimming.json';
@@ -109,6 +109,27 @@ function SuggestionChevron() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <polyline points="15 18 9 12 15 6" />
     </svg>
+  );
+}
+
+function StaticLottie({
+  animationData,
+  className,
+}: {
+  animationData: object;
+  className?: string;
+}) {
+  const lottieRef = useRef<LottieRefCurrentProps>(null);
+
+  return (
+    <Lottie
+      lottieRef={lottieRef}
+      animationData={animationData}
+      loop={false}
+      autoplay={false}
+      className={className}
+      onDOMLoaded={() => lottieRef.current?.goToAndStop(0, true)}
+    />
   );
 }
 
@@ -386,6 +407,7 @@ type AIBotProps = {
   onEventsOpen: () => void;
   onNewsOpen: (id: string) => void;
   initialMessage?: string;
+  embedded?: boolean;
 };
 
 export default function AIBot({
@@ -397,9 +419,10 @@ export default function AIBot({
   onEventsOpen,
   onNewsOpen,
   initialMessage,
+  embedded = false,
 }: AIBotProps) {
-  const [render, setRender] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [render, setRender] = useState(embedded);
+  const [visible, setVisible] = useState(embedded);
   const [closing, setClosing] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -419,6 +442,7 @@ export default function AIBot({
 
   // Mount / unmount with a leaving animation
   useEffect(() => {
+    if (embedded) return;
     if (open) {
       setRender(true);
       setClosing(false);
@@ -450,6 +474,7 @@ export default function AIBot({
   };
 
   useLayoutEffect(() => {
+    if (embedded) return;
     if (!render) return;
     const el = inputRef.current;
     if (el && startRect) {
@@ -473,7 +498,7 @@ export default function AIBot({
 
   // Escape closes
   useEffect(() => {
-    if (!render) return;
+    if (!render || embedded) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -588,14 +613,27 @@ export default function AIBot({
     setAutomationDraft(null);
   };
 
+  const handleClose = () => {
+    if (embedded) {
+      if (started) handleNewChat();
+      return;
+    }
+    onClose();
+  };
+
   if (!render) return null;
 
   return (
-    <div className={`aibot${visible ? ' is-open' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-label="עוזר חכם" dir="rtl">
-      <div className="aibot-bg" />
+    <div
+      className={`aibot${embedded || visible ? ' is-open' : ''}${closing ? ' is-closing' : ''}${embedded ? ' aibot--preview' : ''}`}
+      role="dialog"
+      aria-label="עוזר חכם"
+      dir="rtl"
+    >
+      {!embedded && <div className="aibot-bg" />}
 
       <div className="aibot-top">
-        <button type="button" className="aibot-back" onClick={onClose} aria-label="סגירה">
+        <button type="button" className="aibot-back" onClick={handleClose} aria-label="סגירה">
           <CloseIcon />
         </button>
         <div className="aibot-id">
@@ -642,12 +680,19 @@ export default function AIBot({
                 >
                   <span className="aibot-suggestion-emoji" aria-hidden="true">
                     {s.animation ? (
-                      <Lottie
-                        animationData={s.animation}
-                        loop
-                        autoplay
-                        className="aibot-suggestion-lottie"
-                      />
+                      embedded ? (
+                        <StaticLottie
+                          animationData={s.animation}
+                          className="aibot-suggestion-lottie"
+                        />
+                      ) : (
+                        <Lottie
+                          animationData={s.animation}
+                          loop
+                          autoplay
+                          className="aibot-suggestion-lottie"
+                        />
+                      )
                     ) : (
                       s.emoji
                     )}

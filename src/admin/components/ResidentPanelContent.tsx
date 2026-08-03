@@ -3,6 +3,7 @@ import {
   RESIDENT_ENGAGEMENT_LABELS,
   type Resident,
 } from '../data/residentsMockData';
+import ResidentAvatar from './ResidentAvatar';
 
 type ResidentPanelContentProps = {
   resident: Resident;
@@ -14,9 +15,11 @@ export default function ResidentPanelContent({ resident }: ResidentPanelContentP
   return (
     <div className="resident-panel-content">
       <div className="resident-panel-identity">
-        <div className={`resident-avatar resident-avatar--${resident.engagement}`} aria-hidden="true">
-          {resident.initials}
-        </div>
+        <ResidentAvatar
+          animationData={resident.avatarAnimation}
+          engagement={resident.engagement}
+          size="panel"
+        />
         <div>
           <p className="resident-panel-address text-small-bold">
             {resident.street} {resident.houseNumber}

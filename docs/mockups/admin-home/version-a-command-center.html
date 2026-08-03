@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>גרסה א׳ — מרכז פיקוד | תיבת פעולות</title>
+  <link rel="stylesheet" href="../../../src/new_shapes/index.css" />
+  <style>
+    :root {
+      --sidebar-w: 220px;
+      --ink: #222233;
+      --secondary: #6b6b7b;
+      --gray: #f5f5f7;
+      --card-shadow: inset 0 0 0 1px rgba(34,34,51,.06), 0 8px 20px rgba(34,34,51,.06);
+      --divider: rgba(34,34,51,.06);
+      --polls: #0061fe;
+      --volunteer: #ff4208;
+      --events: #f5c518;
+      --marketplace: #25b752;
+      --news: #91b3ff;
+      --lime: #c8f060;
+      --orange-soft: #fff0eb;
+      --blue-soft: #eef3ff;
+      --lime-soft: #f0fae8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pangea', sans-serif;
+      background: var(--gray);
+      color: var(--ink);
+      height: 100vh;
+      overflow: hidden;
+    }
+    .colbo { font-family: 'COLBO', sans-serif; font-weight: 700; font-stretch: expanded; letter-spacing: .02em; }
+    .shell { display: flex; height: 100vh; }
+
+  /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset -1px 0 0 var(--divider);
+    }
+    .brand { padding: 20px 16px; display: flex; gap: 10px; align-items: center; }
+    .brand-mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--lime); display: grid; place-items: center;
+      font-family: 'COLBO', sans-serif; font-weight: 700; font-size: 14px;
+    }
+    .brand-name { font-size: 14px; font-weight: 700; display: block; }
+    .brand-role { font-size: 12px; color: var(--secondary); }
+    .nav { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 2px; }
+    .nav-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border: none; background: none;
+      border-radius: 12px; font-family: inherit; font-size: 14px;
+      color: var(--ink); cursor: default; width: 100%; text-align: right;
+    }
+    .nav-btn.active { background: var(--gray); }
+    .nav-btn.active .nav-label { font-family: 'COLBO', sans-serif; font-weight: 700; font-stretch: expanded; }
+    .nav-icon { width: 20px; opacity: .7; flex-shrink: 0; }
+    .nav-badge {
+      margin-inline-start: auto; background: var(--volunteer); color: #fff;
+      font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px;
+    }
+    .promo {
+      margin: 8px; padding: 14px; border-radius: 14px;
+      background: var(--blue-soft); box-shadow: var(--card-shadow);
+    }
+    .promo-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .promo-body { font-size: 12px; color: var(--secondary); margin-bottom: 10px; }
+    .promo-btn {
+      font-size: 12px; font-weight: 700; padding: 6px 12px;
+      border: none; border-radius: 999px; background: #fff; cursor: default;
+    }
+    .sidebar-foot {
+      padding: 12px 8px 16px;
+      box-shadow: inset 0 1px 0 var(--divider);
+    }
+
+  /* Main */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar {
+      padding: 16px 24px 0;
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+    .topbar h1 { font-size: 24px; }
+    .topbar-sub { font-size: 13px; color: var(--secondary); margin-top: 4px; }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; }
+    .pill {
+      font-size: 12px; padding: 6px 12px; border-radius: 999px;
+      background: #fff; box-shadow: var(--card-shadow); color: var(--secondary);
+    }
+    .pill.live::before {
+      content: ''; display: inline-block; width: 6px; height: 6px;
+      background: var(--marketplace); border-radius: 50%; margin-inline-end: 6px;
+    }
+
+    .canvas {
+      flex: 1; padding: 16px 24px 20px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: auto 1fr;
+      gap: 14px;
+      min-height: 0;
+    }
+
+  /* Hero panel — dark accent inspired by health ref */
+    .hero {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #2a2a38 0%, #1e1e2a 100%);
+      border-radius: 20px;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 180px 1fr 200px;
+      gap: 20px;
+      align-items: center;
+      color: #fff;
+      box-shadow: 0 12px 40px rgba(34,34,51,.18);
+    }
+    .gauge-wrap { position: relative; width: 160px; height: 100px; margin: 0 auto; }
+    .gauge-label {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end; padding-bottom: 8px;
+    }
+    .gauge-val { font-size: 36px; font-weight: 700; line-height: 1; }
+    .gauge-cap { font-size: 11px; opacity: .6; }
+    .hero-stats { display: flex; flex-direction: column; gap: 14px; }
+    .hero-stat-row { display: flex; align-items: center; gap: 12px; }
+    .hero-stat-label { font-size: 12px; opacity: .7; width: 90px; flex-shrink: 0; }
+    .hero-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,.12); border-radius: 999px; overflow: hidden; }
+    .hero-bar-fill { height: 100%; border-radius: 999px; }
+    .hero-stat-num { font-size: 18px; font-weight: 700; width: 36px; text-align: left; }
+    .hero-kpis { display: flex; flex-direction: column; gap: 10px; }
+    .hero-kpi {
+      background: rgba(255,255,255,.08); border-radius: 14px;
+      padding: 12px 14px; text-align: center;
+    }
+    .hero-kpi-val { font-size: 28px; font-weight: 700; line-height: 1; }
+    .hero-kpi-label { font-size: 11px; opacity: .65; margin-top: 4px; }
+
+  /* Timeline */
+    .timeline-card {
+      background: #fff; border-radius: 18px; padding: 16px 18px;
+      box-shadow: var(--card-shadow); display: flex; flex-direction: column; min-height: 0;
+    }
+    .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .card-title { font-size: 14px; }
+    .card-sub { font-size: 11px; color: var(--secondary); }
+    .timeline {
+      flex: 1; position: relative; padding-top: 24px;
+    }
+    .timeline-axis {
+      position: absolute; top: 8px; left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: var(--secondary);
+    }
+    .timeline-line {
+      position: absolute; top: 20px; left: 0; right: 0; height: 2px;
+      background: var(--divider);
+    }
+    .timeline-events { position: relative; height: 80px; }
+    .tl-event {
+      position: absolute; top: 28px;
+      background: var(--gray); border-radius: 10px;
+      padding: 8px 10px; font-size: 11px; white-space: nowrap;
+      box-shadow: var(--card-shadow);
+    }
+    .tl-event::before {
+      content: ''; position: absolute; top: -10px; left: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
+      transform: translateX(-50%);
+    }
+    .tl-event.e1 { right: 8%; } .tl-event.e1::before { background: var(--volunteer); }
+    .tl-event.e2 { right: 38%; } .tl-event.e2::before { background: var(--polls); }
+    .tl-event.e3 { right: 68%; } .tl-event.e3::before { background: var(--lime); }
+
+  /* Right column stack */
+    .stack { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+    .donut-card, .inbox-card, .heat-card {
+      background: #fff; border-radius: 18px; padding: 16px 18px;
+      box-shadow: var(--card-shadow);
+    }
+    .donut-card { flex: 0 0 auto; }
+    .donut-row { display: flex; align-items: center; gap: 16px; }
+    .legend { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .legend-pct { margin-inline-start: auto; font-weight: 700; }
+    .inbox-card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .inbox-list { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+    .inbox-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 12px; background: var(--gray);
+    }
+    .inbox-type {
+      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; flex-shrink: 0;
+    }
+    .inbox-type--urgent { background: var(--orange-soft); color: var(--volunteer); }
+    .inbox-type--news { background: var(--blue-soft); color: var(--polls); }
+    .inbox-type--event { background: #fff8e0; color: #b8860b; }
+    .inbox-title { font-size: 12px; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .inbox-time { font-size: 10px; color: var(--secondary); flex-shrink: 0; }
+
+    .heat-card { flex: 0 0 100px; }
+    .heat-grid {
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-top: 8px;
+    }
+    .heat-cell { aspect-ratio: 1; border-radius: 3px; background: var(--gray); }
+    .heat-cell.l1 { background: #d4e8ff; } .heat-cell.l2 { background: #91b3ff; }
+    .heat-cell.l3 { background: #0061fe; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">גא</span>
+        <div>
+          <span class="brand-name colbo">גבעת אלה</span>
+          <span class="brand-role">מנהל קהילה</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" type="button" disabled>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+          <span class="nav-label">תיבת פעולות</span>
+          <span class="nav-badge">6</span>
+        </button>
+        <button class="nav-btn" type="button" disabled>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 8 1.5 1.5L12 7"/><path d="M14 9h3"/><path d="m8 14 1.5 1.5L12 13"/><path d="M14 15h3"/></svg>
+          <span class="nav-label">משימות</span>
+        </button>
+        <button class="nav-btn" type="button" disabled>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 12.8 7.2 14.5 9.5C16.8 11.2 22 12 22 12C22 12 16.8 12.8 14.5 15.1C12.8 16.8 12 22 12 22C12 22 11.2 16.8 9.5 15.1C7.2 12.8 2 12 2 12C2 12 7.2 11.2 9.5 9.5C11.2 7.2 12 2 12 2Z"/></svg>
+          <span class="nav-label">סוכן AI לתושבים</span>
+        </button>
+        <button class="nav-btn" type="button" disabled>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span class="nav-label">תוכן</span>
+        </button>
+        <button class="nav-btn" type="button" disabled>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="nav-label">תושבים</span>
+        </button>
+        <button class="nav-btn" type="button" disabled>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span class="nav-label">תובנות</span>
+        </button>
+        <button class="nav-btn" type="button" disabled>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="9" width="6" height="6" rx="1"/><rect x="16" y="3" width="6" height="6" rx="1"/><rect x="16" y="15" width="6" height="6" rx="1"/><path d="M8 12h4M12 12v-6h4M12 12v6h4"/></svg>
+          <span class="nav-label">מפת מידע</span>
+        </button>
+      </nav>
+      <div class="promo">
+        <p class="promo-title colbo">סוכן AI פעיל</p>
+        <p class="promo-body">42 פעולות טופלו אוטומטית היום</p>
+        <button class="promo-btn" type="button" disabled>צפה בפעילות</button>
+      </div>
+      <div class="sidebar-foot">
+        <button class="nav-btn" type="button" disabled>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span class="nav-label">הגדרות</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="colbo">תיבת פעולות</h1>
+          <p class="topbar-sub">6 ממתינים לאישורך · 2 דחופים</p>
+        </div>
+        <div class="topbar-actions">
+          <span class="pill live">עודכן לפני 20 שנ׳</span>
+          <span class="pill">היום, 3 באוג׳</span>
+        </div>
+      </header>
+
+      <div class="canvas">
+        <section class="hero">
+          <div class="gauge-wrap">
+            <svg viewBox="0 0 160 90" width="160" height="90">
+              <path d="M 15 80 A 65 65 0 0 1 145 80" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="10" stroke-linecap="round"/>
+              <path d="M 15 80 A 65 65 0 0 1 145 80" fill="none" stroke="url(#gA)" stroke-width="10" stroke-linecap="round" stroke-dasharray="204" stroke-dashoffset="45"/>
+              <defs><linearGradient id="gA" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8f060"/><stop offset="100%" stop-color="#91b3ff"/></linearGradient></defs>
+            </svg>
+            <div class="gauge-label">
+              <span class="gauge-val">78%</span>
+              <span class="gauge-cap">מעורבות קהילתית</span>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat-row">
+              <span class="hero-stat-label">ממתינים</span>
+              <div class="hero-bar-track"><div class="hero-bar-fill" style="width:35%;background:#ff4208"></div></div>
+              <span class="hero-stat-num">6</span>
+            </div>
+            <div class="hero-stat-row">
+              <span class="hero-stat-label">אוטומציה</span>
+              <div class="hero-bar-track"><div class="hero-bar-fill" style="width:85%;background:#c8f060"></div></div>
+              <span class="hero-stat-num">42</span>
+            </div>
+            <div class="hero-stat-row">
+              <span class="hero-stat-label">דחופים</span>
+              <div class="hero-bar-track"><div class="hero-bar-fill" style="width:20%;background:#f5c518"></div></div>
+              <span class="hero-stat-num">2</span>
+            </div>
+          </div>
+          <div class="hero-kpis">
+            <div class="hero-kpi">
+              <div class="hero-kpi-val" style="color:#c8f060">28</div>
+              <div class="hero-kpi-label">עדכונים פורסמו</div>
+            </div>
+            <div class="hero-kpi">
+              <div class="hero-kpi-val" style="color:#91b3ff">14</div>
+              <div class="hero-kpi-label">סקרים נסגרו</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="timeline-card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title colbo">פעילות היום</h2>
+              <p class="card-sub">ציר זמן אוטומציה ואישורים</p>
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="timeline-axis">
+              <span>06:00</span><span>10:00</span><span>14:00</span><span>18:00</span><span>22:00</span>
+            </div>
+            <div class="timeline-line"></div>
+            <div class="timeline-events">
+              <div class="tl-event e1">נחש באולם — דחוף</div>
+              <div class="tl-event e2">34 שאלות בריכה</div>
+              <div class="tl-event e3">28 עדכונים אוטומטיים</div>
+            </div>
+          </div>
+        </section>
+
+        <div class="stack">
+          <div class="donut-card">
+            <div class="card-head">
+              <h2 class="card-title colbo">מקורות מידע</h2>
+            </div>
+            <div class="donut-row">
+              <svg width="72" height="72" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="14" fill="none" stroke="#f5f5f7" stroke-width="5"/>
+                <circle cx="18" cy="18" r="14" fill="none" stroke="#25b752" stroke-width="5" stroke-dasharray="33 55" stroke-dashoffset="0" transform="rotate(-90 18 18)"/>
+                <circle cx="18" cy="18" r="14" fill="none" stroke="#91b3ff" stroke-width="5" stroke-dasharray="25 63" stroke-dashoffset="-33" transform="rotate(-90 18 18)"/>
+                <circle cx="18" cy="18" r="14" fill="none" stroke="#0061fe" stroke-width="5" stroke-dasharray="19 69" stroke-dashoffset="-58" transform="rotate(-90 18 18)"/>
+                <circle cx="18" cy="18" r="14" fill="none" stroke="#ff4208" stroke-width="5" stroke-dasharray="11 77" stroke-dashoffset="-77" transform="rotate(-90 18 18)"/>
+              </svg>
+              <div class="legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#25b752"></span>WhatsApp<span class="legend-pct">38%</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background:#91b3ff"></span>אפליקציה<span class="legend-pct">28%</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background:#0061fe"></span>שיחות AI<span class="legend-pct">22%</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background:#ff4208"></span>דוא״ל<span class="legend-pct">12%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="inbox-card">
+            <div class="card-head">
+              <h2 class="card-title colbo">תור לאישור</h2>
+              <span style="font-size:11px;font-weight:700;background:var(--orange-soft);color:var(--volunteer);padding:2px 8px;border-radius:999px">6</span>
+            </div>
+            <div class="inbox-list">
+              <div class="inbox-item">
+                <span class="inbox-type inbox-type--urgent">דחוף</span>
+                <span class="inbox-title">נחש צפע בכניסה לאולם הספורט</span>
+                <span class="inbox-time">3 שע׳</span>
+              </div>
+              <div class="inbox-item">
+                <span class="inbox-type inbox-type--urgent">דחוף</span>
+                <span class="inbox-title">רחוב האלון יחסם מחר לעבודות</span>
+                <span class="inbox-time">12 דק׳</span>
+              </div>
+              <div class="inbox-item">
+                <span class="inbox-type inbox-type--news">עדכון</span>
+                <span class="inbox-title">שעות הבריכה לקיץ</span>
+                <span class="inbox-time">שעה</span>
+              </div>
+              <div class="inbox-item">
+                <span class="inbox-type inbox-type--event">אירוע</span>
+                <span class="inbox-title">ערב קהילה — שיח תושבים</span>
+                <span class="inbox-time">5 שע׳</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="heat-card">
+            <div class="card-head" style="margin-bottom:4px">
+              <h2 class="card-title colbo" style="font-size:12px">פעילות קהילתית — 12 שבועות</h2>
+            </div>
+            <div class="heat-grid" id="heatA"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const g = document.getElementById('heatA');
+    const levels = [0,0,1,0,2,1,0,1,2,3,1,0,0,1,2,2,1,0,1,3,2,1,0,1,2,1,0,2,3,2,1,0,1,2,1,0];
+    levels.forEach(l => { const c = document.createElement('div'); c.className = 'heat-cell' + (l ? ' l'+l : ''); g.appendChild(c); });
+  </script>
+</body>
+</html>

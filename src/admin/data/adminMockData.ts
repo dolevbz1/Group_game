@@ -15,8 +15,7 @@ export type InboxItem = {
 };
 
 export type TopicStat = {
-  id: string;
-  emoji: string;
+  id: 'pool' | 'events' | 'volunteer' | 'gate' | 'payment' | 'packages' | 'polls';
   label: string;
   count: number;
   trend: 'up' | 'down' | 'stable';
@@ -50,10 +49,10 @@ export const METRICS = {
 };
 
 export const SOURCE_BREAKDOWN = [
-  { id: 'whatsapp', label: 'WhatsApp', pct: 38, color: '#25D366' },
-  { id: 'app', label: 'אפליקציה', pct: 28, color: '#4FC3E8' },
-  { id: 'ai-chat', label: 'שיחות AI', pct: 22, color: '#9B7BE8' },
-  { id: 'email', label: 'דוא״ל', pct: 12, color: '#FF9F45' },
+  { id: 'whatsapp', label: 'WhatsApp', pct: 38, color: '#25B752' },
+  { id: 'app', label: 'אפליקציה', pct: 28, color: '#91B3FF' },
+  { id: 'ai-chat', label: 'שיחות AI', pct: 22, color: '#0061FE' },
+  { id: 'email', label: 'דוא״ל', pct: 12, color: '#FF4208' },
 ];
 
 export const AUTOMATION_SPLIT = {
@@ -143,13 +142,13 @@ export const INBOX_ITEMS: InboxItem[] = [
 ];
 
 export const TOPIC_STATS: TopicStat[] = [
-  { id: 'pool', emoji: '🏊', label: 'שעות בריכה', count: 34, trend: 'up', trendLabel: '+18 השבוע', pct: 100 },
-  { id: 'events', emoji: '📅', label: 'אירועים קרובים', count: 22, trend: 'stable', trendLabel: 'יציב', pct: 65 },
-  { id: 'volunteer', emoji: '🤝', label: 'התנדבות', count: 18, trend: 'up', trendLabel: '+5 השבוע', pct: 53 },
-  { id: 'gate', emoji: '🚗', label: 'פתיחת שער', count: 15, trend: 'down', trendLabel: '-3 השבוע', pct: 44 },
-  { id: 'payment', emoji: '💳', label: 'תשלום לוועד', count: 12, trend: 'stable', trendLabel: 'יציב', pct: 35 },
-  { id: 'packages', emoji: '📦', label: 'סטטוס חבילות', count: 9, trend: 'up', trendLabel: '+4 השבוע', pct: 26 },
-  { id: 'polls', emoji: '📊', label: 'סקרים והצבעות', count: 7, trend: 'down', trendLabel: '-2 השבוע', pct: 21 },
+  { id: 'pool', label: 'שעות בריכה', count: 34, trend: 'up', trendLabel: '+18 השבוע', pct: 100 },
+  { id: 'events', label: 'אירועים קרובים', count: 22, trend: 'stable', trendLabel: 'יציב', pct: 65 },
+  { id: 'volunteer', label: 'התנדבות', count: 18, trend: 'up', trendLabel: '+5 השבוע', pct: 53 },
+  { id: 'gate', label: 'פתיחת שער', count: 15, trend: 'down', trendLabel: '-3 השבוע', pct: 44 },
+  { id: 'payment', label: 'תשלום לוועד', count: 12, trend: 'stable', trendLabel: 'יציב', pct: 35 },
+  { id: 'packages', label: 'סטטוס חבילות', count: 9, trend: 'up', trendLabel: '+4 השבוע', pct: 26 },
+  { id: 'polls', label: 'סקרים והצבעות', count: 7, trend: 'down', trendLabel: '-2 השבוע', pct: 21 },
 ];
 
 export const AI_ADVICE: AIAdvice[] = [

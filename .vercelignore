@@ -1,0 +1,11 @@
+node_modules
+.git
+.DS_Store
+*.local
+.env
+.env.*
+Sources
+tunnel-url.txt
+tunnel-watchdog.sh
+public/presentation-*.mp4
+dist

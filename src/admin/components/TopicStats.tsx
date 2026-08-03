@@ -9,7 +9,6 @@ export default function TopicStats({ topics }: TopicStatsProps) {
     <ul className="admin-topic-stats">
       {topics.map((topic, index) => (
         <li key={topic.id} className={`admin-topic-row${index === 0 ? ' is-top' : ''}`}>
-          <span className="admin-topic-emoji" aria-hidden="true">{topic.emoji}</span>
           <div className="admin-topic-info">
             <div className="admin-topic-head">
               <span className="admin-topic-label text-small-normal">{topic.label}</span>

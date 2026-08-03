@@ -1,14 +1,13 @@
 import type { InboxItem } from '../data/adminMockData';
 import {
   METRICS,
-  SOURCE_BREAKDOWN,
   AUTOMATION_SPLIT,
-  generateHeatmapData,
+  TOPIC_STATS,
 } from '../data/adminMockData';
 import InboxCard from '../components/InboxCard';
 import MetricCard from '../components/MetricCard';
-import SourceBars from '../components/SourceBars';
-import ActivityHeatmap from '../components/ActivityHeatmap';
+import TopicStats from '../components/TopicStats';
+import AdminCalendarWidget from '../components/AdminCalendarWidget';
 
 type HomeViewProps = {
   inbox: InboxItem[];
@@ -19,7 +18,6 @@ type HomeViewProps = {
 export default function HomeView({ inbox, onApprove, onDismiss }: HomeViewProps) {
   const pending = inbox.filter((i) => i.status !== 'handled');
   const urgent = pending.filter((i) => i.status === 'urgent');
-  const heatmap = generateHeatmapData();
 
   return (
     <div className="admin-view">
@@ -52,59 +50,49 @@ export default function HomeView({ inbox, onApprove, onDismiss }: HomeViewProps)
       </div>
 
       <div className="admin-cards-row">
-        <section className="admin-card admin-card--bars">
-          <h2 className="admin-card-title text-small-bold">מקורות מידע</h2>
-          <p className="admin-card-sub text-tiny-normal">מאיפה מגיע המידע לסוכן</p>
-          <SourceBars items={SOURCE_BREAKDOWN} />
-        </section>
-
-        <section className="admin-card admin-card--split">
-          <h2 className="admin-card-title text-small-bold">פירוק אוטומציה היום</h2>
-          <div className="admin-split-stats">
-            <div className="admin-split-stat">
-              <span className="admin-split-value text-h2-bold">{AUTOMATION_SPLIT.autoPublished}</span>
-              <span className="admin-split-label text-tiny-normal">עדכונים פורסמו</span>
-            </div>
-            <div className="admin-split-stat">
-              <span className="admin-split-value text-h2-bold">{AUTOMATION_SPLIT.autoClosed}</span>
-              <span className="admin-split-label text-tiny-normal">סקרים נסגרו</span>
-            </div>
-            <div className="admin-split-stat admin-split-stat--escalated">
-              <span className="admin-split-value text-h2-bold">{AUTOMATION_SPLIT.escalated}</span>
-              <span className="admin-split-label text-tiny-normal">הועברו אליך</span>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <div className="admin-bottom-row">
-        <section className="admin-card admin-card--inbox">
+        <section className="admin-card admin-card--topics">
           <div className="admin-card-head">
-            <h2 className="admin-card-title text-small-bold">תור לאישור</h2>
-            <span className="admin-card-count text-tiny-bold">{pending.length}</span>
+            <div>
+              <h2 className="admin-card-title text-medium-bold">נושאים נפוצים בשאלות</h2>
+              <p className="admin-card-sub text-tiny-normal">7 ימים אחרונים · כל המקורות</p>
+            </div>
+            <span className="admin-card-pill text-tiny-bold">117 שאלות</span>
           </div>
-          <div className="admin-inbox-list">
-            {pending.length === 0 ? (
-              <p className="admin-empty text-small-normal">הכול מעודכן — אין פריטים ממתינים 🎉</p>
-            ) : (
-              pending.map((item) => (
-                <InboxCard
-                  key={item.id}
-                  item={item}
-                  onApprove={() => onApprove(item.id)}
-                  onDismiss={() => onDismiss(item.id)}
-                />
-              ))
-            )}
+          <TopicStats topics={TOPIC_STATS} />
+          <div className="admin-widget-cta">
+            <p className="admin-widget-cta-text text-tiny-normal">
+              34 תושבים שאלו על שעות הבריכה השבוע — פרסום עדכון יפחית פניות חוזרות
+            </p>
+            <button type="button" className="admin-widget-cta-action text-tiny-bold">
+              צור עדכון
+            </button>
           </div>
         </section>
 
-        <section className="admin-card admin-card--heatmap">
-          <h2 className="admin-card-title text-small-bold">פעילות קהילתית</h2>
-          <p className="admin-card-sub text-tiny-normal">12 שבועות אחרונים</p>
-          <ActivityHeatmap data={heatmap} />
-        </section>
+        <AdminCalendarWidget />
       </div>
+
+      <section className="admin-card admin-card--inbox">
+        <div className="admin-card-head">
+          <h2 className="admin-card-title text-medium-bold">תור לאישור</h2>
+          <span className="admin-card-count text-tiny-bold">{pending.length}</span>
+        </div>
+        <div className="admin-inbox-list">
+          {pending.length === 0 ? (
+            <p className="admin-empty text-small-normal">הכול מעודכן — אין פריטים ממתינים 🎉</p>
+          ) : (
+            pending.map((item, index) => (
+              <InboxCard
+                key={item.id}
+                item={item}
+                defaultExpanded={index === 0}
+                onApprove={() => onApprove(item.id)}
+                onDismiss={() => onDismiss(item.id)}
+              />
+            ))
+          )}
+        </div>
+      </section>
     </div>
   );
 }

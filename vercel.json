@@ -8,6 +8,7 @@
     { "source": "/new_shapes", "destination": "/new_shapes.html" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/presentation", "destination": "/presentation.html" },
+    { "source": "/hagasha", "destination": "/hagasha.html" },
     { "source": "/landing", "destination": "/landing.html" }
   ]
 }

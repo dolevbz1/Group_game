@@ -18,6 +18,7 @@ export default defineConfig({
         newShapes: resolve(__dirname, 'new_shapes.html'),
         admin: resolve(__dirname, 'admin.html'),
         presentation: resolve(__dirname, 'presentation.html'),
+        hagasha: resolve(__dirname, 'hagasha.html'),
         landing: resolve(__dirname, 'landing.html'),
       },
     },
