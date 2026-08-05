@@ -8,6 +8,7 @@
 .news-stories {
   position: relative;
   direction: rtl;
+  isolation: isolate;
 }
 
 .news-stories-track {
@@ -168,11 +169,13 @@
   color: var(--color-new-black);
   box-shadow: 0 4px 14px color-mix(in srgb, var(--color-card-border) 18%, transparent);
   cursor: pointer;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .news-stories-next:active {
-  transform: translateY(-50%) scale(0.94);
+  transform: translateY(-50%) translateZ(0) scale(0.94);
 }
 
 .news-stories-next svg {
