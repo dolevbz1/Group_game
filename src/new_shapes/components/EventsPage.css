@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 1100;
-  background: #C3ECF6;
+  background: color-mix(in srgb, var(--color-nav-events) 14%, var(--color-light-surface));
   display: flex;
   flex-direction: column;
   /* Profile-style reveal: fade the panel in, cascade the content up (no bottom slide) */
@@ -316,12 +316,15 @@
   color: var(--color-secondary);
 }
 
-/* ─── Event card ─── */
+/* ─── Event card — matches the ticket-style card used in the carousel ─── */
 .events-event-card {
-  background: #ffffff;
-  border: 0.5px solid rgba(34, 34, 51, 0.12);
-  border-radius: 20px;
+  background: var(--color-light-surface);
+  border: none;
+  border-radius: var(--SP3);
   overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-light-surface) 80%, transparent),
+    0 8px 20px color-mix(in srgb, var(--color-card-border) 6%, transparent);
 }
 
 .events-event-header {
@@ -346,9 +349,10 @@
 
 .events-event-image {
   width: 100%;
-  height: 140px;
+  height: 148px;
   position: relative;
   overflow: hidden;
+  background-color: var(--color-gray);
 }
 
 .events-event-image-placeholder {
@@ -401,13 +405,21 @@
 }
 
 .events-event-cta {
-  background: none;
-  border: none;
-  color: var(--color-card-border);
-  font-weight: var(--font-weight-bold);
-  cursor: pointer;
-  padding: 0;
-  text-align: right;
-  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
   margin-top: var(--SP1);
+  padding: 0 var(--SP3);
+  background: var(--color-nav-events-soft);
+  border: 1px solid var(--color-nav-events);
+  border-radius: 4px;
+  color: var(--color-new-black);
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.events-event-cta:active {
+  transform: scale(0.98);
 }

@@ -117,6 +117,13 @@ export default function App() {
     setAiBotOpen(true);
   };
 
+  const handleMarketplaceFreeItemsAutomation = () => {
+    setMarketplaceOpen(false);
+    setSearchRect(null);
+    setBotInitialMessage('רוצה שתעדכן אותי כל פעם שמתפרסם פריט חינם חדש במרקטפלייס');
+    setAiBotOpen(true);
+  };
+
   const handleNewsPublished = (draft: ReportNewsDraft, photoUrl: string | null) => {
     const item = createNewsItemFromReport({ ...draft, photoUrl });
     addPublishedNewsItem(item);
@@ -217,7 +224,11 @@ export default function App() {
           onUpdate={handleAutomationUpdate}
         />
         <EventsPage open={eventsOpen} onClose={() => setEventsOpen(false)} />
-        <MarketplacePage open={marketplaceOpen} onClose={() => setMarketplaceOpen(false)} />
+        <MarketplacePage
+          open={marketplaceOpen}
+          onClose={() => setMarketplaceOpen(false)}
+          onOpenFreeItemsAutomation={handleMarketplaceFreeItemsAutomation}
+        />
         <NewsDetailPage
           open={newsDetailOpen}
           newsId={newsDetailId}

@@ -7,7 +7,6 @@ import eventsShape from '../assets/SVG nav/Frame 75.svg';
 import pollsShape from '../assets/SVG nav/wired-flat-1213-snake-hover-crawl 1.svg';
 import marketplaceShape from '../assets/SVG nav/Frame 73.svg';
 import avrahamAvatarAnim from '../assets/volunteer-avatar-avraham.json';
-import menorahAnim from '../assets/menorah-hover-pinch.json';
 import { COMMUNITY_STORIES } from '../data/communityStories';
 import { NEWS_ITEMS, type NewsItem } from '../data/newsItems';
 import './NewsCard.css';
@@ -143,14 +142,6 @@ export default function NewsCard({
                 ))}
               </span>
               <span className="news-story-overlay" />
-              {story.id === 'passover-youth-2' && (
-                <Lottie
-                  animationData={menorahAnim}
-                  loop
-                  className="news-story-menorah"
-                  aria-hidden="true"
-                />
-              )}
               <span className="news-story-copy">
                 <span className="news-story-title text-small-bold">{story.title}</span>
               </span>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import eventsShape from '../assets/SVG nav/Frame 75.svg';
 import { COMMUNITY_STORIES } from '../data/communityStories';
 import './StoryViewer.css';
@@ -25,14 +25,7 @@ function HeartIcon() {
   );
 }
 
-function SendIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m22 2-7 20-4-9-9-4Z" />
-      <path d="M22 2 11 13" />
-    </svg>
-  );
-}
+const STORY_DURATION_MS = 5000;
 
 export default function StoryViewer({ open, storyId, onClose }: StoryViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,42 +36,32 @@ export default function StoryViewer({ open, storyId, onClose }: StoryViewerProps
     if (open) setCurrentIndex(0);
   }, [open, storyId]);
 
-  useEffect(() => {
-    if (!open) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-      if (event.key === 'ArrowLeft') {
-        setCurrentIndex((index) => {
-          if (index === images.length - 1) {
-            onClose();
-            return index;
-          }
-          return index + 1;
-        });
-      }
-      if (event.key === 'ArrowRight') {
-        setCurrentIndex((index) => Math.max(0, index - 1));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [images.length, open, onClose]);
-
-  if (!open) return null;
-
-  const showNext = () => {
+  const showNext = useCallback(() => {
     if (currentIndex === images.length - 1) {
       onClose();
       return;
     }
     setCurrentIndex((index) => index + 1);
-  };
+  }, [currentIndex, images.length, onClose]);
 
-  const showPrevious = () => {
+  const showPrevious = useCallback(() => {
     setCurrentIndex((index) => Math.max(0, index - 1));
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+      if (event.key === 'ArrowLeft') showNext();
+      if (event.key === 'ArrowRight') showPrevious();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose, showNext, showPrevious]);
+
+  if (!open) return null;
 
   return (
     <section className="story-viewer" role="dialog" aria-modal="true" aria-label={story.title}>
@@ -105,12 +88,33 @@ export default function StoryViewer({ open, storyId, onClose }: StoryViewerProps
       />
 
       <header className="story-viewer-header">
-        <div className="story-viewer-progress" aria-label={`תמונה ${currentIndex + 1} מתוך ${images.length}`}>
+        <div
+          className="story-viewer-progress"
+          dir="rtl"
+          aria-label={`תמונה ${currentIndex + 1} מתוך ${images.length}`}
+          style={{ '--story-duration': `${STORY_DURATION_MS}ms` } as React.CSSProperties}
+        >
           {images.map((image, index) => (
-            <span
-              key={image}
-              className={`story-viewer-progress-track${index <= currentIndex ? ' is-complete' : ''}`}
-            />
+            <span key={image} className="story-viewer-progress-track">
+              <span
+                key={index === currentIndex ? `active-${currentIndex}` : `track-${index}`}
+                className={[
+                  'story-viewer-progress-fill',
+                  index < currentIndex && 'is-complete',
+                  index === currentIndex && 'is-active',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                onAnimationEnd={
+                  index === currentIndex
+                    ? (event) => {
+                        if (event.currentTarget !== event.target) return;
+                        showNext();
+                      }
+                    : undefined
+                }
+              />
+            </span>
           ))}
         </div>
 
@@ -135,14 +139,11 @@ export default function StoryViewer({ open, storyId, onClose }: StoryViewerProps
         <input
           className="story-viewer-reply text-small-normal"
           data-hook="story-reply"
-          aria-label="שליחת הודעה"
-          placeholder="שליחת הודעה..."
+          aria-label="הוספת תגובה"
+          placeholder="הוספת תגובה..."
         />
         <button type="button" className="story-viewer-action" data-hook="story-like" aria-label="אהבתי">
           <HeartIcon />
-        </button>
-        <button type="button" className="story-viewer-action" data-hook="story-send" aria-label="שיתוף">
-          <SendIcon />
         </button>
       </footer>
     </section>

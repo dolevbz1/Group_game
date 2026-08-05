@@ -71,6 +71,7 @@ export const NEWS_ITEMS: NewsItem[] = [
     title: 'רחוב האלון יחסם מחר לעבודות בניה',
     storyTitle: 'אירוע פסח לנוער',
     desc: 'בין 7:00–14:00 · הזיזו את הרכב מהרחוב עד הבוקר',
+    heroImage: '/street-closure-hero.png',
     author: {
       name: 'ועד גבעת אלה',
       role: 'עדכון רשמי',

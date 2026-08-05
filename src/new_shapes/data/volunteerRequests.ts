@@ -16,6 +16,10 @@ export type VolunteerRequest = {
     lat: number;
     lng: number;
   };
+  dayOffset: number;
+  startHour: number;
+  startMinute: number;
+  durationMinutes: number;
 };
 
 export const VOLUNTEER_REQUESTS: VolunteerRequest[] = [
@@ -29,6 +33,10 @@ export const VOLUNTEER_REQUESTS: VolunteerRequest[] = [
     duration: '30 דק׳',
     availability: 'מחר ב־14:00',
     position: { lat: 32.7222, lng: 35.2415 },
+    dayOffset: 1,
+    startHour: 14,
+    startMinute: 0,
+    durationMinutes: 30,
   },
   {
     id: 'avraham',
@@ -40,6 +48,10 @@ export const VOLUNTEER_REQUESTS: VolunteerRequest[] = [
     duration: '20 דק׳',
     availability: 'מחר ב־14:00',
     position: { lat: 32.72, lng: 35.2458 },
+    dayOffset: 1,
+    startHour: 14,
+    startMinute: 0,
+    durationMinutes: 20,
   },
   {
     id: 'levi',
@@ -51,6 +63,10 @@ export const VOLUNTEER_REQUESTS: VolunteerRequest[] = [
     duration: '3 שע׳',
     availability: 'מחר ב־14:00',
     position: { lat: 32.7228, lng: 35.245 },
+    dayOffset: 1,
+    startHour: 14,
+    startMinute: 0,
+    durationMinutes: 180,
   },
   {
     id: 'rachel',
@@ -62,5 +78,9 @@ export const VOLUNTEER_REQUESTS: VolunteerRequest[] = [
     duration: '45 דק׳',
     availability: 'מחר ב־14:00',
     position: { lat: 32.7224, lng: 35.251 },
+    dayOffset: 1,
+    startHour: 14,
+    startMinute: 0,
+    durationMinutes: 45,
   },
 ];

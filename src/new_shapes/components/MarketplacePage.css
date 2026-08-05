@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 1100;
-  background: #FFD4A8;
+  background: color-mix(in srgb, var(--color-nav-marketplace) 10%, var(--color-light-surface));
   display: flex;
   flex-direction: column;
   opacity: 0;
@@ -297,6 +297,10 @@
   padding-top: var(--SP4);
 }
 
+.marketplace-page-body.has-floating-promo {
+  padding-bottom: calc(var(--SP6) + env(safe-area-inset-bottom, 0px) + 190px);
+}
+
 .marketplace-page-body.is-sale {
   padding-top: var(--SP2);
 }
@@ -369,15 +373,142 @@
   gap: var(--SP3);
 }
 
+/* ─── AI automation promo (giveaway tab) — floating bar above the tab bar ─── */
+.marketplace-ai-promo {
+  position: absolute;
+  left: var(--SP4);
+  right: var(--SP4);
+  bottom: calc(var(--SP4) + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: var(--SP3);
+  padding: var(--SP4);
+  background: var(--color-light-surface);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-light-surface) 80%, transparent),
+    0 16px 32px color-mix(in srgb, var(--color-card-border) 16%, transparent);
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.marketplace-ai-promo.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketplace-ai-promo {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+}
+
+.marketplace-ai-promo-dismiss {
+  position: absolute;
+  top: var(--SP3);
+  left: var(--SP3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-card-border) 6%, transparent);
+  color: rgba(34, 34, 51, 0.55);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.marketplace-ai-promo-dismiss svg {
+  width: 13px;
+  height: 13px;
+}
+
+.marketplace-ai-promo-body {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--SP3);
+  padding-inline-end: var(--SP6);
+}
+
+.marketplace-ai-promo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-news-blue) 24%, transparent);
+}
+
+.marketplace-ai-promo-icon-svg {
+  width: 22px;
+  height: 22px;
+}
+
+.marketplace-ai-promo-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  text-align: right;
+}
+
+.marketplace-ai-promo-title {
+  color: var(--color-card-border);
+}
+
+.marketplace-ai-promo-text {
+  color: rgba(34, 34, 51, 0.68);
+  line-height: 1.4;
+}
+
+.marketplace-ai-promo-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--SP2);
+  height: 44px;
+  background: color-mix(in srgb, var(--color-news-blue) 18%, transparent);
+  border: 1px solid var(--color-news-blue);
+  border-radius: 4px;
+  color: var(--color-card-border);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.marketplace-ai-promo-cta:active {
+  transform: scale(0.98);
+  background: color-mix(in srgb, var(--color-news-blue) 28%, transparent);
+}
+
+.marketplace-ai-promo-cta-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
 .marketplace-row {
   display: flex;
   align-items: center;
   gap: var(--SP3);
   width: 100%;
   padding: var(--SP3);
-  background: #ffffff;
-  border: 0.5px solid var(--color-card-border);
-  border-radius: 12px;
+  background: var(--color-light-surface);
+  border: none;
+  border-radius: var(--SP3);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-light-surface) 80%, transparent),
+    0 8px 20px color-mix(in srgb, var(--color-card-border) 6%, transparent);
   cursor: pointer;
   text-align: right;
   -webkit-tap-highlight-color: transparent;

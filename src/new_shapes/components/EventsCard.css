@@ -28,6 +28,14 @@
   overflow: hidden;
 }
 
+.event-ticket-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .event-ticket-ticker {
   position: absolute;
   top: 0;

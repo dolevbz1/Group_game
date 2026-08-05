@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import shoppingAnim from '../assets/marketplace-shopping.json';
-import { IconButton, CloseIcon } from './IconButton';
+import { IconButton, CloseIcon, AiSparkleIcon } from './IconButton';
 import MarketplaceFilterSheet from './MarketplaceFilterSheet';
 import {
   countForYouListings,
@@ -19,11 +19,13 @@ import {
 } from '../data/marketplaceListings';
 import './MarketplacePage.css';
 
-const SCREEN_COLOR = '#FFD4A8';
+const SCREEN_COLOR = '#E9F8EE';
+const AI_PROMO_DISMISSED_KEY = 'marketplace-free-ai-promo-dismissed';
 
 type MarketplacePageProps = {
   open: boolean;
   onClose: () => void;
+  onOpenFreeItemsAutomation: () => void;
 };
 
 function SearchIcon() {
@@ -145,6 +147,56 @@ function ListingRow({ listing, reason }: { listing: MarketplaceListing; reason?:
   );
 }
 
+function FreeItemsAiPromo({
+  visible,
+  onOpenAutomation,
+  onDismiss,
+}: {
+  visible: boolean;
+  onOpenAutomation: () => void;
+  onDismiss: () => void;
+}) {
+  return (
+    <div
+      className={`marketplace-ai-promo${visible ? ' is-visible' : ''}`}
+      role="note"
+      aria-hidden={!visible}
+      aria-label="הצעה להפעלת אוטומציה"
+    >
+      <button
+        type="button"
+        className="marketplace-ai-promo-dismiss"
+        aria-label="סגירת ההודעה"
+        onClick={onDismiss}
+      >
+        <CloseIcon />
+      </button>
+      <div className="marketplace-ai-promo-body">
+        <span className="marketplace-ai-promo-icon" aria-hidden="true">
+          <AiSparkleIcon className="marketplace-ai-promo-icon-svg" />
+        </span>
+        <span className="marketplace-ai-promo-copy">
+          <strong className="marketplace-ai-promo-title text-medium-bold">
+            פריטים חינם מתפרסמים כל הזמן
+          </strong>
+          <span className="marketplace-ai-promo-text text-small-normal">
+            תנו לעוזר החכם לעדכן אתכם ברגע שמתפרסם, נוסף או מתחדש פריט חינם במרקטפלייס.
+          </span>
+        </span>
+      </div>
+      <button
+        type="button"
+        className="marketplace-ai-promo-cta text-small-bold"
+        data-hook="marketplace-ai-promo-cta"
+        onClick={onOpenAutomation}
+      >
+        <AiSparkleIcon className="marketplace-ai-promo-cta-icon" />
+        להפעיל התראה על פריטים חינם
+      </button>
+    </div>
+  );
+}
+
 function ForYouFeed({ tab }: { tab: 'sale' | 'giveaway' }) {
   const sections = useMemo(() => getForYouSections(tab), [tab]);
   const totalCount = useMemo(() => countForYouListings(tab), [tab]);
@@ -189,13 +241,25 @@ function ForYouFeed({ tab }: { tab: 'sale' | 'giveaway' }) {
   );
 }
 
-export default function MarketplacePage({ open, onClose }: MarketplacePageProps) {
+export default function MarketplacePage({
+  open,
+  onClose,
+  onOpenFreeItemsAutomation,
+}: MarketplacePageProps) {
   const [activeTab, setActiveTab] = useState<'sale' | 'giveaway'>('giveaway');
   const [category, setCategory] = useState<MarketplaceCategory>('all');
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<MarketplaceFilters>(DEFAULT_MARKETPLACE_FILTERS);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [promoDismissed, setPromoDismissed] = useState(
+    () => localStorage.getItem(AI_PROMO_DISMISSED_KEY) === '1'
+  );
   const saleTabLottieRef = useRef<LottieRefCurrentProps>(null);
+
+  const handleDismissPromo = () => {
+    setPromoDismissed(true);
+    localStorage.setItem(AI_PROMO_DISMISSED_KEY, '1');
+  };
 
   const isSaleTab = activeTab === 'sale';
   const isForYou = isSaleTab && category === 'all';
@@ -323,7 +387,11 @@ export default function MarketplacePage({ open, onClose }: MarketplacePageProps)
         </div>
       )}
 
-      <div className={`marketplace-page-body${isSaleTab ? ' is-sale' : ' is-giveaway'}`}>
+      <div
+        className={`marketplace-page-body${isSaleTab ? ' is-sale' : ' is-giveaway'}${
+          !isSaleTab && !promoDismissed ? ' has-floating-promo' : ''
+        }`}
+      >
         {isForYou ? (
           <ForYouFeed tab="sale" />
         ) : !isSaleTab ? (
@@ -348,6 +416,14 @@ export default function MarketplacePage({ open, onClose }: MarketplacePageProps)
           </p>
         )}
       </div>
+
+      {!isSaleTab && (
+        <FreeItemsAiPromo
+          visible={!promoDismissed}
+          onOpenAutomation={onOpenFreeItemsAutomation}
+          onDismiss={handleDismissPromo}
+        />
+      )}
 
       <MarketplaceFilterSheet
         open={filterOpen && isSaleTab}

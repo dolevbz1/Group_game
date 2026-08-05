@@ -109,13 +109,6 @@ export default function ProtectedAreaActivePage({ open, onClose }: Props) {
             {formatElapsed(elapsedSeconds)}
           </span>
           <div className="protected-area-status-main">
-            <div className="protected-area-status-copy">
-              <h2 className="protected-area-status-title">{PROTECTED_AREA_STATUS.headline}</h2>
-              <p className="protected-area-status-sub text-small-normal">
-                {PROTECTED_AREA_STATUS.subline}
-              </p>
-            </div>
-            <div className="protected-area-status-divider" aria-hidden="true" />
             <div className="protected-area-status-meta">
               <span className="protected-area-status-icon" aria-hidden="true">
                 <AlertIcon />
@@ -123,6 +116,13 @@ export default function ProtectedAreaActivePage({ open, onClose }: Props) {
               <time className="protected-area-status-time text-small-bold">
                 {PROTECTED_AREA_STATUS.startedAt}
               </time>
+            </div>
+            <div className="protected-area-status-divider" aria-hidden="true" />
+            <div className="protected-area-status-copy">
+              <h2 className="protected-area-status-title">{PROTECTED_AREA_STATUS.headline}</h2>
+              <p className="protected-area-status-sub text-small-normal">
+                {PROTECTED_AREA_STATUS.subline}
+              </p>
             </div>
           </div>
         </section>

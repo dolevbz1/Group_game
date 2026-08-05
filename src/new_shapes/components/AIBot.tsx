@@ -31,7 +31,12 @@ type Message = {
 };
 
 type Suggestion = { emoji?: string; animation?: object; text: string };
-type Reply = { match: string; text: string; variant?: MessageVariant };
+type Reply = {
+  match: string;
+  text: string;
+  variant?: MessageVariant;
+  automation?: AutomationTemplate;
+};
 type CustomAutomationDraft = {
   stage: 'trigger' | 'action';
   trigger?: string;
@@ -41,6 +46,9 @@ const UPCOMING_EVENTS = Object.entries(EVENTS_BY_DATE)
   .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))
   .flatMap(([date, events]) => events.map((event) => ({ ...event, date })));
 const POOL_UPDATE = getNewsById('pool');
+const MARKETPLACE_FREE_AUTOMATION = AUTOMATION_TEMPLATES.find(
+  (template) => template.id === 'marketplace-free-item'
+);
 
 const SUGGESTIONS: Suggestion[] = [
   { animation: poolSwimmerAnimation, text: 'מתי שעות הפתיחה של הבריכה?' },
@@ -69,6 +77,12 @@ const REPLIES: Reply[] = [
     match: 'אוטומצ',
     text: 'אפשר להתחיל מדוגמה מוכנה או לבנות אוטומציה חדשה בשיחה:',
     variant: 'automation-options',
+  },
+  {
+    match: 'חינם',
+    text: 'מעולה! הכנתי טיוטת אוטומציה שתעדכן אתכם בכל פעם שמתפרסם, נוסף או מתעדכן פריט חינם במרקטפלייס:',
+    variant: 'automation-review',
+    automation: MARKETPLACE_FREE_AUTOMATION,
   },
 ];
 
@@ -572,7 +586,8 @@ export default function AIBot({
     const matchedReply = REPLIES.find((reply) => text.includes(reply.match));
     queueBotResponse(
       matchedReply?.text ?? FALLBACK,
-      matchedReply?.variant
+      matchedReply?.variant,
+      matchedReply?.automation
     );
   };
 

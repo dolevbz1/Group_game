@@ -78,17 +78,6 @@
   height: 100% !important;
 }
 
-.protected-area-alert-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto var(--SP3);
-  padding: var(--SP1) var(--SP3);
-  border-radius: 999px;
-  background: var(--color-alert-urgent-soft);
-  color: var(--color-alert-urgent);
-}
-
 .protected-area-alert-title {
   margin: 0 0 var(--SP2);
   color: var(--color-card-border);

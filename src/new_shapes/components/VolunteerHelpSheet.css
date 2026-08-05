@@ -1,0 +1,216 @@
+.volunteer-help-root {
+  position: absolute;
+  inset: 0;
+  z-index: 950;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+@media (min-width: 600px) {
+  .volunteer-help-root {
+    inset: 12px;
+    border-radius: 38px;
+    overflow: hidden;
+  }
+}
+
+.volunteer-help-root.is-open {
+  pointer-events: auto;
+}
+
+.volunteer-help-backdrop {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: none;
+  background: rgba(34, 34, 51, 0.35);
+  backdrop-filter: blur(0px) saturate(100%);
+  -webkit-backdrop-filter: blur(0px) saturate(100%);
+  opacity: 0;
+  transition: opacity 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease;
+  cursor: default;
+}
+
+.volunteer-help-root.is-open .volunteer-help-backdrop {
+  opacity: 1;
+  backdrop-filter: blur(6px) saturate(130%);
+  -webkit-backdrop-filter: blur(6px) saturate(130%);
+}
+
+.volunteer-help-sheet {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding: var(--SP3) var(--SP5) calc(var(--SP6) + env(safe-area-inset-bottom, 0px));
+  transform: translateY(105%);
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  box-shadow: 0 -8px 24px color-mix(in srgb, var(--color-card-border) 10%, transparent);
+}
+
+.volunteer-help-root.is-open .volunteer-help-sheet {
+  transform: translateY(0);
+}
+
+.volunteer-help-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(34, 34, 51, 0.15);
+  margin: 0 auto var(--SP4);
+}
+
+.volunteer-help-person {
+  display: flex;
+  align-items: center;
+  gap: var(--SP3);
+  margin-bottom: var(--SP4);
+}
+
+.volunteer-help-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--color-gray);
+  border: 0.5px solid var(--color-card-border);
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.volunteer-help-avatar-lottie {
+  width: 100%;
+  height: 100%;
+}
+
+.volunteer-help-avatar-lottie svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.volunteer-help-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.volunteer-help-title {
+  margin: 0;
+  color: var(--color-card-border);
+}
+
+.volunteer-help-task {
+  margin: 0;
+  color: var(--color-secondary);
+}
+
+.volunteer-help-meta {
+  display: flex;
+  gap: var(--SP4);
+  margin: 0 0 var(--SP4);
+  padding: var(--SP3) var(--SP4);
+  background: var(--color-gray);
+  border-radius: 12px;
+}
+
+.volunteer-help-meta > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.volunteer-help-meta dt {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-secondary);
+}
+
+.volunteer-help-meta dd {
+  margin: 0;
+  color: var(--color-card-border);
+  font-weight: var(--font-weight-bold);
+}
+
+.volunteer-help-note {
+  margin: 0 0 var(--SP5);
+  color: var(--color-secondary);
+}
+
+.volunteer-help-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--SP2);
+  width: 100%;
+  height: 48px;
+  border-radius: 4px;
+  color: var(--color-new-black);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.volunteer-help-cta--primary {
+  margin-bottom: var(--SP3);
+  background: var(--color-nav-volunteer-soft);
+  border: 1px solid var(--color-nav-volunteer);
+}
+
+.volunteer-help-cta--primary:active {
+  transform: scale(0.98);
+}
+
+.volunteer-help-cta--secondary {
+  background: transparent;
+  border: 1px solid var(--color-nav-volunteer);
+}
+
+.volunteer-help-sheet.is-done {
+  text-align: center;
+}
+
+.volunteer-help-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--SP4);
+  border-radius: 999px;
+  background: var(--color-nav-volunteer-soft);
+}
+
+.volunteer-help-success-lottie {
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+}
+
+.volunteer-help-success-lottie > div,
+.volunteer-help-success-lottie svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.volunteer-help-sheet.is-done .volunteer-help-title {
+  margin: 0 0 var(--SP2);
+}
+
+.volunteer-help-sheet.is-done .volunteer-help-sub {
+  margin: 0 0 var(--SP6);
+  color: var(--color-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .volunteer-help-backdrop,
+  .volunteer-help-sheet {
+    transition: none;
+  }
+}

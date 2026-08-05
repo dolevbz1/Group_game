@@ -91,8 +91,9 @@
   right: var(--SP2);
   left: var(--SP2);
   display: flex;
-  direction: ltr;
+  direction: rtl;
   gap: var(--SP1);
+  --story-duration: 5000ms;
 }
 
 .story-viewer-progress-track {
@@ -103,8 +104,32 @@
   border-radius: 99px;
 }
 
-.story-viewer-progress-track.is-complete {
+.story-viewer-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 99px;
   background: var(--color-light-surface);
+  transform: scaleX(0);
+  transform-origin: right center;
+}
+
+.story-viewer-progress-fill.is-complete {
+  transform: scaleX(1);
+}
+
+.story-viewer-progress-fill.is-active {
+  animation: story-viewer-progress-fill var(--story-duration) linear forwards;
+}
+
+@keyframes story-viewer-progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .story-viewer-meta {

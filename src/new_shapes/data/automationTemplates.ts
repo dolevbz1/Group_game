@@ -20,6 +20,15 @@ export const AUTOMATION_TEMPLATES: AutomationTemplate[] = [
     tone: 'marketplace',
   },
   {
+    id: 'marketplace-free-item',
+    title: 'פריט חינם חדש במרקטפלייס',
+    description: 'לקבל התראה כשמתפרסם או מתעדכן פריט חינם',
+    trigger: 'מתפרסם, נוסף או מתעדכן פריט חינם במרקטפלייס',
+    action: 'לשלוח לי התראת Push מיד',
+    emoji: '🎁',
+    tone: 'marketplace',
+  },
+  {
     id: 'matching-event',
     title: 'אירוע חדש שמתאים לי',
     description: 'לדעת כשנוסף אירוע לפי תחומי העניין שלי',

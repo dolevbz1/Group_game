@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { GoogleMap, useJsApiLoader, OverlayViewF } from '@react-google-maps/api';
 import Lottie from 'lottie-react';
 import lottie from 'lottie-web';
 import beehiveAnim from '../assets/beehive.json';
 import cafeAnim from '../assets/cafe.json';
 import stadiumAnim from '../assets/stadium.json';
-import { VOLUNTEER_REQUESTS } from '../data/volunteerRequests';
+import { VOLUNTEER_REQUESTS, type VolunteerRequest } from '../data/volunteerRequests';
+import VolunteerHelpSheet from './VolunteerHelpSheet';
+import { downloadVolunteerCalendarEvent } from '../utils/calendarEvent';
 import './VolunteerCard.css';
 
 function HourglassIcon() {
@@ -90,6 +93,8 @@ export default function VolunteerCard({ isActive = false }: { isActive?: boolean
   const [justClaimed, setJustClaimed] = useState<string | null>(null);
   const [proofIndex, setProofIndex] = useState(0);
   const [proofVisible, setProofVisible] = useState(true);
+  const [helpRequest, setHelpRequest] = useState<VolunteerRequest | null>(null);
+  const [helpStep, setHelpStep] = useState<'confirm' | 'done'>('confirm');
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: API_KEY });
 
   useEffect(() => {
@@ -116,12 +121,30 @@ export default function VolunteerCard({ isActive = false }: { isActive?: boolean
     setSelectedId(id);
   };
 
-  const handleClaim = (e: React.MouseEvent) => {
+  const handleRequestHelp = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!featured) return;
-    setClaimedIds((ids) => [...ids, featured.id]);
-    setJustClaimed(featured.id);
+    setHelpStep('confirm');
+    setHelpRequest(featured);
+  };
+
+  const handleConfirmHelp = () => {
+    if (!helpRequest) return;
+    setClaimedIds((ids) => [...ids, helpRequest.id]);
+    setJustClaimed(helpRequest.id);
     setSelectedId(null);
+    setHelpStep('done');
+  };
+
+  const handleCloseHelpSheet = () => {
+    setHelpRequest(null);
+  };
+
+  const handleAddToCalendar = () => {
+    if (!helpRequest) return;
+    downloadVolunteerCalendarEvent(helpRequest);
+    setJustClaimed(null);
+    setHelpRequest(null);
   };
 
   const proof = SOCIAL_PROOF[proofIndex];
@@ -223,7 +246,7 @@ export default function VolunteerCard({ isActive = false }: { isActive?: boolean
             </div>
           </div>
           <footer className="match-footer">
-            <button type="button" className="match-cta text-small-bold" onClick={handleClaim}>
+            <button type="button" className="match-cta text-small-bold" onClick={handleRequestHelp}>
               לפרטים נוספים ותיאום
             </button>
           </footer>
@@ -238,6 +261,17 @@ export default function VolunteerCard({ isActive = false }: { isActive?: boolean
         </div>
       )}
 
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <VolunteerHelpSheet
+            request={helpRequest}
+            step={helpStep}
+            onConfirm={handleConfirmHelp}
+            onClose={handleCloseHelpSheet}
+            onAddToCalendar={handleAddToCalendar}
+          />,
+          document.querySelector('.device') ?? document.body
+        )}
     </div>
   );
 }

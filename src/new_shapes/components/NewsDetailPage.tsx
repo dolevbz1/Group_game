@@ -282,7 +282,7 @@ export default function NewsDetailPage({ open, newsId, onClose }: NewsDetailPage
 
   return (
     <div
-      className={`news-detail${visible ? ' is-open' : ''}${closing ? ' is-closing' : ''}`}
+      className={`news-detail${visible ? ' is-open' : ''}${closing ? ' is-closing' : ''}${item.urgent ? ' is-urgent' : ''}`}
       role="dialog"
       aria-label="פרטי עדכון"
       dir="rtl"
@@ -290,6 +290,14 @@ export default function NewsDetailPage({ open, newsId, onClose }: NewsDetailPage
       <div className="news-detail-bg" />
 
       <div className="news-detail-top">
+        {item.heroImage && (
+          <div
+            className="news-detail-top-blur"
+            style={{ backgroundImage: `url(${item.heroImage})` }}
+            aria-hidden="true"
+          />
+        )}
+        <div className="news-detail-top-tint" aria-hidden="true" />
         <IconButton ariaLabel="סגירה" onClick={onClose}>
           <CloseIcon />
         </IconButton>
@@ -298,51 +306,53 @@ export default function NewsDetailPage({ open, newsId, onClose }: NewsDetailPage
       </div>
 
       <div className="news-detail-scroll">
-        <div className="news-detail-reveal news-detail-hero">
-          {item.heroImage ? (
-            <img
-              src={item.heroImage}
-              alt=""
-              className="news-detail-hero-image news-detail-hero-image--photo"
-            />
-          ) : (
-            <div className="news-detail-hero-image" aria-hidden="true" />
-          )}
-          <div className="news-detail-icon" aria-hidden="true">
-            <NewsVisualIcon item={item} />
-          </div>
-        </div>
-
-        <div className="news-detail-reveal news-detail-content">
-          <h1 className="news-detail-title text-h2-bold">{item.title}</h1>
-
-          <div className="news-detail-author">
-            <div className="news-detail-author-avatar">
-              <AvatarLottie animationData={item.author.avatar} className="news-detail-author-lottie" />
-            </div>
-            <div className="news-detail-author-meta">
-              <span className="news-detail-author-name text-small-bold">{item.author.name}</span>
-              <span className="news-detail-author-sub text-tiny-normal">
-                {item.postedAt} · {item.readMinutes} דק׳ קריאה
-              </span>
+        <article className="news-detail-reveal news-detail-article">
+          <div className="news-detail-hero">
+            {item.heroImage ? (
+              <img
+                src={item.heroImage}
+                alt=""
+                className="news-detail-hero-image news-detail-hero-image--photo"
+              />
+            ) : (
+              <div className="news-detail-hero-image" aria-hidden="true" />
+            )}
+            <div className="news-detail-icon" aria-hidden="true">
+              <NewsVisualIcon item={item} />
             </div>
           </div>
 
-          <p className="news-detail-updated text-tiny-normal">עודכן: {item.updatedAt}</p>
-          <p className="news-detail-body text-medium-normal">{item.body}</p>
-        </div>
+          <div className="news-detail-content">
+            <h1 className="news-detail-title text-h2-bold">{item.title}</h1>
 
-        <section className="news-detail-reveal news-detail-comments" aria-label="תגובות">
-          <h2 className="news-detail-comments-title text-h3-bold">
-            תגובות ({countAllComments(comments)})
-          </h2>
-          <ul className="news-detail-comment-list" aria-live="polite" aria-relevant="additions">
-            {comments.map((comment) => (
-              <CommentThread key={comment.id} comment={comment} />
-            ))}
-          </ul>
-          <CommentComposer onSubmit={handleAddComment} />
-        </section>
+            <div className="news-detail-author">
+              <div className="news-detail-author-avatar">
+                <AvatarLottie animationData={item.author.avatar} className="news-detail-author-lottie" />
+              </div>
+              <div className="news-detail-author-meta">
+                <span className="news-detail-author-name text-small-bold">{item.author.name}</span>
+                <span className="news-detail-author-sub text-tiny-normal">
+                  {item.postedAt} · {item.readMinutes} דק׳ קריאה
+                </span>
+              </div>
+            </div>
+
+            <p className="news-detail-updated text-tiny-normal">עודכן: {item.updatedAt}</p>
+            <p className="news-detail-body text-medium-normal">{item.body}</p>
+          </div>
+
+          <section className="news-detail-comments" aria-label="תגובות">
+            <h2 className="news-detail-comments-title text-h3-bold">
+              תגובות ({countAllComments(comments)})
+            </h2>
+            <ul className="news-detail-comment-list" aria-live="polite" aria-relevant="additions">
+              {comments.map((comment) => (
+                <CommentThread key={comment.id} comment={comment} />
+              ))}
+            </ul>
+            <CommentComposer onSubmit={handleAddComment} />
+          </section>
+        </article>
       </div>
     </div>
   );

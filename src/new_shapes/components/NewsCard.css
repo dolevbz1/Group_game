@@ -133,20 +133,6 @@
   pointer-events: none;
 }
 
-.news-story-menorah {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  right: 0;
-  width: 38.4px;
-  height: 38.4px;
-  padding: var(--SP1);
-  background: var(--color-light-surface);
-  border-radius: 0 0 var(--SP2) var(--SP2);
-  box-sizing: border-box;
-  pointer-events: none;
-}
-
 .news-story-copy {
   position: absolute;
   z-index: 2;

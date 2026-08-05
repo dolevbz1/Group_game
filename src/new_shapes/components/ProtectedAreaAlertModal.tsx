@@ -48,9 +48,8 @@ export default function ProtectedAreaAlertModal({ open, onConfirm }: Props) {
                 className="protected-area-alert-lottie"
               />
             </div>
-            <p className="protected-area-alert-badge text-tiny-bold">התרעה פעילה</p>
             <h2 id="protected-area-alert-title" className="protected-area-alert-title text-h2-bold">
-              כניסה לשטח מוגן
+              כנס למרחב מוגן
             </h2>
             <p id="protected-area-alert-desc" className="protected-area-alert-sub text-medium-normal">
               גשו מיד למרחב המוגן הקרוב. אשרו לאחר שנכנסתם למקום מוגן.

@@ -42,10 +42,10 @@
   display: flex;
   flex-direction: column;
   max-height: min(88vh, 640px);
-  background: #ffffff;
+  background: var(--color-light-surface);
   border-radius: 24px 24px 0 0;
-  border: 0.5px solid var(--color-card-border);
-  border-bottom: none;
+  border: none;
+  box-shadow: 0 -8px 24px color-mix(in srgb, var(--color-card-border) 10%, transparent);
   transform: translateY(105%);
   transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -122,16 +122,18 @@
   width: 100%;
   height: 48px;
   box-sizing: border-box;
-  border: 0.5px solid var(--color-card-border);
+  border: none;
   border-radius: 12px;
   background: var(--color-gray);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-card-border) 14%, transparent);
   color: var(--color-card-border);
   padding: 0 var(--SP3);
 }
 
 .mfilter-input:focus {
   outline: none;
-  background: #ffffff;
+  background: var(--color-light-surface);
+  box-shadow: inset 0 0 0 1.5px var(--color-nav-marketplace);
 }
 
 .mfilter-price-sep {
@@ -148,7 +150,8 @@
 
 .mfilter-chip {
   background: var(--color-gray);
-  border: 0.5px solid var(--color-card-border);
+  border: none;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-card-border) 14%, transparent);
   border-radius: 999px;
   padding: var(--SP2) var(--SP4);
   color: var(--color-card-border);
@@ -157,16 +160,19 @@
 }
 
 .mfilter-chip.is-active {
-  background: var(--color-card-border);
-  color: #ffffff;
+  background: var(--color-nav-marketplace-soft);
+  box-shadow: inset 0 0 0 1.5px var(--color-nav-marketplace);
+  color: var(--color-new-black);
 }
 
 .mfilter-sort-list {
   display: flex;
   flex-direction: column;
-  border: 0.5px solid var(--color-card-border);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-light-surface) 80%, transparent),
+    0 8px 20px color-mix(in srgb, var(--color-card-border) 6%, transparent);
 }
 
 .mfilter-sort-row {
@@ -175,9 +181,9 @@
   justify-content: space-between;
   gap: var(--SP3);
   width: 100%;
-  background: #ffffff;
+  background: var(--color-light-surface);
   border: none;
-  border-bottom: 0.5px solid rgba(34, 34, 51, 0.08);
+  border-bottom: 0.5px solid color-mix(in srgb, var(--color-card-border) 8%, transparent);
   padding: var(--SP3) var(--SP4);
   color: var(--color-card-border);
   cursor: pointer;
@@ -190,7 +196,7 @@
 }
 
 .mfilter-sort-row.is-active {
-  background: var(--color-gray);
+  background: var(--color-nav-marketplace-soft);
 }
 
 .mfilter-sort-check {
@@ -203,8 +209,8 @@
 }
 
 .mfilter-sort-row.is-active .mfilter-sort-check {
-  background: var(--color-card-border);
-  border-color: var(--color-card-border);
+  background: var(--color-nav-marketplace);
+  border-color: var(--color-nav-marketplace);
 }
 
 .mfilter-sort-row.is-active .mfilter-sort-check::after {
@@ -218,18 +224,22 @@
 .mfilter-footer {
   flex-shrink: 0;
   padding: var(--SP4) var(--SP5) calc(var(--SP5) + env(safe-area-inset-bottom, 0px));
-  border-top: 0.5px solid rgba(34, 34, 51, 0.1);
+  border-top: 0.5px solid color-mix(in srgb, var(--color-card-border) 10%, transparent);
 }
 
 .mfilter-apply {
   width: 100%;
   height: 44px;
-  border: none;
-  border-radius: 12px;
-  background: var(--color-card-border);
-  color: #ffffff;
+  border: 1px solid var(--color-nav-marketplace);
+  border-radius: 4px;
+  background: var(--color-nav-marketplace-soft);
+  color: var(--color-new-black);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+}
+
+.mfilter-apply:active {
+  transform: scale(0.98);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -15,12 +15,12 @@ function SendArrowIcon() {
   );
 }
 
-const PROMPTS = [
-  'שעות פתיחה',
-  'מתקנים ושירותים',
-  'אירועים להורים',
-  'התנדבויות ביישוב',
-  'סקרים והצבעות',
+const PROMPT_ITEMS = [
+  { text: 'שעות פתיחה', accent: 'var(--color-news-blue)' },
+  { text: 'מתקנים ושירותים', accent: 'var(--color-nav-marketplace)' },
+  { text: 'אירועים להורים', accent: 'var(--color-nav-events)' },
+  { text: 'התנדבויות ביישוב', accent: 'var(--color-nav-volunteer)' },
+  { text: 'סקרים והצבעות', accent: 'var(--color-nav-polls)' },
 ];
 
 const TYPING_SPEED = 70;
@@ -40,7 +40,7 @@ export default function AISearch({ onSubmit }: AISearchProps) {
   useEffect(() => {
     if (isEditing) return;
 
-    const full = PROMPTS[index];
+    const full = PROMPT_ITEMS[index].text;
     setFading(false);
     setWashing(false);
     setCharCount(0);
@@ -56,7 +56,7 @@ export default function AISearch({ onSubmit }: AISearchProps) {
     timers.push(setTimeout(() => setFading(true), typingDone + PAUSE_AFTER));
     timers.push(
       setTimeout(() => {
-        setIndex((prev) => (prev + 1) % PROMPTS.length);
+        setIndex((prev) => (prev + 1) % PROMPT_ITEMS.length);
       }, typingDone + PAUSE_AFTER + FADE_DURATION)
     );
 
@@ -127,7 +127,12 @@ export default function AISearch({ onSubmit }: AISearchProps) {
         ) : (
           <span className="ai-search-prompt text-h2-normal">
             שאל אותי לגבי{' '}
-            <span className={rotatingClass}>{PROMPTS[index].slice(0, charCount)}</span>
+            <span
+              className={rotatingClass}
+              style={{ '--ai-search-accent': PROMPT_ITEMS[index].accent } as React.CSSProperties}
+            >
+              {PROMPT_ITEMS[index].text.slice(0, charCount)}
+            </span>
           </span>
         )}
       </div>

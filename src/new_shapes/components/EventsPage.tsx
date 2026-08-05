@@ -322,8 +322,8 @@ export default function EventsPage({ open, onClose }: EventsPageProps) {
                       : `${ev.totalCount} משתתפים`}
                   </p>
 
-                  <button type="button" className="events-event-cta text-small-normal">
-                    לפרטים והרשמה ›
+                  <button type="button" className="events-event-cta text-medium-normal">
+                    לפרטים והרשמה
                   </button>
                 </div>
               </div>

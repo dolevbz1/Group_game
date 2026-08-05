@@ -66,6 +66,7 @@ export default function EventsCard({ isActive = false }: { isActive?: boolean })
 
       <div className="event-ticket">
         <div className="event-ticket-image">
+          <img src="/community-evening-hero.png" alt="" className="event-ticket-photo" />
           {isActive && (
             <div className="event-ticket-ticker" aria-hidden="true" dir="ltr">
               <div className="event-ticket-ticker-track">
