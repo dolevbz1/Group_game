@@ -219,8 +219,10 @@ export default function NewsCard({
                       type="button"
                       data-hook={`news-dismiss-${item.id}`}
                       className="news-note-footer-btn news-note-footer-btn--cta text-small-normal"
-                      onClick={() => handleDismiss(item.id)}
-                      disabled={!!dismissingId}
+                      onClick={(e) => {
+                        e.currentTarget.blur();
+                        handleDismiss(item.id);
+                      }}
                     >
                       הבנתי
                     </button>
