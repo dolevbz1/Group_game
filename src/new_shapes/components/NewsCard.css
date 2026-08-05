@@ -517,6 +517,9 @@
 .news-note-wrap {
   position: relative;
   max-height: 240px;
+  overflow: hidden;
+  isolation: isolate;
+  contain: layout paint;
 }
 
 .news-note-wrap.is-collapsing {
@@ -543,9 +546,11 @@
 }
 
 .news-note.is-dismissing {
+  animation: none;
   opacity: 0;
   filter: blur(2px);
   transform: translateX(-115%) rotate(-5deg) scale(0.94);
+  will-change: transform, opacity;
   pointer-events: none;
 }
 
